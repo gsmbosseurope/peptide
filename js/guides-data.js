@@ -60,5 +60,22 @@ const GUIDES = [
     ],
     "images": [],
     "video": ""
+  },
+  {
+    "id": "recovery-tendon-joint-repair-anti-inflammatory-peptides",
+    "title": "Recovery, Tendon/Joint Repair & Anti-Inflammatory Peptides",
+    "summary": "A quick reference to the main tissue-repair, joint, and anti-inflammatory peptides used in recovery research.",
+    "body": [
+      "BPC-157: A pentadecapeptide derived from gastric juice. It stimulates vascular endothelial growth factor (VEGF) to promote angiogenesis, accelerating the healing of torn tendons, ligaments, and muscle fibers while repairing ulcerated and inflamed gastrointestinal lining.",
+      "TB-500 (Thymosin Beta-4 Acetate): The synthetic functional domain of Thymosin Beta-4. It regulates cellular actin polymerization to enhance cell migration, improve soft tissue flexibility, reduce scar and fibrotic tissue formation, and accelerate systemic muscle and skin repair.",
+      "BPC-157 + TB-500 Blends: A synergistic therapeutic combination blending the direct local angiogenic repair of BPC-157 with the systemic tissue-healing reach of TB-500 for rapid recovery from sports injuries and surgical trauma.",
+      "Glow / KLOW80: Advanced multi-peptide protocols combining BPC-157, TB-500, and GHK-Cu (with or without KPV). This formulation simultaneously repairs deep tissue, stimulates collagen synthesis, resolves acute inflammation, and revitalizes skin elasticity.",
+      "Cartalax: A short bioregulatory peptide (Ala-Glu-Asp) that targets chondrocytes directly, stimulating endogenous collagen synthesis to regenerate worn joint cartilage in osteoarthritis and spinal degenerative conditions.",
+      "ARA-290 (Cibinetide): A non-erythropoietic peptide derived from erythropoietin that binds to the innate repair receptor (IRR) to suppress neuroinflammation, stimulate small nerve fiber regeneration, and alleviate chronic neuropathic pain.",
+      "B7-33: A synthetic relaxin-derived peptide that halts and reverses pathological tissue fibrosis in the heart, lungs, and kidneys without causing severe blood pressure drops.",
+      "KPV: A tripeptide derived from α-MSH that inhibits the NF-κB inflammatory pathway, functioning as a potent anti-inflammatory and antimicrobial agent for gut inflammation, acne, and psoriasis."
+    ],
+    "images": [],
+    "video": ""
   }
 ];
