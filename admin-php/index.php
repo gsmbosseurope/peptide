@@ -19,7 +19,7 @@ require_login_page();
     })();
   </script>
   <title>Trusted-Peptide Admin</title>
-  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="admin.css?v=<?php echo filemtime(__DIR__ . '/admin.css'); ?>" />
 </head>
 <body>
   <header class="admin-header">
@@ -72,6 +72,6 @@ require_login_page();
 
   <div id="toast" class="toast" hidden></div>
 
-  <script src="admin.js"></script>
+  <script src="admin.js?v=<?php echo filemtime(__DIR__ . '/admin.js'); ?>"></script>
 </body>
 </html>
