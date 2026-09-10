@@ -48,7 +48,7 @@ function initCheckoutPage() {
   const lines = hydrateCartLines();
 
   if (!lines.length) {
-    summaryEl.innerHTML = `<div class="empty-state"><h3>Your cart is empty</h3><p>Add products from the <a href="products.html">catalog</a> before checking out.</p></div>`;
+    summaryEl.innerHTML = `<div class="empty-state"><h3>Your cart is empty</h3><p>Add products from the <a href="products">catalog</a> before checking out.</p></div>`;
     form.style.display = "none";
     return;
   }

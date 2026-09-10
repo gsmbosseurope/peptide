@@ -116,10 +116,11 @@ function initScrollReveal() {
 }
 
 function initActiveNavLink() {
-  const path = window.location.pathname.split("/").pop() || "index.html";
+  let path = window.location.pathname.split("/").pop() || "";
+  path = path.replace(/\.html$/, "");
   document.querySelectorAll(".main-nav a, .mobile-nav a").forEach((a) => {
-    const href = a.getAttribute("href");
-    if (href === path || (path === "" && href === "index.html")) {
+    let href = a.getAttribute("href").replace(/^\//, "").replace(/\.html$/, "");
+    if (href === path || (path === "" && (href === "index" || href === ""))) {
       a.classList.add("active");
     }
   });

@@ -41,7 +41,7 @@ function productCardHTML(product) {
   const img = product.images && product.images[0] ? product.images[0] : "";
   const cats = productCategories(product);
   return `
-    <a class="product-card reveal" href="product.html?id=${encodeURIComponent(product.id)}">
+    <a class="product-card reveal" href="product?id=${encodeURIComponent(product.id)}">
       <div class="product-card-media">
         ${img ? `<img src="${img}" alt="${product.name}" loading="lazy" />` : ""}
       </div>

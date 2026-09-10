@@ -23,7 +23,7 @@ function initProductDetailPage() {
   const product = PRODUCTS.find((p) => p.id === id) || PRODUCTS[0];
 
   if (!product) {
-    root.innerHTML = `<div class="empty-state"><h3>Product not found</h3><p>Return to the <a href="products.html">full catalog</a>.</p></div>`;
+    root.innerHTML = `<div class="empty-state"><h3>Product not found</h3><p>Return to the <a href="products">full catalog</a>.</p></div>`;
     return;
   }
 
@@ -35,7 +35,7 @@ function initProductDetailPage() {
 
   root.innerHTML = `
     <div class="breadcrumb">
-      <a href="index.html">Home</a> / <a href="products.html">Products</a> / ${product.name}
+      <a href="/">Home</a> / <a href="products">Products</a> / ${product.name}
     </div>
     <div class="product-detail">
       <div class="pd-gallery">

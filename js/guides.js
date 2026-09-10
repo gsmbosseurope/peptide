@@ -10,7 +10,7 @@ function guideQueryParam(name) {
 function guideCardHTML(guide) {
   const img = guide.images && guide.images[0] ? guide.images[0] : "";
   return `
-    <a class="guide-card reveal" href="tip.html?id=${encodeURIComponent(guide.id)}">
+    <a class="guide-card reveal" href="tip?id=${encodeURIComponent(guide.id)}">
       <div class="guide-card-media">
         ${img ? `<img src="${img}" alt="${guide.title}" loading="lazy" />` : `<span class="guide-card-icon">${guideIcon()}</span>`}
       </div>
@@ -48,7 +48,7 @@ function initGuideDetailPage() {
   const guide = GUIDES.find((g) => g.id === id);
 
   if (!guide) {
-    root.innerHTML = `<div class="empty-state"><h3>Guide not found</h3><p>Return to <a href="tips.html">Tips &amp; Guide</a>.</p></div>`;
+    root.innerHTML = `<div class="empty-state"><h3>Guide not found</h3><p>Return to <a href="tips">Tips &amp; Guide</a>.</p></div>`;
     return;
   }
 
@@ -56,7 +56,7 @@ function initGuideDetailPage() {
 
   root.innerHTML = `
     <div class="breadcrumb">
-      <a href="index.html">Home</a> / <a href="tips.html">Tips &amp; Guide</a> / ${guide.title}
+      <a href="/">Home</a> / <a href="tips">Tips &amp; Guide</a> / ${guide.title}
     </div>
     <article class="guide-article">
       <h1>${guide.title}</h1>

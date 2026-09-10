@@ -28,7 +28,7 @@ function renderCartPage() {
     container.innerHTML = `
       <div class="empty-state">
         <h3>Your cart is empty</h3>
-        <p>Browse the <a href="products.html">full catalog</a> to add research peptides.</p>
+        <p>Browse the <a href="products">full catalog</a> to add research peptides.</p>
       </div>
     `;
     summary.innerHTML = "";
@@ -67,7 +67,7 @@ function renderCartPage() {
     <div class="price-row"><span>Subtotal</span><span>${formatEURHtml(subtotal)}</span></div>
     ${discount > 0 ? `<div class="price-row"><span>Wholesale discount</span><span class="discount">−${formatEURHtml(discount)}</span></div>` : ""}
     <div class="price-row total"><span>Total</span><span>${formatEURHtml(total)}</span></div>
-    <a href="checkout.html" class="btn btn-primary btn-block" style="margin-top:18px;">Proceed to Checkout</a>
+    <a href="checkout" class="btn btn-primary btn-block" style="margin-top:18px;">Proceed to Checkout</a>
   `;
 
   container.addEventListener("click", handleCartClick);

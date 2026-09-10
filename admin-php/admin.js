@@ -544,7 +544,7 @@ function renderGuideEditor(guide) {
       <textarea id="g-summary" placeholder="1-2 lines shown on the guide card">${escapeHtml(guide.summary)}</textarea>
     </div>
 
-    <div class="section-title">Article Body (one paragraph per line)</div>
+    <div class="section-title">Article Body (blank line = new paragraph)</div>
     <div class="field-group">
       <textarea id="g-body" rows="8">${escapeHtml((guide.body || []).join("\n"))}</textarea>
     </div>
@@ -597,11 +597,32 @@ async function handleGuideUpload(guideId, files) {
   showToast("Media uploaded — remember to Save Changes to keep it linked.");
 }
 
+// Groups the textarea's lines into paragraphs: consecutive non-blank lines
+// are joined into one paragraph, a blank line (or a "---" divider line)
+// starts a new paragraph. This way pasting text that has one sentence per
+// line (common when copying from Notepad) doesn't turn every sentence into
+// its own paragraph with extra spacing on the live site.
+function splitGuideBody(text) {
+  const lines = text.split("\n").map((s) => s.trim());
+  const paragraphs = [];
+  let current = [];
+  lines.forEach((line) => {
+    if (!line || /^-{3,}$/.test(line)) {
+      if (current.length) paragraphs.push(current.join(" "));
+      current = [];
+    } else {
+      current.push(line);
+    }
+  });
+  if (current.length) paragraphs.push(current.join(" "));
+  return paragraphs;
+}
+
 function collectGuideFormData(base) {
   return {
     title: document.getElementById("g-title").value.trim(),
     summary: document.getElementById("g-summary").value.trim(),
-    body: document.getElementById("g-body").value.split("\n").map((s) => s.trim()).filter(Boolean),
+    body: splitGuideBody(document.getElementById("g-body").value),
     images: currentImages,
     video: currentVideo,
     id: isNew ? document.getElementById("g-id").value.trim() : base.id,
