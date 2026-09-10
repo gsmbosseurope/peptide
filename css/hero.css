@@ -432,15 +432,17 @@
   font-size: 1.05rem;
   font-weight: 700;
   font-family: var(--font-mono);
-  color: var(--accent-bright);
+  color: var(--accent);
   padding: 10px 16px;
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--accent);
   background: rgba(201, 161, 90, 0.12);
-  text-shadow: 0 0 12px rgba(227, 194, 129, 0.55);
   cursor: pointer;
   text-align: left;
   transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+:root:not([data-theme="light"]) .tier-hint-item {
+  text-shadow: 0 0 12px rgba(227, 194, 129, 0.55);
 }
 
 .tier-hint-item:hover {
