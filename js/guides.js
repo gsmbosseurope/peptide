@@ -88,7 +88,7 @@ function initGuideDetailPage() {
 function guideParagraphHTML(para) {
   const match = para.match(/^([^:]{1,60}):\s*(.+)$/s);
   if (match) {
-    return `<p class="guide-article-entry"><strong>${match[1]}</strong><br>${match[2]}</p>`;
+    return `<p class="guide-article-entry"><strong>${match[1]} :</strong><br>${match[2]}</p>`;
   }
   return `<p>${para}</p>`;
 }
