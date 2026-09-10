@@ -74,10 +74,23 @@ function initGuideDetailPage() {
           : ""
       }
       <div class="guide-article-body">
-        ${guide.body.map((para) => `<p>${para}</p>`).join("")}
+        ${guide.body.map(guideParagraphHTML).join("")}
       </div>
     </article>
   `;
+}
+
+// If a paragraph starts with "Name: description" (a short label before the
+// first colon), render the name as its own bold heading line above the
+// description instead of inline — used by reference-list style guides
+// (e.g. the peptide overview articles) so each entry reads like a term
+// definition rather than a run-on sentence.
+function guideParagraphHTML(para) {
+  const match = para.match(/^([^:]{1,60}):\s*(.+)$/s);
+  if (match) {
+    return `<p class="guide-article-entry"><strong>${match[1]}</strong><br>${match[2]}</p>`;
+  }
+  return `<p>${para}</p>`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -623,3 +623,9 @@
   color: var(--text-secondary);
   margin-bottom: 20px;
 }
+.guide-article-entry strong {
+  display: block;
+  font-size: 1.12rem;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
