@@ -14,11 +14,13 @@ function cheapestVariantPrice(product) {
  */
 const CATEGORY_ICONS = {
   "All": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>`,
-  "Recovery & Repair": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 11l3-3a3 3 0 014.24 0l1.76 1.76a3 3 0 010 4.24l-3 3M17 13l-3 3a3 3 0 01-4.24 0L8 14.24a3 3 0 010-4.24l3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 14.5l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-  "Skin & Anti-Aging": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c2 3 5 5.5 5 9.5a5 5 0 01-10 0C7 8.5 10 6 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 21c2.5 0 4-1.2 4-1.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-  "Metabolic Research": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
-  "Growth & Performance": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7h6v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  "Antioxidant & Whitening": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.4 5.4L20 9l-4.6 3.4L17 18l-5-3.2L7 18l1.6-5.6L4 9l5.6-1.6L12 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+  "Weight Loss, Metabolic Regulation & Insulin Resistance": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7h6v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 11l3-3a3 3 0 014.24 0l1.76 1.76a3 3 0 010 4.24l-3 3M17 13l-3 3a3 3 0 01-4.24 0L8 14.24a3 3 0 010-4.24l3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 14.5l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.4 5.4L20 9l-4.6 3.4L17 18l-5-3.2L7 18l1.6-5.6L4 9l5.6-1.6L12 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+  "Brain, Cognitive Function, Mood & Sleep": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3a5 5 0 00-3 9 5 5 0 003 9h1a2 2 0 002-2V5a2 2 0 00-2-2H9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 3a5 5 0 013 9 5 5 0 01-3 9h-1a2 2 0 01-2-2V5a2 2 0 012-2h1z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+  "Male Hormones, Fertility, Sexual Health & Tanning": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="15" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M13 11l6-6M14 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  "Organ-Specific Bioregulators & Therapeutic Compounds": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6.5 5.5 5.5 0 0121.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
   "Accessories & Supplies": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 7V5a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
 };
 
@@ -27,6 +29,27 @@ const CATEGORY_ICON_FALLBACK = `<svg viewBox="0 0 24 24" fill="none" xmlns="http
 
 function categoryIcon(category) {
   return `<span class="filter-chip-icon">${CATEGORY_ICONS[category] || CATEGORY_ICON_FALLBACK}</span>`;
+}
+
+/**
+ * Short 1-2 word labels for the filter chips, so long category names
+ * (e.g. "Weight Loss, Metabolic Regulation & Insulin Resistance") don't
+ * wrap into oversized pill buttons. The full name still shows as a
+ * tooltip (title attribute) and is what's used for actual filtering.
+ */
+const CATEGORY_SHORT_LABELS = {
+  "Weight Loss, Metabolic Regulation & Insulin Resistance": "Weight Loss",
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": "Growth & Strength",
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "Recovery",
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": "Anti-Aging",
+  "Brain, Cognitive Function, Mood & Sleep": "Brain & Mood",
+  "Male Hormones, Fertility, Sexual Health & Tanning": "Sexual Health",
+  "Organ-Specific Bioregulators & Therapeutic Compounds": "Bioregulators",
+  "Accessories & Supplies": "Accessories",
+};
+
+function categoryShortLabel(category) {
+  return CATEGORY_SHORT_LABELS[category] || category;
 }
 
 /** A product's full set of categories — the `categories` array when present, else its single `category`. */
@@ -104,7 +127,7 @@ function initCatalogPage() {
     filterBar.innerHTML = categories
       .map(
         (cat, i) =>
-          `<button class="filter-chip${i === 0 ? " active" : ""}" data-cat="${cat}">${categoryIcon(cat)}<span>${cat}</span></button>`
+          `<button class="filter-chip${i === 0 ? " active" : ""}" data-cat="${cat}" title="${cat}">${categoryIcon(cat)}<span>${categoryShortLabel(cat)}</span></button>`
       )
       .join("");
 
