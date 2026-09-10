@@ -29,11 +29,13 @@
  */
 
 const CATEGORY_LIST = [
-  "Antioxidant & Whitening",
-  "Growth & Performance",
-  "Lose Weight & Diabetics",
-  "Recovery & Repair",
-  "Skin & Anti-Aging",
+  "Weight Loss, Metabolic Regulation & Insulin Resistance",
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance",
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory",
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
+  "Brain, Cognitive Function, Mood & Sleep",
+  "Male Hormones, Fertility, Sexual Health & Tanning",
+  "Organ-Specific Bioregulators & Therapeutic Compounds",
   "Accessories & Supplies"
 ];
 
@@ -41,7 +43,7 @@ const PRODUCTS = [
   {
     "id": "bpc-157",
     "name": "BPC-157",
-    "category": "Recovery & Repair",
+    "category": "Recovery, Tendon/Joint Repair & Anti-Inflammatory",
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "Stable gastric pentadecapeptide studied for tissue and tendon recovery support",
@@ -107,7 +109,7 @@ const PRODUCTS = [
   {
     "id": "tb-500",
     "name": "TB-500",
-    "category": "Recovery & Repair",
+    "category": "Recovery, Tendon/Joint Repair & Anti-Inflammatory",
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Synthetic fragment of Thymosin Beta-4, studied for cell migration and repair pathways.",
@@ -171,11 +173,8 @@ const PRODUCTS = [
   {
     "id": "ghk-cu",
     "name": "GHK-Cu",
-    "category": "Recovery & Repair",
-    "categories": [
-      "Recovery & Repair",
-      "Skin & Anti-Aging"
-    ],
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
+    "categories": ["Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "You Know it for Skin But Also Rebuilds your Bones",
@@ -220,12 +219,8 @@ const PRODUCTS = [
   {
     "id": "glutathione",
     "name": "Glutathione",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Recovery & Repair",
-      "Skin & Anti-Aging"
-    ],
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
+    "categories": ["Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "Master antioxidant tripeptide studied for oxidative stress reduction and skin tone evening.",
@@ -284,12 +279,8 @@ const PRODUCTS = [
   {
     "id": "semaglutide",
     "name": "Semaglutide - Ozempic",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Lose Weight & Diabetics",
-      "Recovery & Repair"
-    ],
+    "category": "Weight Loss, Metabolic Regulation & Insulin Resistance",
+    "categories": ["Weight Loss, Metabolic Regulation & Insulin Resistance"],
     "purity": "99.7%",
     "showPurity": false,
     "shortDescription": "GLP-1 receptor agonist analogue used extensively in metabolic and appetite-regulation research.",
@@ -343,12 +334,8 @@ const PRODUCTS = [
   {
     "id": "ipamorelin",
     "name": "iPamorelin",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Growth & Performance",
-      "Recovery & Repair"
-    ],
+    "category": "Growth Hormone Secretagogues, Hypertrophy & Endurance",
+    "categories": ["Growth Hormone Secretagogues, Hypertrophy & Endurance"],
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "Selective growth-hormone secretagogue studied for lean mass and recovery research.",
@@ -394,12 +381,8 @@ const PRODUCTS = [
   {
     "id": "melanotan-2",
     "name": "Melanotan II",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Recovery & Repair",
-      "Skin & Anti-Aging"
-    ],
+    "category": "Male Hormones, Fertility, Sexual Health & Tanning",
+    "categories": ["Male Hormones, Fertility, Sexual Health & Tanning"],
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Melanocortin analogue studied for pigmentation response research.",
@@ -437,11 +420,8 @@ const PRODUCTS = [
   {
     "id": "cjc-1295",
     "name": "CJC-1295",
-    "category": "Growth & Performance",
-    "categories": [
-      "Growth & Performance",
-      "Recovery & Repair"
-    ],
+    "category": "Growth Hormone Secretagogues, Hypertrophy & Endurance",
+    "categories": ["Growth Hormone Secretagogues, Hypertrophy & Endurance"],
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Long-acting GHRH analogue frequently paired with Ipamorelin in stacked research protocols.",
@@ -505,12 +485,8 @@ const PRODUCTS = [
   {
     "id": "retatrutide",
     "name": "RetaTrutide",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Lose Weight & Diabetics",
-      "Recovery & Repair"
-    ],
+    "category": "Weight Loss, Metabolic Regulation & Insulin Resistance",
+    "categories": ["Weight Loss, Metabolic Regulation & Insulin Resistance"],
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Triple GIP/GLP-1/glucagon receptor agonist studied for metabolic rate and weight research.",
@@ -580,12 +556,8 @@ const PRODUCTS = [
   {
     "id": "mots-c",
     "name": "MOTS-c",
-    "category": "Lose Weight & Diabetics",
-    "categories": [
-      "Lose Weight & Diabetics",
-      "Recovery & Repair",
-      "Skin & Anti-Aging"
-    ],
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
+    "categories": ["Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Mitochondrial-derived peptide studied for metabolic homeostasis and exercise-response research.",
@@ -671,12 +643,8 @@ const PRODUCTS = [
   {
     "id": "pt-141",
     "name": "PT-141",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Growth & Performance",
-      "Recovery & Repair"
-    ],
+    "category": "Male Hormones, Fertility, Sexual Health & Tanning",
+    "categories": ["Male Hormones, Fertility, Sexual Health & Tanning"],
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "Melanocortin receptor agonist (Bremelanotide) studied for libido and arousal-pathway research.",
@@ -736,12 +704,8 @@ const PRODUCTS = [
   {
     "id": "nad-plus",
     "name": "NAD+",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Recovery & Repair",
-      "Skin & Anti-Aging"
-    ],
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
+    "categories": ["Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "Nicotinamide adenine dinucleotide, studied for cellular energy metabolism and longevity research.",
@@ -808,12 +772,8 @@ const PRODUCTS = [
   {
     "id": "lemon-bottle",
     "name": "Lemon Bottle",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Lose Weight & Diabetics",
-      "Skin & Anti-Aging"
-    ],
+    "category": "Weight Loss, Metabolic Regulation & Insulin Resistance",
+    "categories": ["Weight Loss, Metabolic Regulation & Insulin Resistance"],
     "purity": "99%",
     "showPurity": false,
     "shortDescription": "Fat-dissolving compound blend studied for localized lipolysis and body-contouring research.",
@@ -851,12 +811,8 @@ const PRODUCTS = [
   {
     "id": "kiss-peptin",
     "name": "Kiss-Peptin",
-    "category": "Antioxidant & Whitening",
-    "categories": [
-      "Antioxidant & Whitening",
-      "Growth & Performance",
-      "Recovery & Repair"
-    ],
+    "category": "Male Hormones, Fertility, Sexual Health & Tanning",
+    "categories": ["Male Hormones, Fertility, Sexual Health & Tanning"],
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Kisspeptin analogue studied for reproductive-axis and hormonal signaling research.",
@@ -912,7 +868,7 @@ const PRODUCTS = [
   {
     "id": "klow-blend",
     "name": "KLOW",
-    "category": "Recovery & Repair",
+    "category": "Recovery, Tendon/Joint Repair & Anti-Inflammatory",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Combination blend of BPC-157 10mg, GHK-Cu 50mg, TB-500 10mg, and KPV 10mg for stacked recovery research.",
@@ -952,7 +908,7 @@ const PRODUCTS = [
   {
     "id": "epithalon",
     "name": "Epithalon",
-    "category": "Antioxidant & Whitening",
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "Synthetic tetrapeptide studied for telomerase activation and longevity research.",
@@ -994,7 +950,7 @@ const PRODUCTS = [
   {
     "id": "aod-9604",
     "name": "AOD-9604",
-    "category": "Lose Weight & Diabetics",
+    "category": "Weight Loss, Metabolic Regulation & Insulin Resistance",
     "purity": "99.7%",
     "showPurity": false,
     "shortDescription": "Modified fragment of human growth hormone studied for lipolysis research without effect on blood sugar/IGF-1.",
@@ -1036,7 +992,7 @@ const PRODUCTS = [
   {
     "id": "5-amino-1mq",
     "name": "5-Amino-1MQ",
-    "category": "Lose Weight & Diabetics",
+    "category": "Weight Loss, Metabolic Regulation & Insulin Resistance",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Small-molecule NNMT inhibitor studied for adipocyte metabolism and weight research.",
@@ -1078,7 +1034,7 @@ const PRODUCTS = [
   {
     "id": "selank",
     "name": "Selank",
-    "category": "Recovery & Repair",
+    "category": "Brain, Cognitive Function, Mood & Sleep",
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Synthetic heptapeptide analogue of Tuftsin studied for anxiolytic and cognitive-function research.",
@@ -1120,7 +1076,7 @@ const PRODUCTS = [
   {
     "id": "semax",
     "name": "Semax",
-    "category": "Recovery & Repair",
+    "category": "Brain, Cognitive Function, Mood & Sleep",
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Synthetic heptapeptide analogue of ACTH(4-10) studied for neuroprotective and cognitive research.",
@@ -1162,7 +1118,7 @@ const PRODUCTS = [
   {
     "id": "ss-31",
     "name": "SS-31",
-    "category": "Antioxidant & Whitening",
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
     "purity": "99.7%",
     "showPurity": false,
     "shortDescription": "Mitochondria-targeted tetrapeptide (Elamipretide) studied for oxidative stress and mitochondrial research.",
@@ -1204,7 +1160,7 @@ const PRODUCTS = [
   {
     "id": "snap-8",
     "name": "SNAP-8",
-    "category": "Skin & Anti-Aging",
+    "category": "Organ-Specific Bioregulators & Therapeutic Compounds",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Octapeptide studied for topical wrinkle-reduction and neuromuscular signaling research.",
@@ -1246,7 +1202,7 @@ const PRODUCTS = [
   {
     "id": "oxytocin",
     "name": "Oxytocin",
-    "category": "Growth & Performance",
+    "category": "Male Hormones, Fertility, Sexual Health & Tanning",
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Nonapeptide hormone studied for social-bonding, mood, and neuroendocrine research.",
@@ -1284,7 +1240,7 @@ const PRODUCTS = [
   {
     "id": "cerebrolysin",
     "name": "Cerebrolysin",
-    "category": "Recovery & Repair",
+    "category": "Brain, Cognitive Function, Mood & Sleep",
     "purity": "99%",
     "showPurity": false,
     "shortDescription": "Neuropeptide preparation studied for neurotrophic and cognitive-recovery research.",
@@ -1326,7 +1282,7 @@ const PRODUCTS = [
   {
     "id": "ara-290",
     "name": "ARA-290",
-    "category": "Recovery & Repair",
+    "category": "Recovery, Tendon/Joint Repair & Anti-Inflammatory",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Erythropoietin-derived peptide studied for neuropathic and anti-inflammatory research.",
@@ -1364,7 +1320,7 @@ const PRODUCTS = [
   {
     "id": "dsip",
     "name": "DSIP",
-    "category": "Recovery & Repair",
+    "category": "Brain, Cognitive Function, Mood & Sleep",
     "purity": "99.7%",
     "showPurity": false,
     "shortDescription": "Delta sleep-inducing peptide studied for sleep-regulation and stress-response research.",
@@ -1402,7 +1358,7 @@ const PRODUCTS = [
   {
     "id": "dihexa",
     "name": "DiHexa",
-    "category": "Recovery & Repair",
+    "category": "Brain, Cognitive Function, Mood & Sleep",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Small-molecule nootropic studied for synaptogenesis and cognitive-enhancement research.",
@@ -1440,7 +1396,7 @@ const PRODUCTS = [
   {
     "id": "ll-37",
     "name": "LL-37",
-    "category": "Recovery & Repair",
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Human cathelicidin antimicrobial peptide studied for immune and wound-healing research.",
@@ -1478,7 +1434,7 @@ const PRODUCTS = [
   {
     "id": "follistatin",
     "name": "Follistatin",
-    "category": "Growth & Performance",
+    "category": "Growth Hormone Secretagogues, Hypertrophy & Endurance",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Myostatin-inhibiting glycoprotein studied for muscle-growth and body-composition research.",
@@ -1520,7 +1476,7 @@ const PRODUCTS = [
   {
     "id": "caqk",
     "name": "CAQK",
-    "category": "Recovery & Repair",
+    "category": "Recovery, Tendon/Joint Repair & Anti-Inflammatory",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Tetrapeptide studied for targeted delivery to injured brain and spinal cord tissue in research models.",
@@ -1558,7 +1514,7 @@ const PRODUCTS = [
   {
     "id": "ahk-cu",
     "name": "AHK-Cu",
-    "category": "Skin & Anti-Aging",
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
     "purity": "99.7%",
     "showPurity": false,
     "shortDescription": "Copper tripeptide studied for collagen synthesis and dermal wound-healing research.",
@@ -1600,7 +1556,7 @@ const PRODUCTS = [
   {
     "id": "cjc-1295-no-dac-ipamorelin",
     "name": "CJC-1295 (No DAC) + iPamorelin",
-    "category": "Growth & Performance",
+    "category": "Growth Hormone Secretagogues, Hypertrophy & Endurance",
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Combination blend pairing a non-DAC GHRH analogue with a selective GH secretagogue for stacked research.",
@@ -1638,7 +1594,7 @@ const PRODUCTS = [
   {
     "id": "kpv",
     "name": "KPV",
-    "category": "Recovery & Repair",
+    "category": "Recovery, Tendon/Joint Repair & Anti-Inflammatory",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Tripeptide fragment of alpha-MSH studied for anti-inflammatory and gut-barrier research.",
@@ -1680,7 +1636,7 @@ const PRODUCTS = [
   {
     "id": "tesamorelin",
     "name": "Tesamorelin",
-    "category": "Lose Weight & Diabetics",
+    "category": "Growth Hormone Secretagogues, Hypertrophy & Endurance",
     "purity": "99.7%",
     "showPurity": false,
     "shortDescription": "GHRH analogue studied for visceral-fat reduction and growth-hormone axis research.",
@@ -1722,7 +1678,7 @@ const PRODUCTS = [
   {
     "id": "gonadorelin",
     "name": "Gonadorelin",
-    "category": "Growth & Performance",
+    "category": "Male Hormones, Fertility, Sexual Health & Tanning",
     "purity": "99.8%",
     "showPurity": false,
     "shortDescription": "Synthetic GnRH decapeptide studied for reproductive-axis and hormonal regulation research.",
@@ -1768,7 +1724,7 @@ const PRODUCTS = [
   {
     "id": "hmg",
     "name": "HMG",
-    "category": "Growth & Performance",
+    "category": "Male Hormones, Fertility, Sexual Health & Tanning",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Human menopausal gonadotropin studied for fertility and reproductive-hormone research.",
@@ -1806,7 +1762,7 @@ const PRODUCTS = [
   {
     "id": "vip",
     "name": "VIP",
-    "category": "Recovery & Repair",
+    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Vasoactive intestinal peptide studied for immune modulation and mold-illness research.",
@@ -1848,7 +1804,7 @@ const PRODUCTS = [
   {
     "id": "tirzepatide-mounjaro",
     "name": "Tirzepatide Mounjaro",
-    "category": "Lose Weight & Diabetics",
+    "category": "Weight Loss, Metabolic Regulation & Insulin Resistance",
     "purity": "",
     "showPurity": true,
     "shortDescription": "Lose Weight",
