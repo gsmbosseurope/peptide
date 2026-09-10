@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      var stored = localStorage.getItem("peptidesLabsTheme");
+      var theme = stored === "light" || stored === "dark" ? stored : (function() {
+        var h = new Date().getHours();
+        return h >= 6 && h < 18 ? "light" : "dark";
+      })();
+      document.documentElement.setAttribute("data-theme", theme);
+      var storedPalette = localStorage.getItem("peptidesLabsPalette");
+      if (storedPalette === "bloom" || storedPalette === "ember" || storedPalette === "forest" || storedPalette === "tide" || storedPalette === "crimson" || storedPalette === "royal" || storedPalette === "papaya" || storedPalette === "orbit" || storedPalette === "neoncyan" || storedPalette === "lakers" || storedPalette === "aurora" || storedPalette === "blueprint" || storedPalette === "coastal" || storedPalette === "citrusink") document.documentElement.setAttribute("data-palette", storedPalette);
+    })();
+  </script>
+  <title>Contact — trusted-peptide.com</title>
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4C12 4 12 14 20 20C28 26 28 36 28 36" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M28 4C28 4 28 14 20 20C12 26 12 36 12 36" stroke="#C9A15A" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="12" cy="4" r="2.4" fill="currentColor"/><circle cx="28" cy="4" r="2.4" fill="#C9A15A"/>
+          <circle cx="12" cy="36" r="2.4" fill="#C9A15A"/><circle cx="28" cy="36" r="2.4" fill="currentColor"/>
+          <circle cx="20" cy="20" r="2.6" fill="currentColor"/>
+        </svg>
+        <span class="brand-name">Trusted<span class="lab">-Peptide</span></span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="best-sellers.html">Best Sellers</a>
+        <a href="tips.html">Tips &amp; Guide</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="theme-toggle" aria-label="Switch to light theme" title="Toggle light/dark theme">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="palette-switcher">
+          <button class="palette-toggle" aria-label="Choose color palette" title="Choose color palette" aria-expanded="false" aria-haspopup="true">
+            <span class="palette-toggle-swatch"></span>
+          </button>
+          <div class="palette-menu"></div>
+        </div>
+        <a href="cart.html" class="cart-link">Cart <span class="cart-count">0</span></a>
+        <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="best-sellers.html">Best Sellers</a>
+      <a href="tips.html">Tips &amp; Guide</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <main class="section container">
+    <span class="eyebrow">Get in touch</span>
+    <h1>Questions about an order or a compound?</h1>
+    <p style="max-width:52ch;">Our team responds fastest via WhatsApp. For bulk/wholesale inquiries or certificates of analysis, email us directly.</p>
+
+    <div class="contact-methods reveal-stagger">
+      <div class="contact-card">
+        <h3>WhatsApp / Phone</h3>
+        <p>Fastest response for order questions and wholesale pricing.</p>
+        <a href="https://wa.me/32469126244" target="_blank" rel="noopener" class="btn btn-primary">+32 469 12 62 44</a>
+      </div>
+      <div class="contact-card">
+        <h3>Email</h3>
+        <p>For certificates of analysis and partnership inquiries.</p>
+        <a href="mailto:sale@trusted-peptide.com" class="btn btn-secondary">sale@trusted-peptide.com</a>
+      </div>
+      <div class="contact-card">
+        <h3>Wholesale</h3>
+        <p>Ordering 10+ units regularly? Ask about custom pricing tiers.</p>
+        <a href="mailto:sale@trusted-peptide.com" class="btn btn-secondary">sale@trusted-peptide.com</a>
+      </div>
+    </div>
+
+    <div style="margin-top:56px;">
+      <h2>Send a message</h2>
+      <form style="max-width:520px;" onsubmit="event.preventDefault(); window.location.href='mailto:sale@trusted-peptide.com?subject=' + encodeURIComponent('Website inquiry from ' + this.name.value) + '&body=' + encodeURIComponent(this.message.value + '\n\nReply to: ' + this.email.value);">
+        <div class="field">
+          <label for="c-name">Name</label>
+          <input type="text" id="c-name" name="name" required />
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input type="email" id="c-email" name="email" required />
+        </div>
+        <div class="field">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-methods">
+        <div class="footer-methods-group">
+          <span class="footer-methods-label">We Ship With</span>
+          <div class="footer-methods-icons">
+            <span class="icon-chip brand-dhl">DHL</span>
+            <span class="icon-chip brand-gls">GLS</span>
+            <span class="icon-chip brand-bpost">Bpost</span>
+            <span class="icon-chip brand-postnl">PostNL</span>
+            <span class="icon-chip brand-ups">UPS</span>
+            <span class="icon-chip brand-dpd">DPD</span>
+            <span class="icon-chip brand-fedex">FedEx</span>
+          </div>
+        </div>
+        <div class="footer-methods-group">
+          <span class="footer-methods-label">We Accept</span>
+          <div class="footer-methods-icons">
+            <span class="icon-chip brand-visa">Visa</span>
+            <span class="icon-chip brand-mastercard">Mastercard</span>
+            <span class="icon-chip brand-paypal">PayPal</span>
+            <span class="icon-chip brand-klarna">Klarna</span>
+            <span class="icon-chip brand-ideal">iDEAL</span>
+            <span class="icon-chip brand-debitcard">Debit Card</span>
+            <span class="icon-chip brand-payafter">Pay After Delivery</span>
+            <span class="icon-chip brand-bitcoin">Bitcoin</span>
+            <span class="icon-chip brand-usdc">USDC</span>
+            <span class="icon-chip brand-usdt">USDT</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 trusted-peptide.com — For research use only. Not for human consumption.</span>
+        <span>All prices in EUR</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/pricing.js"></script>
+  <script src="js/products-data.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

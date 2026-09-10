@@ -1,0 +1,17 @@
+# Local Node admin panel — dependencies and lockfile noise
+admin/node_modules/
+
+# PHP admin panel's real config (contains the login password) — never
+# commit this. Copy admin-php/config.example.php to config.php locally
+# and on the server instead.
+admin-php/config.php
+Trusted-Peptide/admin-php/config.php
+
+# Pre-packaged upload bundle (zip + mirrored folder) — a duplicate of the
+# whole site made for manual upload to hosting, not source we want tracked.
+/Trusted-Peptide/
+/Trusted-Peptide.zip
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db

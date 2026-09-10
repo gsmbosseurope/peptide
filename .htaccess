@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# The admin panel's frontend (admin.js) calls /api/... at the site root
+# (matching how it worked as a standalone Node server). Route those
+# requests to the PHP API router living in /admin/.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ admin/api.php?path=/api/$1 [QSA,L]

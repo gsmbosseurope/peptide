@@ -1,0 +1,6 @@
+# Security: these files contain the admin password and internal logic —
+# they should only ever be included by other PHP files, never requested
+# directly by a browser.
+<FilesMatch "^(config|data|auth)\.php$">
+  Require all denied
+</FilesMatch>
