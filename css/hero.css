@@ -626,7 +626,7 @@
 .guide-article-entry strong {
   display: block;
   font-size: 1.12rem;
-  color: var(--accent-bright);
+  color: var(--accent);
   margin-bottom: 6px;
 }
 .guide-article-entry + .guide-article-entry {
