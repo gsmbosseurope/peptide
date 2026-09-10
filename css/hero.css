@@ -629,3 +629,7 @@
   color: var(--text-primary);
   margin-bottom: 6px;
 }
+.guide-article-entry + .guide-article-entry {
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+}
