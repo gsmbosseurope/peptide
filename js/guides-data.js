@@ -38,5 +38,27 @@ const GUIDES = [
     ],
     "images": [],
     "video": ""
+  },
+  {
+    "id": "weight-loss-metabolic-peptides-overview",
+    "title": "Weight Loss & Metabolic Regulation — Peptide Overview",
+    "summary": "A quick reference to the main GLP-1, GIP, and fat-metabolism peptides used in weight loss research.",
+    "body": [
+      "Semaglutide: A selective GLP-1 receptor agonist. It stimulates glucose-dependent insulin secretion, suppresses hepatic glucagon release, slows gastric motility and emptying, and sends direct satiety signals to the hypothalamic appetite center to significantly reduce caloric intake and regulate HbA1c levels.",
+      "Tirzepatide: A dual GLP-1 and GIP (glucose-dependent insulinotropic polypeptide) receptor agonist. It combines central appetite suppression with enhanced insulin sensitivity in adipose tissue, promoting deep fat breakdown and cumulative weight loss at rates superior to single-hormone agonists.",
+      "Retatrutide: An advanced triple agonist targeting GLP-1, GIP, and Glucagon receptors (GCGR) simultaneously. Glucagon elevates basal metabolic rate, hepatic fat oxidation, and resting energy expenditure, while GLP-1 and GIP suppress hunger and regulate blood glucose, making it highly potent for severe obesity and metabolic dysfunction-associated steatohepatitis (MASH).",
+      "Mazdutide: A dual GLP-1 and Glucagon receptor agonist designed to balance appetite suppression with enhanced hepatic fatty acid oxidation, reducing overall fat mass and improving lipid profiles.",
+      "Survodutide: A dual GLP-1/Glucagon receptor agonist targeting advanced clinical weight loss and metabolic liver disease by stimulating energy expenditure in peripheral tissues and burning deep visceral fat.",
+      "Cagrilintide / Cagrilintide + Semaglutide: A long-acting synthetic amylin analogue. It delays nutrient absorption and promotes gastric fullness; when combined with Semaglutide, it targets hunger through two distinct biological pathways for synergistic, amplified weight loss results.",
+      "HGH Fragment 176-191: The C-terminal region of human growth hormone (amino acids 176–191). It exclusively stimulates lipolysis and inhibits lipogenesis without affecting blood glucose levels, insulin sensitivity, or cellular proliferation.",
+      "AOD9604: A modified, stabilized C-terminal growth hormone analogue (177–191) designed to stimulate fat release from adipocytes without elevating blood sugar, while also aiding in cartilage and joint repair.",
+      "Adipotide / FTTP: A pro-apoptotic targeting peptide that selectively binds to blood vessels supplying white adipose tissue, cutting off blood supply to induce targeted adipocyte apoptosis and rapid fat tissue reduction.",
+      "5-Amino-1MQ: A small molecule inhibitor of the enzyme nicotinamide N-methyltransferase (NNMT) in fat tissue. It elevates cellular NAD+ levels, accelerates basal metabolic rate, and drives fat loss while sparing lean muscle mass from catabolism.",
+      "SLU-PP-322: An estrogen-related receptor (ERR) metabolic agonist that triggers skeletal muscle to consume fatty acids and produce energy, mimicking the physiological adaptations of endurance exercise without physical strain.",
+      "Lipo-C / Lemon Bottle: Injectable localized solutions containing fat-dissolving agents and lymphatic circulation boosters used to break down and drain stubborn localized fat deposits (such as the submental area, abdomen, and flanks).",
+      "L-Carnitine: A carrier amino acid that shuttles long-chain fatty acids into the mitochondrial matrix for ATP generation, supporting exercise performance and fat oxidation."
+    ],
+    "images": [],
+    "video": ""
   }
 ];
