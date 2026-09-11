@@ -26,7 +26,7 @@
  */
 
 const THEME_STORAGE_KEY = "peptidesLabsTheme"; // "light" | "dark" | absent (auto)
-const PALETTE_STORAGE_KEY = "peptidesLabsPalette"; // "classic" | "bloom" | "ember" | "forest" | "tide" | "crimson" | "royal" | "papaya" | "orbit" | "neoncyan" | "lakers" | "aurora" | "blueprint" | "coastal" | "citrusink" | "chocolate"
+const PALETTE_STORAGE_KEY = "peptidesLabsPalette"; // "classic" | "bloom" | "ember" | "forest" | "tide" | "crimson" | "royal" | "papaya" | "orbit" | "neoncyan" | "lakers" | "aurora" | "blueprint" | "coastal" | "citrusink" | "chocolate" | "burgundy"
 const PALETTES = [
   { id: "classic", label: "Classic", swatch: ["#021024", "#c9a15a"] },
   { id: "bloom", label: "Dusk Bloom", swatch: ["#1b3358", "#f1916d"] },
@@ -44,6 +44,7 @@ const PALETTES = [
   { id: "coastal", label: "Coastal", swatch: ["#062045", "#f2c4ce"] },
   { id: "citrusink", label: "Citrus Ink", swatch: ["#121212", "#ff6b1a"] },
   { id: "chocolate", label: "Chocolate", swatch: ["#231F26", "#DC9170"] },
+  { id: "burgundy", label: "Burgundy", swatch: ["#621124", "#FC829B"] },
 ];
 
 function getAutoTheme() {
