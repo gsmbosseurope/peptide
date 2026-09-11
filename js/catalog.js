@@ -111,7 +111,8 @@ function initCatalogPage() {
   const filterBar = document.getElementById("filter-bar");
   const searchInput = document.getElementById("search-input");
 
-  let activeCategory = "All";
+  const urlCategory = new URLSearchParams(window.location.search).get("cat");
+  let activeCategory = urlCategory && PRODUCT_CATEGORIES.includes(urlCategory) ? urlCategory : "All";
   let searchTerm = "";
 
   function applyFilters() {
@@ -132,8 +133,8 @@ function initCatalogPage() {
     const categories = ["All", ...PRODUCT_CATEGORIES];
     filterBar.innerHTML = categories
       .map(
-        (cat, i) =>
-          `<button class="filter-chip${i === 0 ? " active" : ""}" data-cat="${cat}" title="${cat}">${categoryIcon(cat)}<span>${categoryShortLabel(cat)}</span></button>`
+        (cat) =>
+          `<button class="filter-chip${cat === activeCategory ? " active" : ""}" data-cat="${cat}" title="${cat}">${categoryIcon(cat)}<span>${categoryShortLabel(cat)}</span></button>`
       )
       .join("");
 

@@ -10,7 +10,35 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartCountBadge();
   initScrollButtons();
   initWhatsAppButton();
+  initFooterCategories();
 });
+
+/**
+ * Populates the footer's "Shop by Category" column (present on about,
+ * index, product, products, tip, tips) with a link per category, deep-
+ * linking into products.html?cat=<name> (catalog.js reads that query
+ * param and pre-selects the matching filter chip on load).
+ */
+const FOOTER_CATEGORY_SHORT_LABELS = {
+  "Weight Loss, Metabolic Regulation & Insulin Resistance": "Weight Loss",
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": "Growth & Strength",
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "Recovery",
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": "Anti-Aging",
+  "Brain, Cognitive Function, Mood & Sleep": "Brain & Mood",
+  "Male Hormones, Fertility, Sexual Health & Tanning": "Sexual Health",
+  "Organ-Specific Bioregulators & Therapeutic Compounds": "Bioregulators",
+  "Skin, Hair Care": "Skin & Hair",
+  "Accessories & Supplies": "Accessories",
+};
+
+function initFooterCategories() {
+  const list = document.getElementById("footer-categories");
+  if (!list || typeof PRODUCT_CATEGORIES === "undefined") return;
+  list.innerHTML = PRODUCT_CATEGORIES.map((cat) => {
+    const label = FOOTER_CATEGORY_SHORT_LABELS[cat] || cat;
+    return `<li><a href="products?cat=${encodeURIComponent(cat)}" title="${cat}">${label}</a></li>`;
+  }).join("");
+}
 
 /**
  * Persistent floating WhatsApp button, fixed bottom-left (mirrors the
