@@ -50,6 +50,7 @@ try {
         $products = load_products();
         $incoming = read_json_body();
         if (empty($incoming['id'])) $incoming['id'] = slugify($incoming['name'] ?? 'product');
+        if ($incoming['id'] === '') $incoming['id'] = 'product-' . round(microtime(true) * 1000);
         foreach ($products as $p) {
             if ($p['id'] === $incoming['id']) send_error('A product with id "' . $incoming['id'] . '" already exists.', 400);
         }
@@ -175,6 +176,10 @@ try {
         $guides = load_guides();
         $incoming = read_json_body();
         if (empty($incoming['id'])) $incoming['id'] = slugify($incoming['title'] ?? 'guide');
+        // slugify() strips non-Latin characters, so a title that's entirely
+        // Arabic (or any non a-z0-9 script) produces an empty id — fall back
+        // to a timestamp-based id rather than saving with a blank one.
+        if ($incoming['id'] === '') $incoming['id'] = 'guide-' . round(microtime(true) * 1000);
         foreach ($guides as $g) {
             if ($g['id'] === $incoming['id']) send_error('A guide with id "' . $incoming['id'] . '" already exists.', 400);
         }
