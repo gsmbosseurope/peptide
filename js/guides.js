@@ -7,6 +7,16 @@ function guideQueryParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
 
+// Detects Arabic (and other RTL-script) text so guide titles/paragraphs
+// written in Arabic render right-to-left, while English text (the
+// majority of the site) is untouched — checked per text chunk, not
+// per page, so a guide mixing English peptide names with Arabic
+// explanations still gets the right direction on each piece.
+const RTL_CHAR_PATTERN = /[֑-߿יִ-﷽ﹰ-ﻼ]/;
+function textDir(text) {
+  return RTL_CHAR_PATTERN.test(text || "") ? "rtl" : "ltr";
+}
+
 function guideCardHTML(guide) {
   const img = guide.images && guide.images[0] ? guide.images[0] : "";
   return `
@@ -15,8 +25,8 @@ function guideCardHTML(guide) {
         ${img ? `<img src="${img}" alt="${guide.title}" loading="lazy" />` : `<span class="guide-card-icon">${guideIcon()}</span>`}
       </div>
       <div class="guide-card-body">
-        <span class="guide-card-title">${guide.title}</span>
-        <p class="guide-card-summary">${guide.summary}</p>
+        <span class="guide-card-title" dir="${textDir(guide.title)}">${guide.title}</span>
+        <p class="guide-card-summary" dir="${textDir(guide.summary)}">${guide.summary}</p>
         <span class="btn btn-ghost">Read guide →</span>
       </div>
     </a>
@@ -59,8 +69,8 @@ function initGuideDetailPage() {
       <a href="/">Home</a> / <a href="tips">Tips &amp; Guide</a> / ${guide.title}
     </div>
     <article class="guide-article">
-      <h1>${guide.title}</h1>
-      <p class="guide-article-summary">${guide.summary}</p>
+      <h1 dir="${textDir(guide.title)}">${guide.title}</h1>
+      <p class="guide-article-summary" dir="${textDir(guide.summary)}">${guide.summary}</p>
       ${
         guide.images && guide.images.length
           ? `<div class="guide-article-gallery">${guide.images
@@ -86,11 +96,12 @@ function initGuideDetailPage() {
 // (e.g. the peptide overview articles) so each entry reads like a term
 // definition rather than a run-on sentence.
 function guideParagraphHTML(para) {
+  const dir = textDir(para);
   const match = para.match(/^([^:]{1,60}):\s*(.+)$/s);
   if (match) {
-    return `<p class="guide-article-entry"><strong>${match[1]} :</strong><br>${match[2]}</p>`;
+    return `<p class="guide-article-entry" dir="${dir}"><strong>${match[1]} :</strong><br>${match[2]}</p>`;
   }
-  return `<p>${para}</p>`;
+  return `<p dir="${dir}">${para}</p>`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
