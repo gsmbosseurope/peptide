@@ -30,6 +30,7 @@ require_login_page();
         <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
       </button>
       <button class="btn" id="manage-categories-btn">Categories</button>
+      <button class="btn" id="manage-theme-btn">Theme</button>
       <button class="btn btn-primary" id="new-item-btn">+ New Product</button>
       <a class="btn" href="logout.php">Log Out</a>
     </div>
@@ -70,8 +71,23 @@ require_login_page();
     </div>
   </div>
 
+  <div id="theme-modal" class="modal-overlay" hidden>
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Theme &amp; Color Palettes</h2>
+        <button class="modal-close" id="theme-modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-hint">Rename any palette's display name (shown in the visitor's color picker) and choose which palette a first-time visitor sees by default. Existing visitors' saved choices are unaffected.</p>
+        <div id="theme-palette-list"></div>
+        <button class="btn btn-primary btn-sm" id="save-theme-btn" style="margin-top:16px;">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast" hidden></div>
 
+  <script src="../js/theme-settings.js?v=<?php echo filemtime(__DIR__ . '/../js/theme-settings.js'); ?>"></script>
   <script src="admin.js?v=<?php echo filemtime(__DIR__ . '/admin.js'); ?>" data-cfasync="false"></script>
 </body>
 </html>

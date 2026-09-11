@@ -135,6 +135,18 @@ try {
         send(['ok' => true, 'categories' => $updated]);
     }
 
+    // ---------- /api/theme-settings ----------
+    if ($segments === ['api', 'theme-settings'] && $method === 'GET') {
+        send(load_theme_settings());
+    }
+
+    if ($segments === ['api', 'theme-settings'] && $method === 'PUT') {
+        $body = read_json_body();
+        $settings = normalize_theme_settings($body);
+        save_theme_settings($settings);
+        send(['ok' => true] + $settings);
+    }
+
     // ---------- /api/products/:id/upload ----------
     if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'products' && $segments[3] === 'upload' && $method === 'POST') {
         $id = urldecode($segments[2]);

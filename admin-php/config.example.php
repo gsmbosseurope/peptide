@@ -15,6 +15,7 @@ define('ADMIN_PASSWORD', 'ChangeThisPassword123!');
 define('ROOT_DIR', dirname(__DIR__));
 define('DATA_FILE', ROOT_DIR . '/js/products-data.js');
 define('GUIDES_DATA_FILE', ROOT_DIR . '/js/guides-data.js');
+define('THEME_SETTINGS_FILE', ROOT_DIR . '/js/theme-settings.js');
 define('PRODUCTS_ASSETS_DIR', ROOT_DIR . '/assets/products');
 define('GUIDES_ASSETS_DIR', ROOT_DIR . '/assets/guides');
 

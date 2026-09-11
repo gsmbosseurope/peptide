@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="js/theme-settings.js"></script>
   <script>
     (function() {
       var stored = localStorage.getItem("peptidesLabsTheme");
@@ -11,8 +12,10 @@
         return h >= 6 && h < 18 ? "light" : "dark";
       })();
       document.documentElement.setAttribute("data-theme", theme);
+      var validPalettes = ["bloom", "ember", "forest", "tide", "crimson", "royal", "papaya", "orbit", "neoncyan", "lakers", "aurora", "blueprint", "coastal", "citrusink", "chocolate"];
       var storedPalette = localStorage.getItem("peptidesLabsPalette");
-      if (storedPalette === "bloom" || storedPalette === "ember" || storedPalette === "forest" || storedPalette === "tide" || storedPalette === "crimson" || storedPalette === "royal" || storedPalette === "papaya" || storedPalette === "orbit" || storedPalette === "neoncyan" || storedPalette === "lakers" || storedPalette === "aurora" || storedPalette === "blueprint" || storedPalette === "coastal" || storedPalette === "citrusink" || storedPalette === "chocolate") document.documentElement.setAttribute("data-palette", storedPalette);
+      var palette = validPalettes.indexOf(storedPalette) !== -1 ? storedPalette : (typeof THEME_SETTINGS !== "undefined" ? THEME_SETTINGS.defaultPaletteId : null);
+      if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
   <title>Contact — trusted-peptide.com</title>

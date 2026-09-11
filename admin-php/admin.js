@@ -773,4 +773,93 @@ if (window.innerWidth <= 860) {
   editorPaneWrap.classList.add("is-hidden-mobile");
 }
 
+/* ---------- Theme modal ---------- */
+// Built-in palette ids/labels/swatches, kept in sync with js/theme.js's
+// PALETTES list — needed here because theme.js itself isn't loaded in the
+// admin panel (it drives the public site's theme toggle/picker UI).
+const BUILTIN_PALETTES = [
+  { id: "classic", label: "Classic", swatch: ["#021024", "#c9a15a"] },
+  { id: "bloom", label: "Dusk Bloom", swatch: ["#1b3358", "#f1916d"] },
+  { id: "ember", label: "Ember", swatch: ["#242f49", "#b51a2b"] },
+  { id: "forest", label: "Forest", swatch: ["#0b2b26", "#8eb69b"] },
+  { id: "tide", label: "Tide", swatch: ["#072e33", "#0f969c"] },
+  { id: "crimson", label: "Crimson", swatch: ["#941020", "#f64547"] },
+  { id: "royal", label: "Royal", swatch: ["#1f0270", "#e8a317"] },
+  { id: "papaya", label: "Papaya", swatch: ["#4a2810", "#f57a1b"] },
+  { id: "orbit", label: "Orbit Blue", swatch: ["#08152f", "#2457ff"] },
+  { id: "neoncyan", label: "Neon Cyan", swatch: ["#043a7e", "#00f5ff"] },
+  { id: "lakers", label: "Lakers", swatch: ["#3d0f78", "#fdb927"] },
+  { id: "aurora", label: "Aurora", swatch: ["#022e21", "#cdfc8a"] },
+  { id: "blueprint", label: "Blueprint", swatch: ["#00539c", "#ffd662"] },
+  { id: "coastal", label: "Coastal", swatch: ["#062045", "#f2c4ce"] },
+  { id: "citrusink", label: "Citrus Ink", swatch: ["#121212", "#ff6b1a"] },
+  { id: "chocolate", label: "Chocolate", swatch: ["#231F26", "#DC9170"] },
+];
+
+const themeModal = document.getElementById("theme-modal");
+const themePaletteListEl = document.getElementById("theme-palette-list");
+let currentThemeSettings = { defaultPaletteId: "classic", paletteLabels: {} };
+
+function renderThemeModal() {
+  themePaletteListEl.innerHTML = BUILTIN_PALETTES.map((p) => {
+    const customLabel = currentThemeSettings.paletteLabels[p.id] || "";
+    const isDefault = currentThemeSettings.defaultPaletteId === p.id;
+    return `
+    <div class="category-row" data-palette-id="${p.id}">
+      <span class="palette-swatch" style="display:inline-block;width:20px;height:20px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg, ${p.swatch[0]}, ${p.swatch[1]});"></span>
+      <input type="text" class="theme-label-input" placeholder="${p.label}" value="${escapeAttr(customLabel)}" style="flex:1;" />
+      <label style="display:flex;align-items:center;gap:6px;font-size:0.82rem;white-space:nowrap;">
+        <input type="radio" name="default-palette" class="theme-default-radio" ${isDefault ? "checked" : ""} />
+        Default
+      </label>
+    </div>
+  `;
+  }).join("");
+}
+
+async function openThemeModal() {
+  themeModal.hidden = false;
+  themePaletteListEl.innerHTML = '<p style="color:var(--steel-blue); font-size:0.85rem;">Loading…</p>';
+  try {
+    const settings = await api("/api/theme-settings");
+    currentThemeSettings = {
+      defaultPaletteId: settings.defaultPaletteId || "classic",
+      paletteLabels: settings.paletteLabels || {},
+    };
+    renderThemeModal();
+  } catch (e) {
+    themePaletteListEl.innerHTML = `<p style="color:var(--danger); font-size:0.85rem;">Failed to load theme settings: ${escapeHtml(e.message)}</p>`;
+  }
+}
+function closeThemeModal() {
+  themeModal.hidden = true;
+}
+
+document.getElementById("manage-theme-btn").addEventListener("click", openThemeModal);
+document.getElementById("theme-modal-close").addEventListener("click", closeThemeModal);
+themeModal.addEventListener("click", (e) => {
+  if (e.target === themeModal) closeThemeModal();
+});
+
+document.getElementById("save-theme-btn").addEventListener("click", async () => {
+  const paletteLabels = {};
+  let defaultPaletteId = "classic";
+  themePaletteListEl.querySelectorAll(".category-row").forEach((row) => {
+    const id = row.dataset.paletteId;
+    const label = row.querySelector(".theme-label-input").value.trim();
+    if (label) paletteLabels[id] = label;
+    if (row.querySelector(".theme-default-radio").checked) defaultPaletteId = id;
+  });
+  try {
+    await api("/api/theme-settings", {
+      method: "PUT",
+      body: JSON.stringify({ defaultPaletteId, paletteLabels }),
+    });
+    showToast("Theme settings saved.");
+    closeThemeModal();
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+});
+
 Promise.all([loadCategories(), loadProducts(), loadGuides()]).catch((e) => showToast(e.message, "error"));

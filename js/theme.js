@@ -84,9 +84,21 @@ function initThemeToggle() {
 }
 
 /* ---------- Palette switcher ---------- */
+function getDefaultPaletteId() {
+  const configured = typeof THEME_SETTINGS !== "undefined" ? THEME_SETTINGS.defaultPaletteId : null;
+  return PALETTES.some((p) => p.id === configured) ? configured : "classic";
+}
+
+function getPaletteLabel(id) {
+  const override = typeof THEME_SETTINGS !== "undefined" && THEME_SETTINGS.paletteLabels ? THEME_SETTINGS.paletteLabels[id] : null;
+  if (override) return override;
+  const found = PALETTES.find((p) => p.id === id);
+  return found ? found.label : id;
+}
+
 function getActivePalette() {
   const stored = localStorage.getItem(PALETTE_STORAGE_KEY);
-  return PALETTES.some((p) => p.id === stored) ? stored : "classic";
+  return PALETTES.some((p) => p.id === stored) ? stored : getDefaultPaletteId();
 }
 
 function applyPalette(palette) {
@@ -121,7 +133,7 @@ function initPaletteToggle() {
     (p) => `
     <button type="button" class="palette-option" data-palette-option="${p.id}">
       <span class="palette-swatch" style="background: linear-gradient(135deg, ${p.swatch[0]}, ${p.swatch[1]})"></span>
-      ${p.label}
+      ${getPaletteLabel(p.id)}
     </button>
   `
   ).join("");
@@ -150,7 +162,105 @@ function initPaletteToggle() {
   });
 }
 
+/* ---------- First-visit welcome modal ---------- */
+// Shown once per visitor (tracked separately from the theme/palette keys
+// themselves, since a visitor could dismiss without changing anything and
+// still count as "seen") so they know the site is themeable before they'd
+// otherwise stumble onto the toggle/picker buttons in the header.
+const WELCOME_SEEN_KEY = "peptidesLabsWelcomeSeen";
+
+function buildWelcomeModal() {
+  const overlay = document.createElement("div");
+  overlay.className = "welcome-modal-overlay";
+  overlay.innerHTML = `
+    <div class="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-modal-title">
+      <button type="button" class="welcome-modal-close" aria-label="Close">✕</button>
+      <h2 id="welcome-modal-title">Make it yours</h2>
+      <p>Pick a day or night mode, and a color palette — you can always change these later from the header.</p>
+      <div class="welcome-modal-section">
+        <span class="welcome-modal-label">Mode</span>
+        <div class="welcome-modal-mode-row">
+          <button type="button" class="welcome-mode-btn" data-mode="light">☀️ Light</button>
+          <button type="button" class="welcome-mode-btn" data-mode="dark">🌙 Dark</button>
+        </div>
+      </div>
+      <div class="welcome-modal-section">
+        <span class="welcome-modal-label">Color palette</span>
+        <div class="welcome-modal-palette-grid"></div>
+      </div>
+      <button type="button" class="btn btn-primary welcome-modal-continue">Continue</button>
+    </div>
+  `;
+  return overlay;
+}
+
+function initWelcomeModal() {
+  if (localStorage.getItem(WELCOME_SEEN_KEY)) return;
+
+  const overlay = buildWelcomeModal();
+  document.body.appendChild(overlay);
+
+  let chosenMode = getActiveTheme();
+  let chosenPalette = getActivePalette();
+
+  const modeButtons = overlay.querySelectorAll(".welcome-mode-btn");
+  const paletteGrid = overlay.querySelector(".welcome-modal-palette-grid");
+
+  function updateModeUI() {
+    modeButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.mode === chosenMode));
+  }
+  function updatePaletteUI() {
+    paletteGrid.querySelectorAll("[data-welcome-palette]").forEach((el) => {
+      el.classList.toggle("active", el.dataset.welcomePalette === chosenPalette);
+    });
+  }
+
+  paletteGrid.innerHTML = PALETTES.map(
+    (p) => `
+    <button type="button" class="welcome-palette-option" data-welcome-palette="${p.id}" title="${getPaletteLabel(p.id)}">
+      <span class="welcome-palette-swatch" style="background: linear-gradient(135deg, ${p.swatch[0]}, ${p.swatch[1]})"></span>
+      <span class="welcome-palette-name">${getPaletteLabel(p.id)}</span>
+    </button>
+  `
+  ).join("");
+
+  updateModeUI();
+  updatePaletteUI();
+
+  modeButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      chosenMode = btn.dataset.mode;
+      updateModeUI();
+      applyTheme(chosenMode);
+    });
+  });
+
+  paletteGrid.addEventListener("click", (e) => {
+    const option = e.target.closest("[data-welcome-palette]");
+    if (!option) return;
+    chosenPalette = option.dataset.welcomePalette;
+    updatePaletteUI();
+    applyPalette(chosenPalette);
+  });
+
+  function closeWelcomeModal(save) {
+    if (save) {
+      setManualTheme(chosenMode);
+      setManualPalette(chosenPalette);
+    }
+    localStorage.setItem(WELCOME_SEEN_KEY, "1");
+    overlay.remove();
+  }
+
+  overlay.querySelector(".welcome-modal-continue").addEventListener("click", () => closeWelcomeModal(true));
+  overlay.querySelector(".welcome-modal-close").addEventListener("click", () => closeWelcomeModal(false));
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeWelcomeModal(false);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
   initPaletteToggle();
+  initWelcomeModal();
 });
