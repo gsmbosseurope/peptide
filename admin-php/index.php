@@ -72,6 +72,6 @@ require_login_page();
 
   <div id="toast" class="toast" hidden></div>
 
-  <script src="admin.js?v=<?php echo filemtime(__DIR__ . '/admin.js'); ?>"></script>
+  <script src="admin.js?v=<?php echo filemtime(__DIR__ . '/admin.js'); ?>" data-cfasync="false"></script>
 </body>
 </html>
