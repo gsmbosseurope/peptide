@@ -165,6 +165,12 @@
     linear-gradient(180deg, rgba(245, 247, 248, 0.3) 0%, transparent 30%, transparent 70%, rgba(245, 247, 248, 0.55) 100%);
 }
 
+:root[data-palette="chocolate"][data-theme="light"] .catalog-banner-fade {
+  background:
+    linear-gradient(90deg, var(--bg) 0%, rgba(250, 243, 239, 0.94) 30%, rgba(250, 243, 239, 0.55) 55%, transparent 78%),
+    linear-gradient(180deg, rgba(250, 243, 239, 0.3) 0%, transparent 30%, transparent 70%, rgba(250, 243, 239, 0.55) 100%);
+}
+
 @media (max-width: 700px) {
   .catalog-banner { height: 260px; }
   .catalog-banner-img { object-position: 70% 45%; }
@@ -247,6 +253,11 @@
     background:
       linear-gradient(90deg, var(--bg) 0%, rgba(245, 247, 248, 0.88) 40%, rgba(245, 247, 248, 0.4) 70%, transparent 100%),
       linear-gradient(180deg, rgba(245, 247, 248, 0.3) 0%, transparent 30%, transparent 65%, rgba(245, 247, 248, 0.6) 100%);
+  }
+  :root[data-palette="chocolate"][data-theme="light"] .catalog-banner-fade {
+    background:
+      linear-gradient(90deg, var(--bg) 0%, rgba(250, 243, 239, 0.88) 40%, rgba(250, 243, 239, 0.4) 70%, transparent 100%),
+      linear-gradient(180deg, rgba(250, 243, 239, 0.3) 0%, transparent 30%, transparent 65%, rgba(250, 243, 239, 0.6) 100%);
   }
   .catalog-banner-content h1 { font-size: 1.9rem; }
   .catalog-banner-content .eyebrow { margin-top: -28px; font-size: 0.72rem; }

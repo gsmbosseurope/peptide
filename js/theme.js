@@ -13,9 +13,10 @@
  * electric blue/ice/steel), "neoncyan" (dark azure/vivid neon cyan),
  * "lakers" (deep purple/gold), "aurora" (deep teal green/vivid lime),
  * "blueprint" (royal blue/muted yellow beige), "coastal" (deep navy/
- * soft blush pink), or "citrusink" (near-black/vivid orange/soft
- * yellow). Chosen via a dropdown next to the theme toggle, remembered
- * in localStorage, applied via [data-palette] on <html>.
+ * soft blush pink), "citrusink" (near-black/vivid orange/soft
+ * yellow), or "chocolate" (cocoa/caramel/slate blue). Chosen via a
+ * dropdown next to the theme toggle, remembered in localStorage,
+ * applied via [data-palette] on <html>.
  *
  * IMPORTANT: getInitialTheme()/applyTheme() below are also inlined as a
  * blocking <script> in <head> on every page (see THEME_INIT_SCRIPT in this
@@ -25,7 +26,7 @@
  */
 
 const THEME_STORAGE_KEY = "peptidesLabsTheme"; // "light" | "dark" | absent (auto)
-const PALETTE_STORAGE_KEY = "peptidesLabsPalette"; // "classic" | "bloom" | "ember" | "forest" | "tide" | "crimson" | "royal" | "papaya" | "orbit" | "neoncyan" | "lakers" | "aurora" | "blueprint" | "coastal" | "citrusink"
+const PALETTE_STORAGE_KEY = "peptidesLabsPalette"; // "classic" | "bloom" | "ember" | "forest" | "tide" | "crimson" | "royal" | "papaya" | "orbit" | "neoncyan" | "lakers" | "aurora" | "blueprint" | "coastal" | "citrusink" | "chocolate"
 const PALETTES = [
   { id: "classic", label: "Classic", swatch: ["#021024", "#c9a15a"] },
   { id: "bloom", label: "Dusk Bloom", swatch: ["#1b3358", "#f1916d"] },
@@ -42,6 +43,7 @@ const PALETTES = [
   { id: "blueprint", label: "Blueprint", swatch: ["#00539c", "#ffd662"] },
   { id: "coastal", label: "Coastal", swatch: ["#062045", "#f2c4ce"] },
   { id: "citrusink", label: "Citrus Ink", swatch: ["#121212", "#ff6b1a"] },
+  { id: "chocolate", label: "Chocolate", swatch: ["#231F26", "#DC9170"] },
 ];
 
 function getAutoTheme() {
