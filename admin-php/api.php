@@ -60,7 +60,7 @@ try {
     }
 
     if (count($segments) === 3 && $segments[0] === 'api' && $segments[1] === 'products' && $method === 'PUT') {
-        $id = $segments[2];
+        $id = urldecode($segments[2]);
         $products = load_products();
         $idx = null;
         foreach ($products as $i => $p) if ($p['id'] === $id) { $idx = $i; break; }
@@ -72,7 +72,7 @@ try {
     }
 
     if (count($segments) === 3 && $segments[0] === 'api' && $segments[1] === 'products' && $method === 'DELETE') {
-        $id = $segments[2];
+        $id = urldecode($segments[2]);
         $products = load_products();
         $filtered = array_values(array_filter($products, fn($p) => $p['id'] !== $id));
         save_products($filtered);
@@ -136,7 +136,7 @@ try {
 
     // ---------- /api/products/:id/upload ----------
     if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'products' && $segments[3] === 'upload' && $method === 'POST') {
-        $id = $segments[2];
+        $id = urldecode($segments[2]);
         if (empty($_FILES['file'])) send_error('No file uploaded.', 400);
         $file = $_FILES['file'];
         if ($file['error'] !== UPLOAD_ERR_OK) send_error('Upload failed.', 400);
@@ -151,7 +151,7 @@ try {
     }
 
     if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'products' && $segments[3] === 'files' && $method === 'GET') {
-        $id = $segments[2];
+        $id = urldecode($segments[2]);
         $dir = PRODUCTS_ASSETS_DIR . '/' . $id;
         if (!is_dir($dir)) send([]);
         $files = array_values(array_diff(scandir($dir), ['.', '..']));
@@ -159,8 +159,8 @@ try {
     }
 
     if (count($segments) === 5 && $segments[0] === 'api' && $segments[1] === 'products' && $segments[3] === 'files' && $method === 'DELETE') {
-        $id = $segments[2];
-        $filename = $segments[4];
+        $id = urldecode($segments[2]);
+        $filename = urldecode($segments[4]);
         $filePath = PRODUCTS_ASSETS_DIR . '/' . $id . '/' . basename($filename);
         if (file_exists($filePath)) @unlink($filePath);
         send(['ok' => true]);
@@ -185,7 +185,7 @@ try {
     }
 
     if (count($segments) === 3 && $segments[0] === 'api' && $segments[1] === 'guides' && $method === 'PUT') {
-        $id = $segments[2];
+        $id = urldecode($segments[2]);
         $guides = load_guides();
         $idx = null;
         foreach ($guides as $i => $g) if ($g['id'] === $id) { $idx = $i; break; }
@@ -197,7 +197,7 @@ try {
     }
 
     if (count($segments) === 3 && $segments[0] === 'api' && $segments[1] === 'guides' && $method === 'DELETE') {
-        $id = $segments[2];
+        $id = urldecode($segments[2]);
         $guides = load_guides();
         $filtered = array_values(array_filter($guides, fn($g) => $g['id'] !== $id));
         save_guides($filtered);
@@ -205,7 +205,7 @@ try {
     }
 
     if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'guides' && $segments[3] === 'upload' && $method === 'POST') {
-        $id = $segments[2];
+        $id = urldecode($segments[2]);
         if (empty($_FILES['file'])) send_error('No file uploaded.', 400);
         $file = $_FILES['file'];
         if ($file['error'] !== UPLOAD_ERR_OK) send_error('Upload failed.', 400);

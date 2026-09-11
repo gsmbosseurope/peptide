@@ -458,7 +458,7 @@ async function handleUpload(productId, files) {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch(`/api/products/${productId}/upload`, { method: "POST", body: formData });
+      const res = await fetch(`/api/products/${encodeURIComponent(productId)}/upload`, { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       if (file.type.startsWith("video/")) {
@@ -504,7 +504,7 @@ async function saveProduct(base) {
       isNew = false;
       currentId = result.id;
     } else {
-      await api(`/api/products/${base.id}`, { method: "PUT", body: JSON.stringify(payload) });
+      await api(`/api/products/${encodeURIComponent(base.id)}`, { method: "PUT", body: JSON.stringify(payload) });
       showToast("Changes saved.");
     }
     await loadProducts();
@@ -517,7 +517,7 @@ async function saveProduct(base) {
 async function deleteProduct(id) {
   if (!confirm("Delete this product? This cannot be undone.")) return;
   try {
-    await api(`/api/products/${id}`, { method: "DELETE" });
+    await api(`/api/products/${encodeURIComponent(id)}`, { method: "DELETE" });
     currentId = null;
     showToast("Product deleted.");
     await loadProducts();
@@ -581,7 +581,7 @@ async function handleGuideUpload(guideId, files) {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch(`/api/guides/${guideId}/upload`, { method: "POST", body: formData });
+      const res = await fetch(`/api/guides/${encodeURIComponent(guideId)}/upload`, { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       if (file.type.startsWith("video/")) {
@@ -638,7 +638,7 @@ async function saveGuide(base) {
       isNew = false;
       currentId = result.id;
     } else {
-      await api(`/api/guides/${base.id}`, { method: "PUT", body: JSON.stringify(payload) });
+      await api(`/api/guides/${encodeURIComponent(base.id)}`, { method: "PUT", body: JSON.stringify(payload) });
       showToast("Changes saved.");
     }
     await loadGuides();
@@ -651,7 +651,7 @@ async function saveGuide(base) {
 async function deleteGuide(id) {
   if (!confirm("Delete this guide? This cannot be undone.")) return;
   try {
-    await api(`/api/guides/${id}`, { method: "DELETE" });
+    await api(`/api/guides/${encodeURIComponent(id)}`, { method: "DELETE" });
     currentId = null;
     showToast("Guide deleted.");
     await loadGuides();
