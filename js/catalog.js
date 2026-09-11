@@ -72,7 +72,7 @@ function productCardHTML(product) {
       </div>
       <div class="product-card-body">
         <div class="product-card-meta-row">
-          <span class="product-card-cat">${cats.join(" · ")}</span>
+          <span class="product-card-cat" title="${cats.join(" · ")}">${cats.map(categoryShortLabel).join(" · ")}</span>
           ${product.showPurity !== false && product.purity ? `<span class="badge-purity badge-purity-inline">${product.purity} purity</span>` : ""}
         </div>
         <span class="product-card-name">${product.name}</span>

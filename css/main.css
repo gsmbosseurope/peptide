@@ -1593,8 +1593,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 560px) {
-  .whatsapp-float-btn { left: 14px; bottom: 14px; width: 48px; height: 48px; }
-  .whatsapp-float-btn svg { width: 26px; height: 26px; }
+  .whatsapp-float-btn { left: 14px; bottom: 14px; width: 44px; height: 44px; }
+  .whatsapp-float-btn svg { width: 22px; height: 22px; }
 }
 
 .cart-link {
@@ -1963,16 +1963,29 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 560px) {
+  :root { --header-height: 64px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
   .footer-grid > div:first-child { grid-column: 1 / -1; margin-bottom: 8px; }
-  .footer-methods { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .footer-methods { flex-direction: column; align-items: flex-start; gap: 20px; padding-bottom: 56px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; padding-bottom: 60px; }
   .section { padding-top: 64px; padding-bottom: 40px; }
   .section + .site-footer,
   .section ~ .site-footer { margin-top: 0; padding-top: 32px; }
 
-  .filter-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .filter-chip { justify-content: center; padding: 10px 12px; }
+  .filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 8px;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-chip { flex: 0 0 auto; white-space: nowrap; padding: 10px 14px; }
 
   .product-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
   .product-card-body { padding: 12px 12px 16px; gap: 6px; }

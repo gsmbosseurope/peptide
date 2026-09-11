@@ -32,8 +32,10 @@ function renderCartPage() {
       </div>
     `;
     summary.innerHTML = "";
+    summary.hidden = true;
     return;
   }
+  summary.hidden = false;
 
   container.innerHTML = lines
     .map(
