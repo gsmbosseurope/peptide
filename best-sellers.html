@@ -127,7 +127,7 @@
       var items = BEST_SELLER_IDS.map(function (id) {
         return PRODUCTS.find(function (p) { return p.id === id; });
       }).filter(Boolean);
-      renderProductGrid(grid, items);
+      renderProductGrid(grid, items, { sort: false });
     });
   </script>
   <script src="js/theme.js"></script>

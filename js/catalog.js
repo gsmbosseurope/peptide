@@ -86,7 +86,11 @@ function productCardHTML(product) {
   `;
 }
 
-function renderProductGrid(container, products) {
+function renderProductGrid(container, products, options) {
+  const sortAlphabetically = !options || options.sort !== false;
+  if (sortAlphabetically) {
+    products = [...products].sort((a, b) => a.name.localeCompare(b.name));
+  }
   if (!products.length) {
     container.innerHTML = `
       <div class="empty-state">
