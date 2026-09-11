@@ -36,6 +36,7 @@ const CATEGORY_LIST = [
   "Brain, Cognitive Function, Mood & Sleep",
   "Male Hormones, Fertility, Sexual Health & Tanning",
   "Organ-Specific Bioregulators & Therapeutic Compounds",
+  "Skin, Hair Care",
   "Accessories & Supplies"
 ];
 
@@ -173,8 +174,8 @@ const PRODUCTS = [
   {
     "id": "ghk-cu",
     "name": "GHK-Cu",
-    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
-    "categories": ["Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
+    "category": "Skin, Hair Care",
+    "categories": ["Skin, Hair Care", "Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "You Know it for Skin But Also Rebuilds your Bones",
@@ -219,8 +220,8 @@ const PRODUCTS = [
   {
     "id": "glutathione",
     "name": "Glutathione",
-    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
-    "categories": ["Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
+    "category": "Skin, Hair Care",
+    "categories": ["Skin, Hair Care", "Anti-Aging, Cellular Immunity & Mitochondrial Repair"],
     "purity": "99.9%",
     "showPurity": false,
     "shortDescription": "Master antioxidant tripeptide studied for oxidative stress reduction and skin tone evening.",
@@ -1160,7 +1161,8 @@ const PRODUCTS = [
   {
     "id": "snap-8",
     "name": "SNAP-8",
-    "category": "Organ-Specific Bioregulators & Therapeutic Compounds",
+    "category": "Skin, Hair Care",
+    "categories": ["Skin, Hair Care", "Organ-Specific Bioregulators & Therapeutic Compounds"],
     "purity": "99.5%",
     "showPurity": false,
     "shortDescription": "Octapeptide studied for topical wrinkle-reduction and neuromuscular signaling research.",
@@ -1514,7 +1516,7 @@ const PRODUCTS = [
   {
     "id": "ahk-cu",
     "name": "AHK-Cu",
-    "category": "Anti-Aging, Cellular Immunity & Mitochondrial Repair",
+    "category": "Skin, Hair Care",
     "purity": "99.7%",
     "showPurity": false,
     "shortDescription": "Copper tripeptide studied for collagen synthesis and dermal wound-healing research.",

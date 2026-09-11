@@ -21,6 +21,7 @@ const CATEGORY_ICONS = {
   "Brain, Cognitive Function, Mood & Sleep": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3a5 5 0 00-3 9 5 5 0 003 9h1a2 2 0 002-2V5a2 2 0 00-2-2H9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 3a5 5 0 013 9 5 5 0 01-3 9h-1a2 2 0 01-2-2V5a2 2 0 012-2h1z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
   "Male Hormones, Fertility, Sexual Health & Tanning": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="15" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M13 11l6-6M14 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   "Organ-Specific Bioregulators & Therapeutic Compounds": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6.5 5.5 5.5 0 0121.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+  "Skin, Hair Care": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c2 3 5 5.5 5 9.5a5 5 0 01-10 0C7 8.5 10 6 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 21c2.5 0 4-1.2 4-1.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   "Accessories & Supplies": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 7V5a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
 };
 
@@ -45,6 +46,7 @@ const CATEGORY_SHORT_LABELS = {
   "Brain, Cognitive Function, Mood & Sleep": "Brain & Mood",
   "Male Hormones, Fertility, Sexual Health & Tanning": "Sexual Health",
   "Organ-Specific Bioregulators & Therapeutic Compounds": "Bioregulators",
+  "Skin, Hair Care": "Skin & Hair",
   "Accessories & Supplies": "Accessories",
 };
 
