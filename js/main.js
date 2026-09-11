@@ -10,16 +10,31 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartCountBadge();
   initScrollButtons();
   initWhatsAppButton();
-  initFooterCategories();
+  initCategoryIconsSection();
 });
 
 /**
- * Populates the footer's "Shop by Category" column (present on about,
- * index, product, products, tip, tips) with a link per category, deep-
- * linking into products.html?cat=<name> (catalog.js reads that query
- * param and pre-selects the matching filter chip on load).
+ * Renders the "Shop by Category" icon grid (a standalone section placed
+ * just above the footer on about, index, product, products, tip, tips)
+ * with one square icon tile per category, deep-linking into
+ * products.html?cat=<name> (catalog.js reads that query param and
+ * pre-selects the matching filter chip on load). Uses the same short
+ * labels and outlined SVG icons as the filter chips on products.html,
+ * for visual consistency between the two.
  */
-const FOOTER_CATEGORY_SHORT_LABELS = {
+const CATEGORY_ICONS_STANDALONE = {
+  "Weight Loss, Metabolic Regulation & Insulin Resistance": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 17l6-6 4 4 8-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7h6v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 11l3-3a3 3 0 014.24 0l1.76 1.76a3 3 0 010 4.24l-3 3M17 13l-3 3a3 3 0 01-4.24 0L8 14.24a3 3 0 010-4.24l3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 14.5l5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.4 5.4L20 9l-4.6 3.4L17 18l-5-3.2L7 18l1.6-5.6L4 9l5.6-1.6L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  "Brain, Cognitive Function, Mood & Sleep": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3a5 5 0 00-3 9 5 5 0 003 9h1a2 2 0 002-2V5a2 2 0 00-2-2H9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M15 3a5 5 0 013 9 5 5 0 01-3 9h-1a2 2 0 01-2-2V5a2 2 0 012-2h1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  "Male Hormones, Fertility, Sexual Health & Tanning": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="15" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M13 11l6-6M14 5h5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  "Organ-Specific Bioregulators & Therapeutic Compounds": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6.5 5.5 5.5 0 0121.5 12c-2.5 4.5-9.5 9-9.5 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  "Skin, Hair Care": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c2 3 5 5.5 5 9.5a5 5 0 01-10 0C7 8.5 10 6 12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 21c2.5 0 4-1.2 4-1.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  "Accessories & Supplies": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7V5a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+};
+const CATEGORY_ICON_FALLBACK_STANDALONE = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41L12 22l-9-9V4h9l8.59 9.41a2 2 0 010 2.83z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.5" stroke="currentColor" stroke-width="1.6"/></svg>`;
+const CATEGORY_SHORT_LABELS_STANDALONE = {
   "Weight Loss, Metabolic Regulation & Insulin Resistance": "Weight Loss",
   "Growth Hormone Secretagogues, Hypertrophy & Endurance": "Growth & Strength",
   "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "Recovery",
@@ -31,12 +46,18 @@ const FOOTER_CATEGORY_SHORT_LABELS = {
   "Accessories & Supplies": "Accessories",
 };
 
-function initFooterCategories() {
-  const list = document.getElementById("footer-categories");
-  if (!list || typeof PRODUCT_CATEGORIES === "undefined") return;
-  list.innerHTML = PRODUCT_CATEGORIES.map((cat) => {
-    const label = FOOTER_CATEGORY_SHORT_LABELS[cat] || cat;
-    return `<li><a href="products?cat=${encodeURIComponent(cat)}" title="${cat}">${label}</a></li>`;
+function initCategoryIconsSection() {
+  const grid = document.getElementById("category-icons-grid");
+  if (!grid || typeof PRODUCT_CATEGORIES === "undefined") return;
+  grid.innerHTML = PRODUCT_CATEGORIES.map((cat) => {
+    const label = CATEGORY_SHORT_LABELS_STANDALONE[cat] || cat;
+    const icon = CATEGORY_ICONS_STANDALONE[cat] || CATEGORY_ICON_FALLBACK_STANDALONE;
+    return `
+      <a class="category-icon-tile" href="products?cat=${encodeURIComponent(cat)}" title="${cat}">
+        <span class="category-icon-tile-icon">${icon}</span>
+        <span class="category-icon-tile-label">${label}</span>
+      </a>
+    `;
   }).join("");
 }
 
