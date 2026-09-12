@@ -18,7 +18,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Contact — trusted-peptide.com</title>
+  <title>Your Cart — trusted-peptide.com</title>
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -69,47 +69,11 @@
     </nav>
   </header>
 
-  <main class="section container">
-    <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:44px;height:44px;margin-bottom:16px;" aria-hidden="true" />
-    <span class="eyebrow">Get in touch</span>
-    <h1>Questions about an order or a compound?</h1>
-    <p style="max-width:52ch;">Our team responds fastest via WhatsApp. For bulk/wholesale inquiries or certificates of analysis, email us directly.</p>
-
-    <div class="contact-methods reveal-stagger">
-      <div class="contact-card">
-        <h3>WhatsApp / Phone</h3>
-        <p>Fastest response for order questions and wholesale pricing.</p>
-        <a href="https://wa.me/32469126244" target="_blank" rel="noopener" class="btn btn-primary">+32 469 12 62 44</a>
-      </div>
-      <div class="contact-card">
-        <h3>Email</h3>
-        <p>For certificates of analysis and partnership inquiries.</p>
-        <a href="mailto:sale@trusted-peptide.com" class="btn btn-secondary">sale@trusted-peptide.com</a>
-      </div>
-      <div class="contact-card">
-        <h3>Wholesale</h3>
-        <p>Ordering 10+ units regularly? Ask about custom pricing tiers.</p>
-        <a href="mailto:sale@trusted-peptide.com" class="btn btn-secondary">sale@trusted-peptide.com</a>
-      </div>
-    </div>
-
-    <div style="margin-top:56px;">
-      <h2>Send a message</h2>
-      <form style="max-width:520px;" onsubmit="event.preventDefault(); window.location.href='mailto:sale@trusted-peptide.com?subject=' + encodeURIComponent('Website inquiry from ' + this.name.value) + '&body=' + encodeURIComponent(this.message.value + '\n\nReply to: ' + this.email.value);">
-        <div class="field">
-          <label for="c-name">Name</label>
-          <input type="text" id="c-name" name="name" required />
-        </div>
-        <div class="field">
-          <label for="c-email">Email</label>
-          <input type="email" id="c-email" name="email" required />
-        </div>
-        <div class="field">
-          <label for="c-message">Message</label>
-          <textarea id="c-message" name="message" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-      </form>
+  <main class="section container" style="padding-top:48px;">
+    <h1>Your Cart</h1>
+    <div class="cart-layout">
+      <div id="cart-items"></div>
+      <div class="summary-card" id="cart-summary"></div>
     </div>
   </main>
 
@@ -152,8 +116,9 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
+  <script src="js/cart.js" data-cfasync="false"></script>
 </body>
 </html>

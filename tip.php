@@ -18,8 +18,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>trusted-peptide.com — Research Peptides, EU Sourced &amp; Certified</title>
-  <meta name="description" content="120+ research peptides, HPLC-verified purity, EU sourced. Transparent variant pricing and wholesale discounts." />
+  <title>Guide — trusted-peptide.com</title>
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,22 +69,7 @@
     </nav>
   </header>
 
-  <section class="catalog-banner">
-    <img class="catalog-banner-img" src="assets/brand/hero-vials.jpg" width="1600" height="678" fetchpriority="high" alt="DNA Peptides Lab research vials — BPC-157, GHK-Cu, SEMAX, TB-500, NAD+, Tirzepetide, GLOW, KLOW" />
-    <div class="catalog-banner-fade"></div>
-    <div class="container catalog-banner-content reveal">
-      <span class="eyebrow">No.1 Trusted Peptides<br />in Europe</span>
-      <h1 style="margin-bottom:0;">Research-Grade<br />Peptides</h1>
-    </div>
-  </section>
-
-  <main class="section container" style="padding-top:32px;">
-    <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:24px;">
-      <span class="eyebrow" style="margin:0;">Most Requested</span>
-      <a href="products" class="btn btn-ghost">View All Products →</a>
-    </div>
-    <div class="product-grid" id="featured-grid"></div>
-  </main>
+  <main class="section container" style="padding-top:48px; max-width:800px;" id="guide-detail-root"></main>
 
   <section class="category-icons-section">
     <div class="container">
@@ -103,7 +87,7 @@
         </div>
         <div>
           <h4>Shop</h4>
-          <ul><li><a href="/">All Products</a></li><li><a href="cart">Cart</a></li><li><a href="checkout">Checkout</a></li></ul>
+          <ul><li><a href="products">All Products</a></li><li><a href="cart">Cart</a></li><li><a href="checkout">Checkout</a></li></ul>
         </div>
         <div>
           <h4>Company</h4>
@@ -151,8 +135,9 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
-  <script src="js/catalog.js?v=1789238585" data-cfasync="false"></script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/guides-data.js?v=<?php echo filemtime(__DIR__ . '/js/guides-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/guides.js?v=<?php echo filemtime(__DIR__ . '/js/guides.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
 </body>

@@ -18,7 +18,8 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Your Cart — trusted-peptide.com</title>
+  <title>All Products — trusted-peptide.com</title>
+  <meta name="description" content="Browse 120+ research peptides with transparent variant pricing and wholesale discounts." />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -69,16 +70,50 @@
     </nav>
   </header>
 
-  <main class="section container" style="padding-top:48px;">
-    <h1>Your Cart</h1>
-    <div class="cart-layout">
-      <div id="cart-items"></div>
-      <div class="summary-card" id="cart-summary"></div>
+  <main class="section container" style="padding-top:56px;">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Full Catalog</span>
+        <h1 style="margin-bottom:0;">All Research Peptides</h1>
+      </div>
     </div>
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px;">
+      <label for="search-input" class="visually-hidden">Search peptides</label>
+      <input type="text" id="search-input" class="search-input" placeholder="Search peptides…" />
+    </div>
+    <div class="filter-bar" id="filter-bar"></div>
+
+    <div class="product-grid" id="product-grid"></div>
   </main>
+
+  <section class="category-icons-section">
+    <div class="container">
+      <span class="eyebrow">Shop by Category</span>
+      <div class="category-icons-grid" id="category-icons-grid"></div>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="margin-bottom:12px;gap:10px;"><img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:32px;height:32px;flex-shrink:0;" aria-hidden="true" /><span>Trusted<span style="color:var(--accent);"> Peptide</span></span></div>
+          <p style="max-width:32ch;">EU-sourced research peptides, certified for purity and consistency. For laboratory and research use only.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul><li><a href="products">All Products</a></li><li><a href="cart">Cart</a></li><li><a href="checkout">Checkout</a></li></ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul><li><a href="about">About</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="contact">Contact</a></li></ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><span class="badge-eu">EU Certified Lab</span></li></ul>
+        </div>
+      </div>
       <div class="footer-methods">
         <div class="footer-methods-group">
           <span class="footer-methods-label">We Ship With</span>
@@ -116,9 +151,9 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/catalog.js?v=<?php echo filemtime(__DIR__ . '/js/catalog.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
-  <script src="js/cart.js" data-cfasync="false"></script>
 </body>
 </html>

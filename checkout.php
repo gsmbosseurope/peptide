@@ -18,8 +18,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Best Sellers — trusted-peptide.com</title>
-  <meta name="description" content="The most requested research peptides for general wellness — recovery, skin, energy, and cellular health. No specific condition required." />
+  <title>Checkout — trusted-peptide.com</title>
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,12 +69,46 @@
     </nav>
   </header>
 
-  <main class="section container">
-    <span class="eyebrow">Most Requested</span>
-    <h1>Best Sellers</h1>
-    <p style="max-width:56ch;">The peptides our customers reach for most — not tied to any specific condition. A solid starting stack for general recovery, energy, skin quality, and everyday resilience.</p>
-
-    <div class="product-grid" id="best-sellers-grid" style="margin-top:40px;"></div>
+  <main class="section container" style="padding-top:48px; max-width:900px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:0;">
+      <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:36px;height:36px;flex-shrink:0;" aria-hidden="true" />
+      <h1 style="margin:0;">Checkout</h1>
+    </div>
+    <div class="cart-layout checkout-layout">
+      <div>
+        <div id="checkout-form-panel">
+          <form id="checkout-form">
+            <div class="field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            <div class="field">
+              <label for="phone">Phone / WhatsApp number</label>
+              <input type="tel" id="phone" name="phone" required />
+            </div>
+            <div class="field">
+              <label for="address">Shipping address</label>
+              <textarea id="address" name="address" required></textarea>
+            </div>
+            <div class="field">
+              <label for="notes">Order notes (optional)</label>
+              <textarea id="notes" name="notes"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Review &amp; Send Order</button>
+            <p style="font-size:0.8rem; margin-top:12px;">No payment is taken here. We'll confirm your order and send a secure payment link via WhatsApp or email.</p>
+          </form>
+        </div>
+        <div id="checkout-confirm-panel" style="display:none;">
+          <h3>Almost done — send your order</h3>
+          <p>Choose how you'd like to send your order details to our team:</p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a id="checkout-whatsapp-link" class="btn btn-primary" target="_blank" rel="noopener">Send via WhatsApp</a>
+            <a id="checkout-mailto-link" class="btn btn-secondary">Send via Email</a>
+          </div>
+        </div>
+      </div>
+      <div class="summary-card" id="checkout-summary"></div>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -117,20 +150,10 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
-  <script src="js/catalog.js?v=1789238585" data-cfasync="false"></script>
-  <script>
-    var BEST_SELLER_IDS = ["bpc-157", "ghk-cu", "nad-plus", "glutathione", "epithalon", "ss-31", "semax", "dsip"];
-    document.addEventListener("DOMContentLoaded", function () {
-      var grid = document.getElementById("best-sellers-grid");
-      if (!grid) return;
-      var items = BEST_SELLER_IDS.map(function (id) {
-        return PRODUCTS.find(function (p) { return p.id === id; });
-      }).filter(Boolean);
-      renderProductGrid(grid, items, { sort: false });
-    });
-  </script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
+  <script src="js/cart.js" data-cfasync="false"></script>
+  <script src="js/checkout.js" data-cfasync="false"></script>
 </body>
 </html>

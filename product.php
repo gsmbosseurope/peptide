@@ -18,8 +18,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>All Products — trusted-peptide.com</title>
-  <meta name="description" content="Browse 120+ research peptides with transparent variant pricing and wholesale discounts." />
+  <title>Product — trusted-peptide.com</title>
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -70,22 +69,7 @@
     </nav>
   </header>
 
-  <main class="section container" style="padding-top:56px;">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">Full Catalog</span>
-        <h1 style="margin-bottom:0;">All Research Peptides</h1>
-      </div>
-    </div>
-
-    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:8px;">
-      <label for="search-input" class="visually-hidden">Search peptides</label>
-      <input type="text" id="search-input" class="search-input" placeholder="Search peptides…" />
-    </div>
-    <div class="filter-bar" id="filter-bar"></div>
-
-    <div class="product-grid" id="product-grid"></div>
-  </main>
+  <main class="section container" style="padding-top:48px;" id="product-detail-root"></main>
 
   <section class="category-icons-section">
     <div class="container">
@@ -151,8 +135,8 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
-  <script src="js/catalog.js?v=1789238585" data-cfasync="false"></script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/product-detail.js?v=<?php echo filemtime(__DIR__ . '/js/product-detail.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
 </body>

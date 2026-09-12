@@ -18,7 +18,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Product — trusted-peptide.com</title>
+  <title>Contact — trusted-peptide.com</title>
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -69,35 +69,52 @@
     </nav>
   </header>
 
-  <main class="section container" style="padding-top:48px;" id="product-detail-root"></main>
+  <main class="section container">
+    <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:44px;height:44px;margin-bottom:16px;" aria-hidden="true" />
+    <span class="eyebrow">Get in touch</span>
+    <h1>Questions about an order or a compound?</h1>
+    <p style="max-width:52ch;">Our team responds fastest via WhatsApp. For bulk/wholesale inquiries or certificates of analysis, email us directly.</p>
 
-  <section class="category-icons-section">
-    <div class="container">
-      <span class="eyebrow">Shop by Category</span>
-      <div class="category-icons-grid" id="category-icons-grid"></div>
+    <div class="contact-methods reveal-stagger">
+      <div class="contact-card">
+        <h3>WhatsApp / Phone</h3>
+        <p>Fastest response for order questions and wholesale pricing.</p>
+        <a href="https://wa.me/32469126244" target="_blank" rel="noopener" class="btn btn-primary">+32 469 12 62 44</a>
+      </div>
+      <div class="contact-card">
+        <h3>Email</h3>
+        <p>For certificates of analysis and partnership inquiries.</p>
+        <a href="mailto:sale@trusted-peptide.com" class="btn btn-secondary">sale@trusted-peptide.com</a>
+      </div>
+      <div class="contact-card">
+        <h3>Wholesale</h3>
+        <p>Ordering 10+ units regularly? Ask about custom pricing tiers.</p>
+        <a href="mailto:sale@trusted-peptide.com" class="btn btn-secondary">sale@trusted-peptide.com</a>
+      </div>
     </div>
-  </section>
+
+    <div style="margin-top:56px;">
+      <h2>Send a message</h2>
+      <form style="max-width:520px;" onsubmit="event.preventDefault(); window.location.href='mailto:sale@trusted-peptide.com?subject=' + encodeURIComponent('Website inquiry from ' + this.name.value) + '&body=' + encodeURIComponent(this.message.value + '\n\nReply to: ' + this.email.value);">
+        <div class="field">
+          <label for="c-name">Name</label>
+          <input type="text" id="c-name" name="name" required />
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input type="email" id="c-email" name="email" required />
+        </div>
+        <div class="field">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </main>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="brand" style="margin-bottom:12px;gap:10px;"><img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:32px;height:32px;flex-shrink:0;" aria-hidden="true" /><span>Trusted<span style="color:var(--accent);"> Peptide</span></span></div>
-          <p style="max-width:32ch;">EU-sourced research peptides, certified for purity and consistency. For laboratory and research use only.</p>
-        </div>
-        <div>
-          <h4>Shop</h4>
-          <ul><li><a href="products">All Products</a></li><li><a href="cart">Cart</a></li><li><a href="checkout">Checkout</a></li></ul>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <ul><li><a href="about">About</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="contact">Contact</a></li></ul>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><span class="badge-eu">EU Certified Lab</span></li></ul>
-        </div>
-      </div>
       <div class="footer-methods">
         <div class="footer-methods-group">
           <span class="footer-methods-label">We Ship With</span>
@@ -135,8 +152,7 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
-  <script src="js/product-detail.js?v=1789238585" data-cfasync="false"></script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
 </body>

@@ -18,7 +18,8 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Guide — trusted-peptide.com</title>
+  <title>Best Sellers — trusted-peptide.com</title>
+  <meta name="description" content="The most requested research peptides for general wellness — recovery, skin, energy, and cellular health. No specific condition required." />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -69,35 +70,16 @@
     </nav>
   </header>
 
-  <main class="section container" style="padding-top:48px; max-width:800px;" id="guide-detail-root"></main>
+  <main class="section container">
+    <span class="eyebrow">Most Requested</span>
+    <h1>Best Sellers</h1>
+    <p style="max-width:56ch;">The peptides our customers reach for most — not tied to any specific condition. A solid starting stack for general recovery, energy, skin quality, and everyday resilience.</p>
 
-  <section class="category-icons-section">
-    <div class="container">
-      <span class="eyebrow">Shop by Category</span>
-      <div class="category-icons-grid" id="category-icons-grid"></div>
-    </div>
-  </section>
+    <div class="product-grid" id="best-sellers-grid" style="margin-top:40px;"></div>
+  </main>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="brand" style="margin-bottom:12px;gap:10px;"><img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:32px;height:32px;flex-shrink:0;" aria-hidden="true" /><span>Trusted<span style="color:var(--accent);"> Peptide</span></span></div>
-          <p style="max-width:32ch;">EU-sourced research peptides, certified for purity and consistency. For laboratory and research use only.</p>
-        </div>
-        <div>
-          <h4>Shop</h4>
-          <ul><li><a href="products">All Products</a></li><li><a href="cart">Cart</a></li><li><a href="checkout">Checkout</a></li></ul>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <ul><li><a href="about">About</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="contact">Contact</a></li></ul>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><span class="badge-eu">EU Certified Lab</span></li></ul>
-        </div>
-      </div>
       <div class="footer-methods">
         <div class="footer-methods-group">
           <span class="footer-methods-label">We Ship With</span>
@@ -135,9 +117,19 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
-  <script src="js/guides-data.js?v=1789238585" data-cfasync="false"></script>
-  <script src="js/guides.js?v=1789238585" data-cfasync="false"></script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/catalog.js?v=<?php echo filemtime(__DIR__ . '/js/catalog.js'); ?>" data-cfasync="false"></script>
+  <script>
+    var BEST_SELLER_IDS = ["bpc-157", "ghk-cu", "nad-plus", "glutathione", "epithalon", "ss-31", "semax", "dsip"];
+    document.addEventListener("DOMContentLoaded", function () {
+      var grid = document.getElementById("best-sellers-grid");
+      if (!grid) return;
+      var items = BEST_SELLER_IDS.map(function (id) {
+        return PRODUCTS.find(function (p) { return p.id === id; });
+      }).filter(Boolean);
+      renderProductGrid(grid, items, { sort: false });
+    });
+  </script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
 </body>

@@ -18,7 +18,8 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Checkout — trusted-peptide.com</title>
+  <title>Tips & Guide — trusted-peptide.com</title>
+  <meta name="description" content="Storage, handling, and reconstitution guides for research peptides." />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -69,50 +70,45 @@
     </nav>
   </header>
 
-  <main class="section container" style="padding-top:48px; max-width:900px;">
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:0;">
-      <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:36px;height:36px;flex-shrink:0;" aria-hidden="true" />
-      <h1 style="margin:0;">Checkout</h1>
-    </div>
-    <div class="cart-layout checkout-layout">
+  <main class="section container" style="padding-top:56px;">
+    <div class="section-head reveal">
       <div>
-        <div id="checkout-form-panel">
-          <form id="checkout-form">
-            <div class="field">
-              <label for="name">Full name</label>
-              <input type="text" id="name" name="name" required />
-            </div>
-            <div class="field">
-              <label for="phone">Phone / WhatsApp number</label>
-              <input type="tel" id="phone" name="phone" required />
-            </div>
-            <div class="field">
-              <label for="address">Shipping address</label>
-              <textarea id="address" name="address" required></textarea>
-            </div>
-            <div class="field">
-              <label for="notes">Order notes (optional)</label>
-              <textarea id="notes" name="notes"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Review &amp; Send Order</button>
-            <p style="font-size:0.8rem; margin-top:12px;">No payment is taken here. We'll confirm your order and send a secure payment link via WhatsApp or email.</p>
-          </form>
-        </div>
-        <div id="checkout-confirm-panel" style="display:none;">
-          <h3>Almost done — send your order</h3>
-          <p>Choose how you'd like to send your order details to our team:</p>
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <a id="checkout-whatsapp-link" class="btn btn-primary" target="_blank" rel="noopener">Send via WhatsApp</a>
-            <a id="checkout-mailto-link" class="btn btn-secondary">Send via Email</a>
-          </div>
-        </div>
+        <span class="eyebrow">Tips &amp; Guide</span>
+        <h1 style="margin-bottom:0;">Storage &amp; Handling Guides</h1>
+        <p style="max-width:52ch; margin-top:12px;">Practical advice for storing, reconstituting, and handling research peptides correctly.</p>
       </div>
-      <div class="summary-card" id="checkout-summary"></div>
     </div>
+
+    <div class="guide-grid" id="guides-grid"></div>
   </main>
+
+  <section class="category-icons-section">
+    <div class="container">
+      <span class="eyebrow">Shop by Category</span>
+      <div class="category-icons-grid" id="category-icons-grid"></div>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="margin-bottom:12px;gap:10px;"><img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:32px;height:32px;flex-shrink:0;" aria-hidden="true" /><span>Trusted<span style="color:var(--accent);"> Peptide</span></span></div>
+          <p style="max-width:32ch;">EU-sourced research peptides, certified for purity and consistency. For laboratory and research use only.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul><li><a href="products">All Products</a></li><li><a href="cart">Cart</a></li><li><a href="checkout">Checkout</a></li></ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul><li><a href="about">About</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="contact">Contact</a></li></ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><span class="badge-eu">EU Certified Lab</span></li></ul>
+        </div>
+      </div>
       <div class="footer-methods">
         <div class="footer-methods-group">
           <span class="footer-methods-label">We Ship With</span>
@@ -150,10 +146,10 @@
   </footer>
 
   <script src="js/pricing.js" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=1789238585" data-cfasync="false"></script>
+  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/guides-data.js?v=<?php echo filemtime(__DIR__ . '/js/guides-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/guides.js?v=<?php echo filemtime(__DIR__ . '/js/guides.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js" data-cfasync="false"></script>
   <script src="js/main.js" data-cfasync="false"></script>
-  <script src="js/cart.js" data-cfasync="false"></script>
-  <script src="js/checkout.js" data-cfasync="false"></script>
 </body>
 </html>
