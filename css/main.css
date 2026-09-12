@@ -2133,6 +2133,11 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
 }
+/* Reserve space before JS populates these grids, so the page below them
+   doesn't jump down once product cards render (a major CLS source). */
+#featured-grid, #product-grid, #best-sellers-grid {
+  min-height: 440px;
+}
 
 .product-card {
   background: var(--bg-card);
