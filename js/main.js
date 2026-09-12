@@ -33,7 +33,28 @@ const CATEGORY_ICONS_STANDALONE = {
   "Skin, Hair Care": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3c2 3 5 5.5 5 9.5a5 5 0 01-10 0C7 8.5 10 6 12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 21c2.5 0 4-1.2 4-1.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
   "Accessories & Supplies": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7V5a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
 };
+const CATEGORY_ICONS_STANDALONE_EXTRA = {
+  "Digestive & Gut Health": `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 3v4a4 4 0 004 4 4 4 0 014 4v6M8 3a4 4 0 00-4 4 4 4 0 004 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="18" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg>`,
+};
+Object.assign(CATEGORY_ICONS_STANDALONE, CATEGORY_ICONS_STANDALONE_EXTRA);
 const CATEGORY_ICON_FALLBACK_STANDALONE = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41L12 22l-9-9V4h9l8.59 9.41a2 2 0 010 2.83z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.5" stroke="currentColor" stroke-width="1.6"/></svg>`;
+/**
+ * One accent color per category — used as the icon-tile's badge background
+ * (a colored circle behind the icon) so each category reads distinctly at
+ * a glance instead of every tile sharing the same monochrome outline.
+ */
+const CATEGORY_ACCENTS_STANDALONE = {
+  "Weight Loss, Metabolic Regulation & Insulin Resistance": "#FF6B4A",
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": "#4A9BFF",
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "#3DD9B4",
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": "#C77DFF",
+  "Brain, Cognitive Function, Mood & Sleep": "#7B8CFF",
+  "Male Hormones, Fertility, Sexual Health & Tanning": "#FF8FB1",
+  "Organ-Specific Bioregulators & Therapeutic Compounds": "#FFB84A",
+  "Skin, Hair Care": "#5EE0D0",
+  "Digestive & Gut Health": "#8FD654",
+  "Accessories & Supplies": "#B8C4D9",
+};
 const CATEGORY_SHORT_LABELS_STANDALONE = {
   "Weight Loss, Metabolic Regulation & Insulin Resistance": "Weight Loss",
   "Growth Hormone Secretagogues, Hypertrophy & Endurance": "Growth & Strength",
@@ -52,9 +73,10 @@ function initCategoryIconsSection() {
   grid.innerHTML = PRODUCT_CATEGORIES.map((cat) => {
     const label = CATEGORY_SHORT_LABELS_STANDALONE[cat] || cat;
     const icon = CATEGORY_ICONS_STANDALONE[cat] || CATEGORY_ICON_FALLBACK_STANDALONE;
+    const accent = CATEGORY_ACCENTS_STANDALONE[cat] || "#B8C4D9";
     return `
-      <a class="category-icon-tile" href="products?cat=${encodeURIComponent(cat)}" title="${cat}">
-        <span class="category-icon-tile-icon">${icon}</span>
+      <a class="category-icon-tile" href="products?cat=${encodeURIComponent(cat)}" title="${cat}" style="--tile-accent:${accent};">
+        <span class="category-icon-tile-icon"><span class="category-icon-tile-badge">${icon}</span></span>
         <span class="category-icon-tile-label">${label}</span>
       </a>
     `;

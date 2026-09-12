@@ -2009,30 +2009,46 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  height: 108px;
+  gap: 12px;
+  height: 128px;
   padding: 16px 10px;
-  border: 1px solid currentColor;
+  border: 1px solid transparent;
   border-radius: var(--radius-md);
-  background: transparent;
+  background: color-mix(in srgb, currentColor 6%, transparent);
   color: inherit;
-  opacity: 0.88;
+  opacity: 0.94;
   text-align: center;
-  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
 }
 .category-icon-tile:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px) scale(1.04);
   opacity: 1;
-  box-shadow: var(--shadow-card);
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  border-color: color-mix(in srgb, var(--tile-accent, currentColor) 55%, transparent);
+  box-shadow: 0 14px 28px -12px color-mix(in srgb, var(--tile-accent, currentColor) 55%, transparent), var(--shadow-card);
+}
+.category-icon-tile:hover .category-icon-tile-badge {
+  transform: scale(1.12) rotate(-6deg);
 }
 .category-icon-tile-icon {
   display: inline-flex;
-  width: 26px;
-  height: 26px;
-  color: inherit;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
-.category-icon-tile-icon svg { width: 100%; height: 100%; display: block; }
+.category-icon-tile-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tile-accent, currentColor) 22%, transparent);
+  color: var(--tile-accent, currentColor);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--tile-accent, currentColor) 45%, transparent);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.category-icon-tile-badge svg { width: 26px; height: 26px; display: block; }
 .category-icon-tile-label {
   font-size: 0.78rem;
   font-weight: 600;
@@ -2046,7 +2062,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 560px) {
   .category-icons-section { padding-top: 40px; }
   .category-icons-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
-  .category-icon-tile { height: 96px; padding: 12px 8px; }
+  .category-icon-tile { height: 112px; padding: 12px 8px; gap: 8px; }
+  .category-icon-tile-badge { width: 44px; height: 44px; }
+  .category-icon-tile-badge svg { width: 22px; height: 22px; }
 }
 .footer-methods {
   display: flex;
