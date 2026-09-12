@@ -1543,6 +1543,13 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-primary);
 }
 
+.brand-logo {
+  display: block;
+  height: 52px;
+  width: auto;
+  flex-shrink: 0;
+}
+
 .brand-mark {
   width: 34px;
   height: 34px;
@@ -1550,6 +1557,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 .brand-name .lab { color: var(--accent); }
+
+@media (max-width: 560px) {
+  .brand-logo { height: 42px; }
+}
 
 .main-nav {
   display: flex;

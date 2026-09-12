@@ -30,12 +30,73 @@
   <header class="site-header">
     <div class="container">
       <a href="/" class="brand">
-        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 4C12 4 12 14 20 20C28 26 28 36 28 36" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M28 4C28 4 28 14 20 20C12 26 12 36 12 36" stroke="#C9A15A" stroke-width="2.2" stroke-linecap="round"/>
-          <circle cx="12" cy="4" r="2.4" fill="currentColor"/><circle cx="28" cy="4" r="2.4" fill="#C9A15A"/>
-          <circle cx="12" cy="36" r="2.4" fill="#C9A15A"/><circle cx="28" cy="36" r="2.4" fill="currentColor"/>
-          <circle cx="20" cy="20" r="2.6" fill="currentColor"/>
+<svg
+          class="brand-logo"
+          viewBox="60 60 480 560"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="logoTitle"
+        >
+          <title id="logoTitle">Trusted-Peptide</title>
+
+          <defs>
+            <linearGradient id="dnaGradient"
+              x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#082B66"/>
+              <stop offset="45%" stop-color="#006DCE"/>
+              <stop offset="75%" stop-color="#08C9D9"/>
+              <stop offset="100%" stop-color="#087F91"/>
+            </linearGradient>
+
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="7" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <g filter="url(#glow)" stroke-linecap="round">
+            <path
+              d="M125 75
+                 H475
+                 L420 130
+                 H180
+                 Z"
+              fill="url(#dnaGradient)"
+            />
+
+            <path
+              d="M280 130
+                 C175 190 175 265 285 325
+                 C395 385 395 460 285 520
+                 C250 540 235 565 235 600"
+              fill="none"
+              stroke="url(#dnaGradient)"
+              stroke-width="48"
+            />
+
+            <path
+              d="M320 130
+                 C425 190 425 265 315 325
+                 C205 385 205 460 315 520
+                 C350 540 365 565 365 600"
+              fill="none"
+              stroke="url(#dnaGradient)"
+              stroke-width="48"
+            />
+
+            <g stroke="#19D7E5" stroke-width="15">
+              <line x1="260" y1="205" x2="340" y2="205"/>
+              <line x1="235" y1="250" x2="365" y2="250"/>
+              <line x1="250" y1="295" x2="350" y2="295"/>
+
+              <line x1="250" y1="410" x2="350" y2="410"/>
+              <line x1="235" y1="455" x2="365" y2="455"/>
+              <line x1="260" y1="500" x2="340" y2="500"/>
+            </g>
+          </g>
         </svg>
         <span class="brand-name">Trusted<span class="lab">-Peptide</span></span>
       </a>
