@@ -40,6 +40,7 @@
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
         <a href="tips">Tips &amp; Guide</a>
+        <a href="peptide-guide">دليلك الشامل</a>
         <a href="contact">Contact</a>
       </nav>
       <div class="header-actions">
@@ -64,6 +65,7 @@
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
       <a href="tips">Tips &amp; Guide</a>
+      <a href="peptide-guide">دليلك الشامل</a>
       <a href="contact">Contact</a>
       <a href="cart">Cart</a>
     </nav>
@@ -91,7 +93,7 @@
         </div>
         <div>
           <h4>Company</h4>
-          <ul><li><a href="about">About</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="contact">Contact</a></li></ul>
+          <ul><li><a href="about">About</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="peptide-guide">دليلك الشامل</a></li><li><a href="contact">Contact</a></li></ul>
         </div>
         <div>
           <h4>Contact</h4>
