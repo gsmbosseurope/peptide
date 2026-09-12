@@ -27,18 +27,7 @@ function renderCartPage() {
   if (!lines.length) {
     container.innerHTML = `
       <div class="empty-state">
-        <svg viewBox="60 60 480 560" xmlns="http://www.w3.org/2000/svg" style="width:48px;height:48px;margin:0 auto 16px;display:block;opacity:0.6;" aria-hidden="true">
-          <defs><linearGradient id="dnaGradientCartEmpty" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#082B66"/><stop offset="45%" stop-color="#006DCE"/><stop offset="75%" stop-color="#08C9D9"/><stop offset="100%" stop-color="#087F91"/></linearGradient></defs>
-          <g stroke-linecap="round">
-            <path d="M125 75 H475 L420 130 H180 Z" fill="url(#dnaGradientCartEmpty)"/>
-            <path d="M280 130 C175 190 175 265 285 325 C395 385 395 460 285 520 C250 540 235 565 235 600" fill="none" stroke="url(#dnaGradientCartEmpty)" stroke-width="48"/>
-            <path d="M320 130 C425 190 425 265 315 325 C205 385 205 460 315 520 C350 540 365 565 365 600" fill="none" stroke="url(#dnaGradientCartEmpty)" stroke-width="48"/>
-            <g stroke="#19D7E5" stroke-width="15">
-              <line x1="260" y1="205" x2="340" y2="205"/><line x1="235" y1="250" x2="365" y2="250"/><line x1="250" y1="295" x2="350" y2="295"/>
-              <line x1="250" y1="410" x2="350" y2="410"/><line x1="235" y1="455" x2="365" y2="455"/><line x1="260" y1="500" x2="340" y2="500"/>
-            </g>
-          </g>
-        </svg>
+        <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:48px;height:48px;margin:0 auto 16px;display:block;opacity:0.6;" aria-hidden="true" />
         <h3>Your cart is empty</h3>
         <p>Browse the <a href="products">full catalog</a> to add research peptides.</p>
       </div>
