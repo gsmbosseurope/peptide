@@ -37,6 +37,7 @@ const CATEGORY_LIST = [
   "Male Hormones, Fertility, Sexual Health & Tanning",
   "Organ-Specific Bioregulators & Therapeutic Compounds",
   "Skin, Hair Care",
+  "Digestive & Gut Health",
   "Accessories & Supplies"
 ];
 
