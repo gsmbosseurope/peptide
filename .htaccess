@@ -1,13 +1,27 @@
 DirectoryIndex index.php index.html
+ErrorDocument 404 /404.php
 
 RewriteEngine On
 
+# ---------- Canonical host: force HTTPS and non-www ----------
+# SEO: without this, https://, http://, www and non-www variants all serve
+# identical content as separate, uncanonicalized URLs in Google's eyes.
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# ---------- Sitemap ----------
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
 # The admin panel's frontend (admin.js) calls /api/... at the site root
 # (matching how it worked as a standalone Node server). Route those
-# requests to the PHP API router living in /admin/.
+# requests to the PHP API router living in /admin-php/.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^api/(.*)$ admin/api.php?path=/api/$1 [QSA,L]
+RewriteRule ^api/(.*)$ admin-php/api.php?path=/api/$1 [QSA,L]
 
 # ---------- Clean URLs: hide the .html/.php extension ----------
 # 1) If someone visits /about.html or /about.php directly, send them to

@@ -1,32 +1,45 @@
+<?php
+require_once __DIR__ . '/admin-php/config.php';
+require_once __DIR__ . '/admin-php/data.php';
+$allTopics = load_peptide_topics();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/theme-settings.js"></script>
+  <script src="js/theme-settings.js?v=<?php echo filemtime(__DIR__ . '/js/theme-settings.js'); ?>"></script>
   <script>
     (function() {
       var stored = localStorage.getItem("peptidesLabsTheme");
-      var theme = stored === "light" || stored === "dark" ? stored : (function() {
-        var h = new Date().getHours();
-        return h >= 6 && h < 18 ? "light" : "dark";
-      })();
+      var theme = stored === "light" || stored === "dark" ? stored : "light";
       document.documentElement.setAttribute("data-theme", theme);
-      var validPalettes = ["bloom", "ember", "forest", "tide", "crimson", "royal", "papaya", "orbit", "neoncyan", "lakers", "aurora", "blueprint", "coastal", "citrusink", "chocolate", "burgundy"];
+      var validPalettes = ["bloom", "ember", "forest", "tide", "crimson", "royal", "papaya", "orbit", "neoncyan", "lakers", "aurora", "blueprint", "coastal", "citrusink", "chocolate", "burgundy", "harmonynavy", "harmonyviolet", "harmonymauve", "harmonycream", "harmonymocha", "harmonyroyale", "harmonyteal", "harmonyvintage"];
       var storedPalette = localStorage.getItem("peptidesLabsPalette");
       var palette = validPalettes.indexOf(storedPalette) !== -1 ? storedPalette : (typeof THEME_SETTINGS !== "undefined" ? THEME_SETTINGS.defaultPaletteId : null);
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>دليلك الشامل عن أنواع البيبتايد — trusted-peptide.com</title>
-  <meta name="description" content="دليل شامل يغطي أنواع الببتيدات المختلفة، استخداماتها وبروتوكولاتها." />
+  <title>Peptide Guide — trusted-peptide.com</title>
+  <meta name="description" content="In-depth topic guides covering peptide categories, mechanisms, and research use." />
+  <link rel="canonical" href="https://trusted-peptide.com/peptide-guide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Trusted-Peptide" />
+  <meta property="og:title" content="Peptide Guide — trusted-peptide.com" />
+  <meta property="og:description" content="In-depth topic guides covering peptide categories, mechanisms, and research use." />
+  <meta property="og:url" content="https://trusted-peptide.com/peptide-guide" />
+  <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Peptide Guide — trusted-peptide.com" />
+  <meta name="twitter:description" content="In-depth topic guides covering peptide categories, mechanisms, and research use." />
+  <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" />
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/main.css?v=<?php echo filemtime(__DIR__ . '/css/main.css'); ?>" />
+  <link rel="stylesheet" href="css/animations.css?v=<?php echo filemtime(__DIR__ . '/css/animations.css'); ?>" />
+  <link rel="stylesheet" href="css/hero.css?v=<?php echo filemtime(__DIR__ . '/css/hero.css'); ?>" />
 </head>
 <body>
 
@@ -40,8 +53,9 @@
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="blog">Blog</a>
         <a href="tips">Tips &amp; Guide</a>
-        <a href="peptide-guide">دليلك الشامل</a>
+        <a href="peptide-guide">Peptide Guide</a>
         <a href="contact">Contact</a>
       </nav>
       <div class="header-actions">
@@ -55,31 +69,45 @@
           </button>
           <div class="palette-menu"></div>
         </div>
-        <a href="cart" class="cart-link">Cart <span class="cart-count">0</span></a>
+        <a href="cart" class="cart-link"><span class="cart-link-word">Cart</span> <span class="cart-count">0</span></a>
         <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
+  </header>
+
     <nav class="mobile-nav">
       <a href="/">Home</a>
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
+      <a href="blog">Blog</a>
       <a href="tips">Tips &amp; Guide</a>
-      <a href="peptide-guide">دليلك الشامل</a>
+      <a href="peptide-guide">Peptide Guide</a>
+      <a href="gallery">Gallery</a>
       <a href="contact">Contact</a>
-      <a href="cart">Cart</a>
     </nav>
-  </header>
 
-  <main class="section container" style="padding-top:48px;">
-    <div class="breadcrumb">
-      <a href="/">Home</a> / دليلك الشامل عن أنواع البيبتايد
+  <main class="section container" style="padding-top:56px;">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Peptide Guide</span>
+        <h1 style="margin-bottom:0;">Peptide Guide Topics</h1>
+        <p style="max-width:52ch; margin-top:12px;">In-depth topic guides covering peptide categories, mechanisms, and research applications.</p>
+        <p style="max-width:52ch; margin-top:8px; color:var(--text-secondary); font-size:0.85rem;">For research and laboratory use only. Educational content, not medical advice.</p>
+      </div>
     </div>
-    <div style="max-width:70ch;">
-      <span class="eyebrow">دليل شامل</span>
-      <h1 dir="rtl">دليلك الشامل عن أنواع البيبتايد</h1>
-      <p dir="rtl" style="margin-top:16px;">هذه الصفحة قيد الإعداد — سيتم إضافة المحتوى الكامل قريبًا.</p>
+
+    <div class="guide-grid" id="peptide-topics-grid">
+      <?php foreach ($allTopics as $t): if (empty($t['id'])) continue; ?>
+      <!-- Server-rendered fallback card: replaced by peptide-guide.js on load. -->
+      <a class="guide-card" href="peptide-guide-topic?id=<?php echo rawurlencode($t['id']); ?>">
+        <div class="guide-card-body">
+          <span class="guide-card-title"><?php echo htmlspecialchars($t['title']); ?></span>
+          <p class="guide-card-summary"><?php echo htmlspecialchars($t['summary']); ?></p>
+        </div>
+      </a>
+      <?php endforeach; ?>
     </div>
   </main>
 
@@ -109,8 +137,8 @@
           <h4>Company</h4>
           <ul>
             <li><a href="about">About</a></li>
-            <li><a href="tips">Tips &amp; Guide</a></li>
-            <li><a href="peptide-guide">دليلك الشامل</a></li>
+            <li><a href="blog">Blog</a></li><li><a href="tips">Tips &amp; Guide</a></li>
+            <li><a href="peptide-guide">Peptide Guide</a></li>
             <li><a href="contact">Contact</a></li>
           </ul>
         </div>
@@ -119,7 +147,7 @@
           <ul>
             <li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li>
             <li><a href="contact">Support</a></li>
-            <li><span class="badge-eu">EU Certified Lab</span></li>
+            <li><img class="badge-eu" src="assets/brand/eu-seal.png" alt="EU Certified Lab" width="72" height="72" loading="lazy" /></li>
           </ul>
         </div>
       </div>
@@ -159,9 +187,12 @@
     </div>
   </footer>
 
-  <script src="js/pricing.js" data-cfasync="false"></script>
+  <script src="js/pricing.js?v=<?php echo filemtime(__DIR__ . '/js/pricing.js'); ?>" data-cfasync="false"></script>
   <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
-  <script src="js/theme.js" data-cfasync="false"></script>
-  <script src="js/main.js" data-cfasync="false"></script>
+  <script src="js/category-tile-labels.js?v=<?php echo filemtime(__DIR__ . '/js/category-tile-labels.js'); ?>" data-cfasync="false"></script>
+  <script src="js/peptide-guide-data.js?v=<?php echo filemtime(__DIR__ . '/js/peptide-guide-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/peptide-guide.js?v=<?php echo filemtime(__DIR__ . '/js/peptide-guide.js'); ?>" data-cfasync="false"></script>
+  <script src="js/theme.js?v=<?php echo filemtime(__DIR__ . '/js/theme.js'); ?>" data-cfasync="false"></script>
+  <script src="js/main.js?v=<?php echo filemtime(__DIR__ . '/js/main.js'); ?>" data-cfasync="false"></script>
 </body>
 </html>

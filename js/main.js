@@ -65,23 +65,31 @@ const CATEGORY_ACCENTS_STANDALONE = {
   "Digestive & Gut Health": "#8FD654",
   "Accessories & Supplies": "#B8C4D9",
 };
+// Every label is exactly two words, so the category tiles read as one
+// consistent set instead of a mix of one-word and two-word labels.
 const CATEGORY_SHORT_LABELS_STANDALONE = {
   "Weight Loss, Metabolic Regulation & Insulin Resistance": "Weight Loss",
-  "Growth Hormone Secretagogues, Hypertrophy & Endurance": "Growth & Strength",
-  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "Recovery",
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": "Growth Support",
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "Injury Recovery",
   "Anti-Aging, Cellular Immunity & Mitochondrial Repair": "Anti-Aging",
-  "Brain, Cognitive Function, Mood & Sleep": "Brain & Mood",
+  "Brain, Cognitive Function, Mood & Sleep": "Brain Health",
   "Male Hormones, Fertility, Sexual Health & Tanning": "Sexual Health",
-  "Organ-Specific Bioregulators & Therapeutic Compounds": "Bioregulators",
-  "Skin, Hair Care": "Skin & Hair",
-  "Accessories & Supplies": "Accessories",
+  "Organ-Specific Bioregulators & Therapeutic Compounds": "Bioregulator Peptides",
+  "Skin, Hair Care": "Skin Care",
+  "Digestive & Gut Health": "Gut Health",
+  "Accessories & Supplies": "Lab Supplies",
 };
 
 function initCategoryIconsSection() {
   const grid = document.getElementById("category-icons-grid");
   if (!grid || typeof PRODUCT_CATEGORIES === "undefined") return;
+  const labelOverrides = typeof CATEGORY_TILE_LABELS !== "undefined" ? CATEGORY_TILE_LABELS : {};
+  // On /ar/ pages, category-labels-ar.js defines CATEGORY_LABELS_AR keyed
+  // by the same canonical English category strings — takes priority over
+  // the admin's English tile-label override so the tiles read in Arabic.
+  const labelsAr = typeof CATEGORY_LABELS_AR !== "undefined" ? CATEGORY_LABELS_AR : {};
   grid.innerHTML = PRODUCT_CATEGORIES.map((cat) => {
-    const label = CATEGORY_SHORT_LABELS_STANDALONE[cat] || cat;
+    const label = labelsAr[cat] || labelOverrides[cat] || CATEGORY_SHORT_LABELS_STANDALONE[cat] || cat;
     const icon = CATEGORY_ICONS_STANDALONE[cat] || CATEGORY_ICON_FALLBACK_STANDALONE;
     const accent = CATEGORY_ACCENTS_STANDALONE[cat] || "#B8C4D9";
     return `
@@ -113,6 +121,24 @@ function initWhatsAppButton() {
     </svg>
   `;
   document.body.appendChild(link);
+
+  // On phones the button sits directly over scrolling content (there's no
+  // room to place it elsewhere), so it's faded further while the page is
+  // actively moving and restored once scrolling settles — avoids it
+  // blocking text/links mid-scroll while staying available at rest.
+  const isMobile = window.matchMedia("(max-width: 560px)");
+  if (isMobile.matches) {
+    let scrollTimer;
+    window.addEventListener(
+      "scroll",
+      () => {
+        link.classList.add("is-scrolling");
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => link.classList.remove("is-scrolling"), 400);
+      },
+      { passive: true }
+    );
+  }
 }
 
 /**
@@ -159,17 +185,28 @@ function initMobileNav() {
   const toggle = document.querySelector(".mobile-menu-toggle");
   const drawer = document.querySelector(".mobile-nav");
   if (!toggle || !drawer) return;
+
+  function closeDrawer() {
+    drawer.classList.remove("open");
+    toggle.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
   toggle.addEventListener("click", () => {
     const isOpen = drawer.classList.toggle("open");
     toggle.classList.toggle("open", isOpen);
     toggle.setAttribute("aria-expanded", String(isOpen));
   });
-  drawer.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => {
-      drawer.classList.remove("open");
-      toggle.classList.remove("open");
-    })
-  );
+  drawer.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeDrawer));
+
+  // Tapping anywhere outside the open drawer (the darkened page behind it,
+  // or the header logo/actions) closes it — previously only the toggle
+  // button, the X, or a nav link inside the drawer would close it.
+  document.addEventListener("click", (e) => {
+    if (!drawer.classList.contains("open")) return;
+    if (drawer.contains(e.target) || toggle.contains(e.target)) return;
+    closeDrawer();
+  });
 }
 
 function initScrollReveal() {

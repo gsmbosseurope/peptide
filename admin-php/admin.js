@@ -1,9 +1,12 @@
 let PRODUCTS = [];
 let CATEGORIES = [];
 let GUIDES = [];
+let PEPTIDE_TOPICS = [];
+let BLOG_POSTS = [];
+let GALLERY_ITEMS = [];
 let currentId = null;
 let isNew = false;
-let activeTab = "products"; // "products" | "guides"
+let activeTab = "products"; // "products" | "guides" | "peptide-guide" | "blog" | "gallery"
 
 /**
  * Floating scroll-to-top / scroll-to-bottom buttons for the editor pane
@@ -125,6 +128,12 @@ function showToast(msg, type = "success") {
 async function api(path, opts) {
   const res = await fetch(path, {
     headers: { "Content-Type": "application/json" },
+    // Belt-and-suspenders alongside the server's own Cache-Control:
+    // no-store on every /api/* response — this stops the *browser's*
+    // HTTP cache specifically from ever serving a GET here from its
+    // local disk/memory cache without even checking the network,
+    // which server-side headers alone don't always prevent.
+    cache: "no-store",
     ...opts,
   });
   const data = await res.json().catch(() => ({}));
@@ -146,11 +155,61 @@ async function loadGuides() {
   if (activeTab === "guides") renderList();
 }
 
+async function loadPeptideTopics() {
+  PEPTIDE_TOPICS = await api("/api/peptide-topics");
+  if (activeTab === "peptide-guide") renderList();
+}
+
+async function loadBlogPosts() {
+  BLOG_POSTS = await api("/api/blog-posts");
+  if (activeTab === "blog") renderList();
+}
+
+async function loadGalleryItems() {
+  GALLERY_ITEMS = await api("/api/gallery");
+  if (activeTab === "gallery") renderList();
+}
+
 function renderList() {
   const term = searchBox.value.trim().toLowerCase();
 
-  if (activeTab === "guides") {
-    const filtered = GUIDES.filter((g) => !term || g.title.toLowerCase().includes(term)).sort((a, b) =>
+  if (activeTab === "gallery") {
+    const filtered = GALLERY_ITEMS.filter((g) => !term || (g.caption || "").toLowerCase().includes(term));
+    listEl.innerHTML = filtered
+      .map((g, i) => {
+        const thumbSrc = g.type === "video" ? g.thumbnail || g.src : g.src;
+        const useVideoTag = g.type === "video" && !g.thumbnail && g.src;
+        const productCount = (g.productIds || []).length;
+        return `
+      <div class="product-list-item gallery-list-item${g.id === currentId ? " active" : ""}" data-id="${g.id}">
+        <div class="gallery-list-thumb">
+          ${useVideoTag ? `<video src="/${escapeAttr(g.src)}" muted preload="metadata"></video>` : thumbSrc ? `<img src="/${escapeAttr(thumbSrc)}" alt="" />` : ""}
+          <span class="gallery-list-type-icon">${g.type === "video" ? "▶" : "🖼"}</span>
+        </div>
+        <div>
+          <div class="name">${escapeHtml(g.caption) || "(no caption)"}</div>
+          <div class="cat">${productCount} product${productCount === 1 ? "" : "s"} tagged</div>
+        </div>
+        <div class="gallery-list-move">
+          <button type="button" class="btn btn-sm gallery-move-up" data-idx="${i}" ${i === 0 ? "disabled" : ""} title="Move up">↑</button>
+          <button type="button" class="btn btn-sm gallery-move-down" data-idx="${i}" ${i === filtered.length - 1 ? "disabled" : ""} title="Move down">↓</button>
+        </div>
+      </div>
+    `;
+      })
+      .join("");
+
+    listEl.querySelectorAll(".gallery-move-up, .gallery-move-down").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const idx = Number(btn.dataset.idx);
+        const delta = btn.classList.contains("gallery-move-up") ? -1 : 1;
+        moveGalleryItem(filtered[idx].id, delta);
+      });
+    });
+  } else if (activeTab === "guides" || activeTab === "peptide-guide" || activeTab === "blog") {
+    const source = activeTab === "guides" ? GUIDES : activeTab === "peptide-guide" ? PEPTIDE_TOPICS : BLOG_POSTS;
+    const filtered = source.filter((g) => !term || g.title.toLowerCase().includes(term)).sort((a, b) =>
       a.title.localeCompare(b.title)
     );
     listEl.innerHTML = filtered
@@ -195,6 +254,12 @@ newItemBtn.addEventListener("click", () => {
   showMobileEditor();
   if (activeTab === "guides") {
     renderGuideEditor({ id: "", title: "", summary: "", body: [], images: [], video: "" });
+  } else if (activeTab === "peptide-guide") {
+    renderPeptideTopicEditor({ id: "", title: "", summary: "", body: [], images: [], video: "" });
+  } else if (activeTab === "blog") {
+    renderBlogPostEditor({ id: "", title: "", summary: "", bodyHtml: "", coverImage: "", video: "", embedHtml: "" });
+  } else if (activeTab === "gallery") {
+    renderGalleryEditor({ id: "", type: "image", src: "", thumbnail: "", caption: "", productIds: [] });
   } else {
     renderEditor({
       id: "",
@@ -224,6 +289,15 @@ function openEditor(id) {
   if (activeTab === "guides") {
     const guide = GUIDES.find((g) => g.id === id);
     if (guide) renderGuideEditor(guide);
+  } else if (activeTab === "peptide-guide") {
+    const topic = PEPTIDE_TOPICS.find((t) => t.id === id);
+    if (topic) renderPeptideTopicEditor(topic);
+  } else if (activeTab === "blog") {
+    const post = BLOG_POSTS.find((p) => p.id === id);
+    if (post) renderBlogPostEditor(post);
+  } else if (activeTab === "gallery") {
+    const item = GALLERY_ITEMS.find((g) => g.id === id);
+    if (item) renderGalleryEditor(item);
   } else {
     const product = PRODUCTS.find((p) => p.id === id);
     if (product) renderEditor(product);
@@ -236,20 +310,32 @@ function switchTab(tab) {
   activeTab = tab;
   currentId = null;
   isNew = false;
-  searchBox.value = "";
-  searchBox.placeholder = tab === "guides" ? "Search guides…" : "Search products…";
-  newItemBtn.textContent = tab === "guides" ? "+ New Guide" : "+ New Product";
-  document.getElementById("manage-categories-btn").hidden = tab === "guides";
+
+  document.getElementById("manage-categories-btn").hidden = tab !== "products";
+
   document.getElementById("tab-products").classList.toggle("active", tab === "products");
   document.getElementById("tab-guides").classList.toggle("active", tab === "guides");
-  editorEl.innerHTML = `<div class="empty-editor">Select ${
-    tab === "guides" ? "a guide" : "a product"
-  } from the list, or create a new one.</div>`;
+  document.getElementById("tab-peptide-guide").classList.toggle("active", tab === "peptide-guide");
+  document.getElementById("tab-blog").classList.toggle("active", tab === "blog");
+  document.getElementById("tab-gallery").classList.toggle("active", tab === "gallery");
+
+  const placeholders = { guides: "Search guides…", "peptide-guide": "Search topics…", blog: "Search posts…", products: "Search products…", gallery: "Search gallery…" };
+  const newLabels = { guides: "+ New Guide", "peptide-guide": "+ New Topic", blog: "+ New Post", products: "+ New Product", gallery: "+ New Gallery Item" };
+  const emptyLabels = { guides: "a guide", "peptide-guide": "a topic", blog: "a post", products: "a product", gallery: "a gallery item" };
+
+  searchBox.value = "";
+  searchBox.placeholder = placeholders[tab];
+  newItemBtn.textContent = newLabels[tab];
+  editorEl.innerHTML = `<div class="empty-editor">Select ${emptyLabels[tab]} from the list, or create a new one.</div>`;
   renderList();
 }
 
 document.getElementById("tab-products").addEventListener("click", () => switchTab("products"));
 document.getElementById("tab-guides").addEventListener("click", () => switchTab("guides"));
+document.getElementById("tab-peptide-guide").addEventListener("click", () => switchTab("peptide-guide"));
+document.getElementById("tab-blog").addEventListener("click", () => switchTab("blog"));
+document.getElementById("tab-gallery").addEventListener("click", () => switchTab("gallery"));
+document.getElementById("tab-gallery").addEventListener("click", () => switchTab("gallery"));
 
 function renderEditor(product) {
   editorEl.innerHTML = `
@@ -291,15 +377,17 @@ function renderEditor(product) {
     </div>
     <div class="field-group">
       <label>Short Description</label>
-      <textarea id="f-shortDescription">${escapeHtml(product.shortDescription)}</textarea>
+      <p class="modal-hint">Use the toolbar for bold, italic, underline, text color, headings, and links. Click the image icon to insert a photo anywhere in the description.</p>
+      <div id="f-shortDescription-quill" style="background:#fff; border-radius:8px;"></div>
+      <button type="button" class="btn btn-sm" id="f-shortDescription-dedupe-btn" style="margin-top:8px;">Remove Duplicate Paragraphs</button>
     </div>
 
-    <div class="section-title">Composition (one per line)</div>
+    <div class="section-title">Details (one per line)</div>
     <div class="field-group">
       <textarea id="f-composition" rows="4">${escapeHtml((product.composition || []).join("\n"))}</textarea>
     </div>
 
-    <div class="section-title">Uses (one per line)</div>
+    <div class="section-title">How to Use (one per line)</div>
     <div class="field-group">
       <textarea id="f-uses" rows="4">${escapeHtml((product.uses || []).join("\n"))}</textarea>
     </div>
@@ -319,6 +407,34 @@ function renderEditor(product) {
     <div id="tiers-list"></div>
     <button class="btn btn-sm" id="add-tier-btn">+ Add tier</button>
 
+    ${isNew ? "" : `
+    <div class="ar-translation-block" style="border:2px solid #c9a15a; border-radius:10px; padding:16px; margin-top:8px; background:rgba(201,161,90,0.06);">
+      <div class="section-title" style="margin-top:0;">Arabic Translation (trusted-peptide.com/ar)</div>
+      <p class="modal-hint">Category, purity, images, video, sizes and prices always match the English product above — only the text fields below are translated. These are saved exactly as written; leaving a field blank saves it blank (no automatic fallback to the English text).</p>
+      <div class="field-group">
+        <label>Product Name (Arabic)</label>
+        <input type="text" id="ar-name" dir="rtl" placeholder="جارٍ التحميل…" disabled />
+      </div>
+      <div class="field-group">
+        <label>Short Description (Arabic)</label>
+        <div id="ar-shortDescription-quill" style="background:#fff; border-radius:8px;" dir="rtl"></div>
+        <button type="button" class="btn btn-sm" id="ar-shortDescription-dedupe-btn" style="margin-top:8px;">Remove Duplicate Paragraphs</button>
+      </div>
+      <div class="section-title">Details, Arabic (one per line)</div>
+      <div class="field-group">
+        <textarea id="ar-composition" rows="4" dir="rtl" placeholder="جارٍ التحميل…" disabled></textarea>
+      </div>
+      <div class="section-title">How to Use, Arabic (one per line)</div>
+      <div class="field-group">
+        <textarea id="ar-uses" rows="4" dir="rtl" placeholder="جارٍ التحميل…" disabled></textarea>
+      </div>
+      <p class="modal-hint" style="color:#a15a2a; font-weight:600;">⚠ This section has its own Save button below — it does NOT save with "Save Changes" at the bottom of the page.</p>
+      <div class="editor-actions">
+        <button class="btn btn-primary" id="save-ar-btn">💾 Save Arabic Translation</button>
+      </div>
+    </div>
+    `}
+
     <div class="editor-actions">
       <button class="btn btn-primary" id="save-btn">${isNew ? "Create Product" : "Save Changes"}</button>
       ${isNew ? "" : '<button class="btn btn-danger" id="delete-btn">Delete Product</button>'}
@@ -328,6 +444,33 @@ function renderEditor(product) {
   renderVariants(product.variants || []);
   renderTiers(product.wholesaleTiers || []);
   renderMedia(product.images || [], product.video || "");
+
+  // Rich-text description editor — same Quill config/pattern as the Blog
+  // editor's Post Body field, so descriptions can use bold/color/headings/
+  // links and inline images instead of being a single plain-text block.
+  productDescQuillInstance = new Quill("#f-shortDescription-quill", {
+    theme: "snow",
+    modules: {
+      toolbar: {
+        container: [
+          [{ header: [2, 3, false] }],
+          ["bold", "italic", "underline"],
+          [{ color: [] }],
+          ["link", "image"],
+          ["clean"],
+        ],
+        handlers: {
+          image: () => productDescQuillImageHandler(product.id),
+        },
+      },
+    },
+  });
+  productDescQuillInstance.root.innerHTML = product.shortDescription || "";
+  document.getElementById("f-shortDescription-dedupe-btn").addEventListener("click", () => dedupeQuillBlocks(productDescQuillInstance));
+
+  if (!isNew) {
+    loadArabicTranslation(product.id);
+  }
 
   document.getElementById("add-variant-btn").addEventListener("click", () => {
     const list = readVariants();
@@ -484,7 +627,7 @@ function collectFormData(base) {
     categories: selectedCategories,
     purity: document.getElementById("f-purity").value.trim(),
     showPurity: document.getElementById("f-showPurity").checked,
-    shortDescription: document.getElementById("f-shortDescription").value.trim(),
+    shortDescription: collapseRepeatedEmptyParagraphs(productDescQuillInstance.root.innerHTML),
     composition: document.getElementById("f-composition").value.split("\n").map((s) => s.trim()).filter(Boolean),
     uses: document.getElementById("f-uses").value.split("\n").map((s) => s.trim()).filter(Boolean),
     images: currentImages,
@@ -509,6 +652,70 @@ async function saveProduct(base) {
     }
     await loadProducts();
     openEditor(currentId);
+  } catch (e) {
+    showToast(e.message, "error");
+  }
+}
+
+/* ---------- Arabic translation (per-product, trusted-peptide.com/ar) ---------- */
+
+async function loadArabicTranslation(productId) {
+  const nameInput = document.getElementById("ar-name");
+  const compositionInput = document.getElementById("ar-composition");
+  const usesInput = document.getElementById("ar-uses");
+  const quillContainer = document.getElementById("ar-shortDescription-quill");
+  if (!nameInput || !quillContainer) return; // isNew — section not rendered
+
+  productDescQuillInstanceAr = new Quill("#ar-shortDescription-quill", {
+    theme: "snow",
+    modules: {
+      toolbar: {
+        container: [
+          [{ header: [2, 3, false] }],
+          ["bold", "italic", "underline"],
+          [{ color: [] }],
+          ["link", "image"],
+          ["clean"],
+        ],
+        handlers: {
+          image: () => productDescQuillImageHandler(productId),
+        },
+      },
+    },
+  });
+
+  let ar;
+  try {
+    ar = await api(`/api/products-ar/${encodeURIComponent(productId)}`);
+  } catch (e) {
+    ar = { name: "", shortDescription: "", composition: [], uses: [] };
+  }
+
+  nameInput.value = ar.name || "";
+  nameInput.disabled = false;
+  nameInput.placeholder = "";
+  compositionInput.value = (ar.composition || []).join("\n");
+  compositionInput.disabled = false;
+  compositionInput.placeholder = "";
+  usesInput.value = (ar.uses || []).join("\n");
+  usesInput.disabled = false;
+  usesInput.placeholder = "";
+  productDescQuillInstanceAr.root.innerHTML = ar.shortDescription || "";
+
+  document.getElementById("ar-shortDescription-dedupe-btn").addEventListener("click", () => dedupeQuillBlocks(productDescQuillInstanceAr));
+  document.getElementById("save-ar-btn").addEventListener("click", () => saveArabicTranslation(productId));
+}
+
+async function saveArabicTranslation(productId) {
+  const payload = {
+    name: document.getElementById("ar-name").value.trim(),
+    shortDescription: collapseRepeatedEmptyParagraphs(productDescQuillInstanceAr.root.innerHTML),
+    composition: document.getElementById("ar-composition").value.split("\n").map((s) => s.trim()).filter(Boolean),
+    uses: document.getElementById("ar-uses").value.split("\n").map((s) => s.trim()).filter(Boolean),
+  };
+  try {
+    await api(`/api/products-ar/${encodeURIComponent(productId)}`, { method: "PUT", body: JSON.stringify(payload) });
+    showToast("Arabic translation saved.");
   } catch (e) {
     showToast(e.message, "error");
   }
@@ -547,6 +754,7 @@ function renderGuideEditor(guide) {
     <div class="section-title">Article Body (blank line = new paragraph)</div>
     <div class="field-group">
       <textarea id="g-body" rows="8">${escapeHtml((guide.body || []).join("\n"))}</textarea>
+      <button type="button" class="btn btn-sm" id="g-dedupe-btn" style="margin-top:8px;">Remove Duplicate Paragraphs</button>
     </div>
 
     <div class="section-title">Photos &amp; Video</div>
@@ -567,6 +775,7 @@ function renderGuideEditor(guide) {
   document.getElementById("save-guide-btn").addEventListener("click", () => saveGuide(guide));
   const deleteBtn = document.getElementById("delete-guide-btn");
   if (deleteBtn) deleteBtn.addEventListener("click", () => deleteGuide(guide.id));
+  document.getElementById("g-dedupe-btn").addEventListener("click", () => dedupeParagraphTextarea("g-body"));
 
   if (!isNew) {
     const dropZone = document.getElementById("upload-drop");
@@ -661,11 +870,381 @@ async function deleteGuide(id) {
   }
 }
 
+/* ---------- Peptide Guide topic editor ---------- */
+function renderPeptideTopicEditor(topic) {
+  editorEl.innerHTML = `
+    <div class="section-title">Topic Info</div>
+    <div class="field-group">
+      <label>Title</label>
+      <input type="text" id="pt-title" value="${escapeAttr(topic.title)}" placeholder="e.g. Growth Hormone Secretagogues Explained" />
+    </div>
+    <div class="field-group">
+      <label>Topic ID / URL slug ${isNew ? "" : "(locked)"}</label>
+      <input type="text" id="pt-id" value="${escapeAttr(topic.id)}" ${isNew ? "" : "disabled"} placeholder="auto-generated from title if left blank" />
+    </div>
+    <div class="field-group">
+      <label>Summary</label>
+      <textarea id="pt-summary" placeholder="1-2 lines shown on the topic card">${escapeHtml(topic.summary)}</textarea>
+    </div>
+
+    <div class="section-title">Topic Body (blank line = new paragraph)</div>
+    <div class="field-group">
+      <textarea id="pt-body" rows="8">${escapeHtml((topic.body || []).join("\n"))}</textarea>
+      <button type="button" class="btn btn-sm" id="pt-dedupe-btn" style="margin-top:8px;">Remove Duplicate Paragraphs</button>
+    </div>
+
+    <div class="section-title">Infographic &amp; Video</div>
+    <div class="media-grid" id="media-grid"></div>
+    <div class="upload-drop" id="upload-drop">
+      ${isNew ? "Save the topic once first, then come back to upload media." : "Click to upload infographic images or a video for this topic"}
+    </div>
+    <input type="file" id="file-input" accept="image/*,video/*" multiple hidden ${isNew ? "disabled" : ""} />
+
+    <div class="editor-actions">
+      <button class="btn btn-primary" id="save-topic-btn">${isNew ? "Create Topic" : "Save Changes"}</button>
+      ${isNew ? "" : '<button class="btn btn-danger" id="delete-topic-btn">Delete Topic</button>'}
+    </div>
+  `;
+
+  renderMedia(topic.images || [], topic.video || "");
+
+  document.getElementById("save-topic-btn").addEventListener("click", () => savePeptideTopic(topic));
+  const deleteBtn = document.getElementById("delete-topic-btn");
+  if (deleteBtn) deleteBtn.addEventListener("click", () => deletePeptideTopic(topic.id));
+  document.getElementById("pt-dedupe-btn").addEventListener("click", () => dedupeParagraphTextarea("pt-body"));
+
+  if (!isNew) {
+    const dropZone = document.getElementById("upload-drop");
+    const fileInput = document.getElementById("file-input");
+    dropZone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", () => handlePeptideTopicUpload(topic.id, fileInput.files));
+  }
+}
+
+async function handlePeptideTopicUpload(topicId, files) {
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch(`/api/peptide-topics/${encodeURIComponent(topicId)}/upload`, { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      if (file.type.startsWith("video/")) {
+        currentVideo = data.path;
+      } else {
+        currentImages.push(data.path);
+      }
+    } catch (e) {
+      showToast(`Upload failed: ${e.message}`, "error");
+    }
+  }
+  renderMedia(currentImages, currentVideo);
+  showToast("Media uploaded — remember to Save Changes to keep it linked.");
+}
+
+function collectPeptideTopicFormData(base) {
+  return {
+    title: document.getElementById("pt-title").value.trim(),
+    summary: document.getElementById("pt-summary").value.trim(),
+    body: splitGuideBody(document.getElementById("pt-body").value),
+    images: currentImages,
+    video: currentVideo,
+    id: isNew ? document.getElementById("pt-id").value.trim() : base.id,
+  };
+}
+
+async function savePeptideTopic(base) {
+  const payload = collectPeptideTopicFormData(base);
+  try {
+    if (isNew) {
+      const result = await api("/api/peptide-topics", { method: "POST", body: JSON.stringify(payload) });
+      showToast("Topic created.");
+      isNew = false;
+      currentId = result.id;
+    } else {
+      await api(`/api/peptide-topics/${encodeURIComponent(base.id)}`, { method: "PUT", body: JSON.stringify(payload) });
+      showToast("Changes saved.");
+    }
+    await loadPeptideTopics();
+    openEditor(currentId);
+  } catch (e) {
+    showToast(e.message, "error");
+  }
+}
+
+async function deletePeptideTopic(id) {
+  if (!confirm("Delete this topic? This cannot be undone.")) return;
+  try {
+    await api(`/api/peptide-topics/${encodeURIComponent(id)}`, { method: "DELETE" });
+    currentId = null;
+    showToast("Topic deleted.");
+    await loadPeptideTopics();
+    editorEl.innerHTML = '<div class="empty-editor">Select a topic from the list, or create a new one.</div>';
+  } catch (e) {
+    showToast(e.message, "error");
+  }
+}
+
+/* ---------- Gallery editor ---------- */
+let galleryCurrentSrc = "";
+let galleryCurrentThumbnail = "";
+
+function renderGalleryEditor(item) {
+  editorEl.innerHTML = `
+    <div class="section-title">Gallery Item</div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Type</label>
+        <select id="gl-type">
+          <option value="image" ${item.type !== "video" ? "selected" : ""}>Image</option>
+          <option value="video" ${item.type === "video" ? "selected" : ""}>Video</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Gallery Item ID / slug ${isNew ? "" : "(locked)"}</label>
+        <input type="text" id="gl-id" value="${escapeAttr(item.id)}" ${isNew ? "" : "disabled"} placeholder="auto-generated from caption if left blank" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Caption</label>
+      <input type="text" id="gl-caption" value="${escapeAttr(item.caption)}" placeholder="Shown under the item and in the lightbox" />
+    </div>
+
+    <div class="section-title" id="gl-media-title">Media</div>
+    <div class="media-grid" id="media-grid"></div>
+    <div class="upload-drop" id="upload-drop">
+      ${isNew ? "Save the gallery item once first, then come back to upload media." : "Click to upload an image or video"}
+    </div>
+    <input type="file" id="file-input" accept="image/*,video/*" hidden ${isNew ? "disabled" : ""} />
+
+    <div class="section-title" id="gl-thumb-title" ${item.type === "video" ? "" : "hidden"}>Thumbnail (optional — falls back to the video's own first frame)</div>
+    <div class="media-grid" id="gl-thumb-grid" ${item.type === "video" ? "" : "hidden"}></div>
+    <div class="upload-drop" id="gl-thumb-drop" ${item.type === "video" ? "" : "hidden"}>
+      ${isNew ? "Save the gallery item once first, then come back to upload a thumbnail." : "Click to upload a poster/thumbnail image"}
+    </div>
+    <input type="file" id="gl-thumb-input" accept="image/*" hidden ${isNew ? "disabled" : ""} />
+
+    <div class="section-title">Tag Products</div>
+    <p class="modal-hint">Checked products will show this item in their Gallery section.</p>
+    <div class="category-checkbox-list" id="gl-products">
+      ${PRODUCTS
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(
+          (p) =>
+            `<label class="checkbox-label"><input type="checkbox" value="${escapeAttr(p.id)}" ${(item.productIds || []).includes(p.id) ? "checked" : ""} /> ${escapeHtml(p.name)}</label>`
+        )
+        .join("")}
+    </div>
+
+    <div class="editor-actions">
+      <button class="btn btn-primary" id="save-gallery-btn">${isNew ? "Create Gallery Item" : "Save Changes"}</button>
+      ${isNew ? "" : '<button class="btn btn-danger" id="delete-gallery-btn">Delete Gallery Item</button>'}
+    </div>
+  `;
+
+  galleryCurrentSrc = item.src || "";
+  galleryCurrentThumbnail = item.thumbnail || "";
+
+  function renderGalleryMedia() {
+    const grid = document.getElementById("media-grid");
+    if (!galleryCurrentSrc) {
+      grid.innerHTML = "";
+    } else if (item.type === "video") {
+      grid.innerHTML = `<div class="media-thumb" data-src="${escapeAttr(galleryCurrentSrc)}"><video src="/${escapeAttr(galleryCurrentSrc)}" muted></video><button class="remove-btn">✕</button></div>`;
+    } else {
+      grid.innerHTML = `<div class="media-thumb" data-src="${escapeAttr(galleryCurrentSrc)}"><img src="/${escapeAttr(galleryCurrentSrc)}" /><button class="remove-btn">✕</button></div>`;
+    }
+    const removeBtn = grid.querySelector(".remove-btn");
+    if (removeBtn) removeBtn.addEventListener("click", () => { galleryCurrentSrc = ""; renderGalleryMedia(); });
+  }
+  function renderGalleryThumb() {
+    const grid = document.getElementById("gl-thumb-grid");
+    grid.innerHTML = galleryCurrentThumbnail
+      ? `<div class="media-thumb" data-src="${escapeAttr(galleryCurrentThumbnail)}"><img src="/${escapeAttr(galleryCurrentThumbnail)}" /><button class="remove-btn">✕</button></div>`
+      : "";
+    const removeBtn = grid.querySelector(".remove-btn");
+    if (removeBtn) removeBtn.addEventListener("click", () => { galleryCurrentThumbnail = ""; renderGalleryThumb(); });
+  }
+  renderGalleryMedia();
+  renderGalleryThumb();
+
+  const typeSelect = document.getElementById("gl-type");
+  const thumbTitle = document.getElementById("gl-thumb-title");
+  const thumbGrid = document.getElementById("gl-thumb-grid");
+  const thumbDrop = document.getElementById("gl-thumb-drop");
+  typeSelect.addEventListener("change", () => {
+    item.type = typeSelect.value;
+    const isVideo = item.type === "video";
+    thumbTitle.hidden = !isVideo;
+    thumbGrid.hidden = !isVideo;
+    thumbDrop.hidden = !isVideo;
+    renderGalleryMedia();
+  });
+
+  async function uploadGalleryFile(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/gallery/upload", { method: "POST", body: formData });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    return data.path;
+  }
+
+  if (!isNew) {
+    const dropZone = document.getElementById("upload-drop");
+    const fileInput = document.getElementById("file-input");
+    dropZone.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      try {
+        galleryCurrentSrc = await uploadGalleryFile(file);
+        renderGalleryMedia();
+        showToast("Media uploaded — remember to Save Changes.");
+      } catch (e) {
+        showToast(`Upload failed: ${e.message}`, "error");
+      }
+    });
+
+    thumbDrop.addEventListener("click", () => document.getElementById("gl-thumb-input").click());
+    document.getElementById("gl-thumb-input").addEventListener("change", async () => {
+      const input = document.getElementById("gl-thumb-input");
+      const file = input.files[0];
+      if (!file) return;
+      try {
+        galleryCurrentThumbnail = await uploadGalleryFile(file);
+        renderGalleryThumb();
+        showToast("Thumbnail uploaded — remember to Save Changes.");
+      } catch (e) {
+        showToast(`Upload failed: ${e.message}`, "error");
+      }
+    });
+  }
+
+  document.getElementById("save-gallery-btn").addEventListener("click", () => saveGalleryItem(item));
+  const deleteBtn = document.getElementById("delete-gallery-btn");
+  if (deleteBtn) deleteBtn.addEventListener("click", () => deleteGalleryItem(item.id));
+}
+
+function collectGalleryFormData(base) {
+  const productIds = Array.from(document.querySelectorAll("#gl-products input[type=checkbox]:checked")).map((cb) => cb.value);
+  return {
+    type: document.getElementById("gl-type").value,
+    caption: document.getElementById("gl-caption").value.trim(),
+    src: galleryCurrentSrc,
+    thumbnail: galleryCurrentThumbnail,
+    productIds,
+    id: isNew ? document.getElementById("gl-id").value.trim() : base.id,
+  };
+}
+
+async function saveGalleryItem(base) {
+  const payload = collectGalleryFormData(base);
+  try {
+    if (isNew) {
+      const result = await api("/api/gallery", { method: "POST", body: JSON.stringify(payload) });
+      showToast("Gallery item created.");
+      isNew = false;
+      currentId = result.id;
+    } else {
+      await api(`/api/gallery/${encodeURIComponent(base.id)}`, { method: "PUT", body: JSON.stringify(payload) });
+      showToast("Changes saved.");
+    }
+    await loadGalleryItems();
+    openEditor(currentId);
+  } catch (e) {
+    showToast(e.message, "error");
+  }
+}
+
+async function deleteGalleryItem(id) {
+  if (!confirm("Delete this gallery item? This cannot be undone.")) return;
+  try {
+    await api(`/api/gallery/${encodeURIComponent(id)}`, { method: "DELETE" });
+    currentId = null;
+    showToast("Gallery item deleted.");
+    await loadGalleryItems();
+    editorEl.innerHTML = '<div class="empty-editor">Select a gallery item from the list, or create a new one.</div>';
+  } catch (e) {
+    showToast(e.message, "error");
+  }
+}
+
+async function moveGalleryItem(id, delta) {
+  const list = [...GALLERY_ITEMS];
+  const idx = list.findIndex((g) => g.id === id);
+  const newIdx = idx + delta;
+  if (idx === -1 || newIdx < 0 || newIdx >= list.length) return;
+  [list[idx], list[newIdx]] = [list[newIdx], list[idx]];
+  GALLERY_ITEMS = list;
+  renderList();
+  try {
+    await api("/api/gallery/reorder", { method: "PUT", body: JSON.stringify({ order: list.map((g) => g.id) }) });
+  } catch (e) {
+    showToast(e.message, "error");
+    await loadGalleryItems();
+  }
+}
+
 function escapeHtml(str) {
   return String(str || "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 }
 function escapeAttr(str) {
   return escapeHtml(str).replace(/"/g, "&quot;");
+}
+
+/**
+ * "Remove Duplicate Paragraphs" for the plain-paragraph editors (Tips &
+ * Guide, Peptide Guide) — splits the textarea's lines back into
+ * paragraphs the same way splitGuideBody() does when saving, drops any
+ * paragraph whose trimmed text exactly repeats an earlier one, and
+ * writes the deduplicated text back in. Content-authoring accidents
+ * (pasting the same section twice) are the usual cause, not a rendering
+ * bug — this lets the paragraph be fixed in one click instead of
+ * hunting through a long textarea by eye.
+ */
+function dedupeParagraphTextarea(textareaId) {
+  const textarea = document.getElementById(textareaId);
+  const paragraphs = splitGuideBody(textarea.value);
+  const seen = new Set();
+  const deduped = [];
+  let removedCount = 0;
+  for (const para of paragraphs) {
+    const key = para.trim();
+    if (seen.has(key)) {
+      removedCount++;
+      continue;
+    }
+    seen.add(key);
+    deduped.push(para);
+  }
+  textarea.value = deduped.join("\n\n");
+  showToast(removedCount ? `Removed ${removedCount} duplicate paragraph${removedCount === 1 ? "" : "s"}.` : "No duplicate paragraphs found.");
+}
+
+/**
+ * Same idea for the Blog editor's rich-text (Quill) body: walks the
+ * editor's top-level blocks (paragraphs, headings) and removes any block
+ * whose text content exactly repeats an earlier block — handles the
+ * "pasted the same section twice" case for Quill-authored HTML the same
+ * way dedupeParagraphTextarea() does for plain paragraph arrays.
+ */
+function dedupeQuillBlocks(quill) {
+  const root = quill.root;
+  const blocks = Array.from(root.children);
+  const seen = new Set();
+  let removedCount = 0;
+  for (const block of blocks) {
+    const key = (block.textContent || "").trim();
+    if (key && seen.has(key)) {
+      block.remove();
+      removedCount++;
+      continue;
+    }
+    if (key) seen.add(key);
+  }
+  showToast(removedCount ? `Removed ${removedCount} duplicate block${removedCount === 1 ? "" : "s"}.` : "No duplicate blocks found.");
 }
 
 /* ---------- Categories modal ---------- */
@@ -863,4 +1442,334 @@ document.getElementById("save-theme-btn").addEventListener("click", async () => 
   }
 });
 
-Promise.all([loadCategories(), loadProducts(), loadGuides()]).catch((e) => showToast(e.message, "error"));
+/* ---------- Category tile labels ("Shop by Category" icon grid) ---------- */
+// Mirrors CATEGORY_SHORT_LABELS_STANDALONE in js/main.js — shown as each
+// field's placeholder so the admin can see the current default before
+// typing an override.
+const CATEGORY_DEFAULT_LABELS = {
+  "Weight Loss, Metabolic Regulation & Insulin Resistance": "Weight Loss",
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": "Growth Support",
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "Injury Recovery",
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": "Anti-Aging",
+  "Brain, Cognitive Function, Mood & Sleep": "Brain Health",
+  "Male Hormones, Fertility, Sexual Health & Tanning": "Sexual Health",
+  "Organ-Specific Bioregulators & Therapeutic Compounds": "Bioregulator Peptides",
+  "Skin, Hair Care": "Skin Care",
+  "Digestive & Gut Health": "Gut Health",
+  "Accessories & Supplies": "Lab Supplies",
+};
+
+const categoryLabelsModal = document.getElementById("category-labels-modal");
+const categoryLabelsListEl = document.getElementById("category-labels-list");
+let currentCategoryTileLabels = {};
+let currentCategoryLabelsAr = {};
+
+function renderCategoryLabelsModal() {
+  categoryLabelsListEl.innerHTML = CATEGORIES.map((cat) => {
+    const value = currentCategoryTileLabels[cat] || "";
+    const placeholder = CATEGORY_DEFAULT_LABELS[cat] || cat;
+    const valueAr = currentCategoryLabelsAr[cat] || "";
+    return `
+    <div class="category-row" data-category="${escapeAttr(cat)}">
+      <span style="font-size:0.85rem; color:var(--text-secondary);">${escapeHtml(cat)}</span>
+      <input type="text" class="category-label-input" placeholder="${escapeAttr(placeholder)}" value="${escapeAttr(value)}" />
+      <input type="text" class="category-label-ar-input" dir="rtl" placeholder="التسمية بالعربية" value="${escapeAttr(valueAr)}" />
+    </div>
+  `;
+  }).join("");
+}
+
+async function openCategoryLabelsModal() {
+  categoryLabelsModal.hidden = false;
+  categoryLabelsListEl.innerHTML = '<p style="color:var(--steel-blue); font-size:0.85rem;">Loading…</p>';
+  try {
+    await loadCategories();
+    currentCategoryTileLabels = await api("/api/category-tile-labels");
+    currentCategoryLabelsAr = await api("/api/category-labels-ar");
+    renderCategoryLabelsModal();
+  } catch (e) {
+    categoryLabelsListEl.innerHTML = `<p style="color:var(--danger); font-size:0.85rem;">Failed to load: ${escapeHtml(e.message)}</p>`;
+  }
+}
+function closeCategoryLabelsModal() {
+  categoryLabelsModal.hidden = true;
+}
+
+document.getElementById("manage-category-labels-btn").addEventListener("click", openCategoryLabelsModal);
+document.getElementById("category-labels-modal-close").addEventListener("click", closeCategoryLabelsModal);
+categoryLabelsModal.addEventListener("click", (e) => {
+  if (e.target === categoryLabelsModal) closeCategoryLabelsModal();
+});
+
+document.getElementById("save-category-labels-btn").addEventListener("click", async () => {
+  const labels = {};
+  const labelsAr = {};
+  categoryLabelsListEl.querySelectorAll(".category-row").forEach((row) => {
+    const cat = row.dataset.category;
+    const label = row.querySelector(".category-label-input").value.trim();
+    if (label) labels[cat] = label;
+    const labelAr = row.querySelector(".category-label-ar-input").value.trim();
+    if (labelAr) labelsAr[cat] = labelAr;
+  });
+  try {
+    await api("/api/category-tile-labels", { method: "PUT", body: JSON.stringify(labels) });
+    await api("/api/category-labels-ar", { method: "PUT", body: JSON.stringify(labelsAr) });
+    showToast("Category labels saved.");
+    closeCategoryLabelsModal();
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+});
+
+/* ---------- Blog post editor (rich text via Quill) ---------- */
+let blogQuillInstance = null;
+let productDescQuillInstance = null;
+let productDescQuillInstanceAr = null;
+
+function renderBlogPostEditor(post) {
+  editorEl.innerHTML = `
+    <div class="section-title">Post Info</div>
+    <div class="field-group">
+      <label>Title</label>
+      <input type="text" id="bp-title" value="${escapeAttr(post.title)}" placeholder="e.g. What Is BPC-157? A Research Overview" />
+    </div>
+    <div class="field-group">
+      <label>Post ID / URL slug ${isNew ? "" : "(locked)"}</label>
+      <input type="text" id="bp-id" value="${escapeAttr(post.id)}" ${isNew ? "" : "disabled"} placeholder="auto-generated from title if left blank" />
+    </div>
+    <div class="field-group">
+      <label>Summary</label>
+      <textarea id="bp-summary" placeholder="1-2 lines shown on the post card and in search results">${escapeHtml(post.summary)}</textarea>
+    </div>
+
+    <div class="section-title">Cover Image</div>
+    <div class="media-grid" id="bp-cover-grid"></div>
+    <div class="upload-drop" id="bp-cover-drop">
+      ${isNew ? "Save the post once first, then come back to upload a cover image." : "Click to upload a cover image"}
+    </div>
+    <input type="file" id="bp-cover-input" accept="image/*" hidden ${isNew ? "disabled" : ""} />
+
+    <div class="section-title">Post Body</div>
+    <p class="modal-hint">Use the toolbar for bold, italic, underline, text color, headings, and links. Click the image icon to insert a photo or infographic anywhere in the article.</p>
+    <div class="field-group">
+      <div id="bp-quill-editor" style="background:#fff; border-radius:8px;"></div>
+      <button type="button" class="btn btn-sm" id="bp-dedupe-btn" style="margin-top:8px;">Remove Duplicate Paragraphs</button>
+    </div>
+
+    <div class="section-title">Video (optional)</div>
+    <div class="media-grid" id="bp-video-grid"></div>
+    <div class="upload-drop" id="bp-video-drop">
+      ${isNew ? "Save the post once first, then come back to upload a video." : "Click to upload a video for this post"}
+    </div>
+    <input type="file" id="bp-video-input" accept="video/*" hidden ${isNew ? "disabled" : ""} />
+
+    <div class="section-title">Embed (optional)</div>
+    <p class="modal-hint">Paste a single &lt;iframe&gt; embed code (e.g. an interactive guide page) — it's shown below the post body. Other tags are ignored for safety; only iframe is allowed here.</p>
+    <div class="field-group">
+      <textarea id="bp-embed" rows="3" placeholder='&lt;iframe src="/Guide/weight-loss-protocols.html" width="100%" height="1700" style="border:none;"&gt;&lt;/iframe&gt;'>${escapeHtml(post.embedHtml || "")}</textarea>
+    </div>
+
+    <div class="editor-actions">
+      <button class="btn btn-primary" id="save-post-btn">${isNew ? "Create Post" : "Save Changes"}</button>
+      ${isNew ? "" : '<button class="btn btn-danger" id="delete-post-btn">Delete Post</button>'}
+    </div>
+  `;
+
+  let bpCoverImage = post.coverImage || "";
+  let bpVideo = post.video || "";
+
+  function renderCoverGrid() {
+    const grid = document.getElementById("bp-cover-grid");
+    grid.innerHTML = bpCoverImage
+      ? `<div class="media-thumb" data-src="${escapeAttr(bpCoverImage)}"><img src="/${bpCoverImage}" /><button class="remove-btn">✕</button></div>`
+      : "";
+    const removeBtn = grid.querySelector(".remove-btn");
+    if (removeBtn) removeBtn.addEventListener("click", () => { bpCoverImage = ""; renderCoverGrid(); });
+  }
+  function renderVideoGrid() {
+    const grid = document.getElementById("bp-video-grid");
+    grid.innerHTML = bpVideo
+      ? `<div class="media-thumb" data-src="${escapeAttr(bpVideo)}"><video src="/${bpVideo}" muted></video><button class="remove-btn">✕</button></div>`
+      : "";
+    const removeBtn = grid.querySelector(".remove-btn");
+    if (removeBtn) removeBtn.addEventListener("click", () => { bpVideo = ""; renderVideoGrid(); });
+  }
+  renderCoverGrid();
+  renderVideoGrid();
+
+  // Quill toolbar: bold/italic/underline, text color, H2/H3, link, and an
+  // image button that uploads through the post's own /upload endpoint
+  // (same pattern as the other editors) and inserts the resulting URL at
+  // the cursor — this is how infographic images get embedded inline.
+  blogQuillInstance = new Quill("#bp-quill-editor", {
+    theme: "snow",
+    modules: {
+      toolbar: {
+        container: [
+          [{ header: [2, 3, false] }],
+          ["bold", "italic", "underline"],
+          [{ color: [] }],
+          ["link", "image"],
+          ["clean"],
+        ],
+        handlers: {
+          image: () => blogQuillImageHandler(post.id),
+        },
+      },
+    },
+  });
+  blogQuillInstance.root.innerHTML = post.bodyHtml || "";
+
+  document.getElementById("bp-dedupe-btn").addEventListener("click", () => dedupeQuillBlocks(blogQuillInstance));
+
+  async function uploadBlogFile(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(`/api/blog-posts/${encodeURIComponent(post.id)}/upload`, { method: "POST", body: formData });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    return data.path;
+  }
+
+  if (!isNew) {
+    const coverDrop = document.getElementById("bp-cover-drop");
+    const coverInput = document.getElementById("bp-cover-input");
+    coverDrop.addEventListener("click", () => coverInput.click());
+    coverInput.addEventListener("change", async () => {
+      const file = coverInput.files[0];
+      if (!file) return;
+      try {
+        bpCoverImage = await uploadBlogFile(file);
+        renderCoverGrid();
+        showToast("Cover image uploaded — remember to Save Changes.");
+      } catch (e) {
+        showToast(`Upload failed: ${e.message}`, "error");
+      }
+    });
+
+    const videoDrop = document.getElementById("bp-video-drop");
+    const videoInput = document.getElementById("bp-video-input");
+    videoDrop.addEventListener("click", () => videoInput.click());
+    videoInput.addEventListener("change", async () => {
+      const file = videoInput.files[0];
+      if (!file) return;
+      try {
+        bpVideo = await uploadBlogFile(file);
+        renderVideoGrid();
+        showToast("Video uploaded — remember to Save Changes.");
+      } catch (e) {
+        showToast(`Upload failed: ${e.message}`, "error");
+      }
+    });
+  }
+
+  document.getElementById("save-post-btn").addEventListener("click", () => saveBlogPost(post, () => bpCoverImage, () => bpVideo));
+  const deleteBtn = document.getElementById("delete-post-btn");
+  if (deleteBtn) deleteBtn.addEventListener("click", () => deleteBlogPost(post.id));
+}
+
+function productDescQuillImageHandler(productId) {
+  if (isNew) {
+    showToast("Save the product once first, then come back to insert images.", "error");
+    return;
+  }
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch(`/api/products/${encodeURIComponent(productId)}/upload`, { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      const range = productDescQuillInstance.getSelection(true);
+      productDescQuillInstance.insertEmbed(range.index, "image", `/${data.path}`);
+      productDescQuillInstance.setSelection(range.index + 1);
+    } catch (e) {
+      showToast(`Image upload failed: ${e.message}`, "error");
+    }
+  };
+  input.click();
+}
+
+function blogQuillImageHandler(postId) {
+  if (isNew) {
+    showToast("Save the post once first, then come back to insert images.", "error");
+    return;
+  }
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (!file) return;
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch(`/api/blog-posts/${encodeURIComponent(postId)}/upload`, { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      const range = blogQuillInstance.getSelection(true);
+      blogQuillInstance.insertEmbed(range.index, "image", `/${data.path}`);
+      blogQuillInstance.setSelection(range.index + 1);
+    } catch (e) {
+      showToast(`Image upload failed: ${e.message}`, "error");
+    }
+  };
+  input.click();
+}
+
+// Quill inserts a separate <p><br></p> for every blank line pressed
+// while composing, so pressing Enter twice between entries (common when
+// pasting or spacing things out) produces two/three stacked empty
+// paragraphs instead of one — each rendering with its own margin. This
+// collapses any run of 2+ consecutive empty paragraphs down to a single
+// one before saving, without touching real content.
+function collapseRepeatedEmptyParagraphs(html) {
+  return html.replace(/(?:<p><br><\/p>\s*){2,}/gi, "<p><br></p>");
+}
+
+async function saveBlogPost(base, getCoverImage, getVideo) {
+  const payload = {
+    title: document.getElementById("bp-title").value.trim(),
+    summary: document.getElementById("bp-summary").value.trim(),
+    bodyHtml: collapseRepeatedEmptyParagraphs(blogQuillInstance.root.innerHTML),
+    coverImage: getCoverImage(),
+    video: getVideo(),
+    embedHtml: document.getElementById("bp-embed").value.trim(),
+    id: isNew ? document.getElementById("bp-id").value.trim() : base.id,
+  };
+  try {
+    if (isNew) {
+      const result = await api("/api/blog-posts", { method: "POST", body: JSON.stringify(payload) });
+      showToast("Post created.");
+      isNew = false;
+      currentId = result.id;
+    } else {
+      await api(`/api/blog-posts/${encodeURIComponent(base.id)}`, { method: "PUT", body: JSON.stringify(payload) });
+      showToast("Changes saved.");
+    }
+    await loadBlogPosts();
+    openEditor(currentId);
+  } catch (e) {
+    showToast(e.message, "error");
+  }
+}
+
+async function deleteBlogPost(id) {
+  if (!confirm("Delete this post? This cannot be undone.")) return;
+  try {
+    await api(`/api/blog-posts/${encodeURIComponent(id)}`, { method: "DELETE" });
+    currentId = null;
+    showToast("Post deleted.");
+    await loadBlogPosts();
+    editorEl.innerHTML = '<div class="empty-editor">Select a post from the list, or create a new one.</div>';
+  } catch (e) {
+    showToast(e.message, "error");
+  }
+}
+
+Promise.all([loadCategories(), loadProducts(), loadGuides(), loadPeptideTopics(), loadBlogPosts(), loadGalleryItems()]).catch((e) => showToast(e.message, "error"));

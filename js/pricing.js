@@ -66,5 +66,9 @@ function slashZeros(str) {
  */
 function formatEURHtml(amount) {
   const withCurrency = formatEUR(amount).replace("€", '<span class="currency-symbol">€</span>');
-  return slashZeros(withCurrency);
+  // dir="ltr" pins the digit/symbol order regardless of the surrounding
+  // context's direction — without it, a price rendered inside an RTL page
+  // (dir="rtl") gets its digits/currency symbol visually reordered by the
+  // browser's bidi algorithm (e.g. "€ 114.40" rendering as "0114.4 €").
+  return `<span dir="ltr">${slashZeros(withCurrency)}</span>`;
 }

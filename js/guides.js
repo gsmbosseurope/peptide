@@ -86,21 +86,41 @@ function initGuideDetailPage() {
       <div class="guide-article-body">
         ${guide.body.map(guideParagraphHTML).join("")}
       </div>
+      <div class="guide-article-share" id="guide-share-wrap"></div>
     </article>
   `;
+
+  renderShareButton(document.getElementById("guide-share-wrap"), {
+    title: guide.title,
+    text: guide.title,
+  });
 }
 
-// If a paragraph starts with "Name: description" (a short label before the
-// first colon), render the name as its own bold heading line above the
-// description instead of inline — used by reference-list style guides
-// (e.g. the peptide overview articles) so each entry reads like a term
-// definition rather than a run-on sentence.
+// A paragraph is treated as its own bold, accent-colored heading line in
+// two cases (used by reference-list style guides — e.g. the peptide
+// overview articles — so each entry reads like a term definition rather
+// than a run-on sentence):
+//   1. "Name: description" — a short label before the first colon, with
+//      description text following it.
+//   2. A short line that opens with a decorative bullet/symbol (◎ ◇ ✦ ○ ◆
+//      etc.) or a number, followed by a name/description separated by an
+//      em/en-dash (e.g. "◎ Semaglutide — First-generation agonist").
 function guideParagraphHTML(para) {
   const dir = textDir(para);
-  const match = para.match(/^([^:]{1,60}):\s*(.+)$/s);
-  if (match) {
-    return `<p class="guide-article-entry" dir="${dir}"><strong>${match[1]} :</strong><br>${match[2]}</p>`;
+
+  const colonMatch = para.match(/^([^:]{1,60}):\s*(.+)$/s);
+  if (colonMatch) {
+    return `<p class="guide-article-entry" dir="${dir}"><strong>${colonMatch[1]} :</strong><br>${colonMatch[2]}</p>`;
   }
+
+  const isMarkerHeading =
+    !para.includes("\n") &&
+    para.length <= 100 &&
+    /^(?:[^\p{L}\p{N}\s-]|[0-9]{1,3})\s+.{0,80}[—–].{0,80}$/u.test(para);
+  if (isMarkerHeading) {
+    return `<p class="guide-article-entry" dir="${dir}"><strong>${para}</strong></p>`;
+  }
+
   return `<p dir="${dir}">${para}</p>`;
 }
 

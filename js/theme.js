@@ -14,7 +14,14 @@
  * "lakers" (deep purple/gold), "aurora" (deep teal green/vivid lime),
  * "blueprint" (royal blue/muted yellow beige), "coastal" (deep navy/
  * soft blush pink), "citrusink" (near-black/vivid orange/soft
- * yellow), or "chocolate" (cocoa/caramel/slate blue). Chosen via a
+ * yellow), "chocolate" (cocoa/caramel/slate blue), "burgundy" (deep
+ * wine/rose pink), "harmonynavy" (deep navy/caramel gold/white),
+ * "harmonyviolet" (royal violet/warm cream/brown), "harmonymauve"
+ * (muted plum/dusty rose/off-white), "harmonycream" (near-black navy/
+ * red-orange/warm cream), "harmonymocha" (dark cocoa/tan/light
+ * tan), "harmonyroyale" (deep navy/warm gold/white), "harmonyteal"
+ * (deep teal/coral pink/warm cream), or "harmonyvintage" (near-black/
+ * deep red/cream tan). Chosen via a
  * dropdown next to the theme toggle, remembered in localStorage,
  * applied via [data-palette] on <html>.
  *
@@ -26,7 +33,7 @@
  */
 
 const THEME_STORAGE_KEY = "peptidesLabsTheme"; // "light" | "dark" | absent (auto)
-const PALETTE_STORAGE_KEY = "peptidesLabsPalette"; // "classic" | "bloom" | "ember" | "forest" | "tide" | "crimson" | "royal" | "papaya" | "orbit" | "neoncyan" | "lakers" | "aurora" | "blueprint" | "coastal" | "citrusink" | "chocolate" | "burgundy"
+const PALETTE_STORAGE_KEY = "peptidesLabsPalette"; // "classic" | "bloom" | "ember" | "forest" | "tide" | "crimson" | "royal" | "papaya" | "orbit" | "neoncyan" | "lakers" | "aurora" | "blueprint" | "coastal" | "citrusink" | "chocolate" | "burgundy" | "harmonynavy" | "harmonyviolet" | "harmonymauve" | "harmonycream" | "harmonymocha" | "harmonyroyale" | "harmonyteal" | "harmonyvintage"
 const PALETTES = [
   { id: "classic", label: "Classic", swatch: ["#021024", "#c9a15a"] },
   { id: "bloom", label: "Dusk Bloom", swatch: ["#1b3358", "#f1916d"] },
@@ -45,11 +52,20 @@ const PALETTES = [
   { id: "citrusink", label: "Citrus Ink", swatch: ["#121212", "#ff6b1a"] },
   { id: "chocolate", label: "Chocolate", swatch: ["#231F26", "#DC9170"] },
   { id: "burgundy", label: "Burgundy", swatch: ["#621124", "#FC829B"] },
+  { id: "harmonynavy", label: "Harmony Navy", swatch: ["#192C50", "#B98250"] },
+  { id: "harmonyviolet", label: "Harmony Violet", swatch: ["#4A3695", "#864824"] },
+  { id: "harmonymauve", label: "Harmony Mauve", swatch: ["#584864", "#BDA4A3"] },
+  { id: "harmonycream", label: "Harmony Cream", swatch: ["#1D2536", "#D84F34"] },
+  { id: "harmonymocha", label: "Harmony Mocha", swatch: ["#46312A", "#9B7457"] },
+  { id: "harmonyroyale", label: "Harmony Royale", swatch: ["#1B2B5C", "#BE9256"] },
+  { id: "harmonyteal", label: "Harmony Teal", swatch: ["#005A54", "#EF6869"] },
+  { id: "harmonyvintage", label: "Harmony Vintage", swatch: ["#191E21", "#912B29"] },
 ];
 
 function getAutoTheme() {
-  const hour = new Date().getHours();
-  return hour >= 6 && hour < 18 ? "light" : "dark";
+  // Always defaults to light for a first-time visitor with no stored
+  // preference — previously picked light/dark from the local clock hour.
+  return "light";
 }
 
 function getActiveTheme() {

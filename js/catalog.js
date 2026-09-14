@@ -53,6 +53,12 @@ const CATEGORY_SHORT_LABELS = {
 };
 
 function categoryShortLabel(category) {
+  // On /ar/ pages, category-labels-ar.js defines CATEGORY_LABELS_AR keyed
+  // by the same canonical English CATEGORY_LIST strings used everywhere
+  // else (icons, filtering) — only the displayed text changes.
+  if (typeof CATEGORY_LABELS_AR !== "undefined" && CATEGORY_LABELS_AR[category]) {
+    return CATEGORY_LABELS_AR[category];
+  }
   return CATEGORY_SHORT_LABELS[category] || category;
 }
 
@@ -63,25 +69,33 @@ function productCategories(product) {
     : [product.category].filter(Boolean);
 }
 
+// A /ar/ page loads category-labels-ar.js before catalog.js, so this
+// global's presence is the signal to switch the card's own hardcoded UI
+// strings (not just category names) to Arabic.
+function isArabicPage() {
+  return typeof CATEGORY_LABELS_AR !== "undefined";
+}
+
 function productCardHTML(product) {
   const price = cheapestVariantPrice(product);
   const img = product.images && product.images[0] ? product.images[0] : "";
   const cats = productCategories(product);
+  const isAr = isArabicPage();
   return `
     <a class="product-card reveal" href="product?id=${encodeURIComponent(product.id)}">
       <div class="product-card-media">
-        ${img ? `<img src="${img}" alt="${product.name}" loading="lazy" />` : ""}
+        ${img ? `<img src="/${img}" alt="${product.name}" loading="lazy" />` : ""}
       </div>
       <div class="product-card-body">
         <div class="product-card-meta-row">
           <span class="product-card-cat" title="${cats.join(" · ")}">${cats.map(categoryShortLabel).join(" · ")}</span>
-          ${product.showPurity !== false && product.purity ? `<span class="badge-purity badge-purity-inline">${product.purity} purity</span>` : ""}
+          ${product.showPurity !== false && product.purity ? `<span class="badge-purity badge-purity-inline">${isAr ? `نقاء ${product.purity}` : `${product.purity} purity`}</span>` : ""}
         </div>
         <span class="product-card-name">${product.name}</span>
         <p class="product-card-desc">${product.shortDescription}</p>
         <div class="product-card-footer">
-          <span class="price-tag">from ${formatEURHtml(price)} <small>/ unit</small></span>
-          <span class="btn btn-ghost">View →</span>
+          <span class="price-tag">${isAr ? "من" : "from"} ${formatEURHtml(price)} <small>${isAr ? "/ الوحدة" : "/ unit"}</small></span>
+          <span class="btn btn-ghost">${isAr ? "عرض ←" : "View →"}</span>
         </div>
       </div>
     </a>
@@ -94,7 +108,14 @@ function renderProductGrid(container, products, options) {
     products = [...products].sort((a, b) => a.name.localeCompare(b.name));
   }
   if (!products.length) {
-    container.innerHTML = `
+    container.innerHTML = isArabicPage()
+      ? `
+      <div class="empty-state">
+        <h3>لا توجد منتجات مطابقة للفلاتر</h3>
+        <p>جرّب فئة مختلفة أو كلمة بحث أخرى.</p>
+      </div>
+    `
+      : `
       <div class="empty-state">
         <h3>No products match your filters</h3>
         <p>Try a different category or search term.</p>

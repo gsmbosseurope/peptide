@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/theme-settings.js"></script>
+  <script src="js/theme-settings.js?v=<?php echo filemtime(__DIR__ . '/js/theme-settings.js'); ?>"></script>
   <script>
     (function() {
       var stored = localStorage.getItem("peptidesLabsTheme");
-      var theme = stored === "light" || stored === "dark" ? stored : (function() {
-        var h = new Date().getHours();
-        return h >= 6 && h < 18 ? "light" : "dark";
-      })();
+      var theme = stored === "light" || stored === "dark" ? stored : "light";
       document.documentElement.setAttribute("data-theme", theme);
-      var validPalettes = ["bloom", "ember", "forest", "tide", "crimson", "royal", "papaya", "orbit", "neoncyan", "lakers", "aurora", "blueprint", "coastal", "citrusink", "chocolate", "burgundy"];
+      var validPalettes = ["bloom", "ember", "forest", "tide", "crimson", "royal", "papaya", "orbit", "neoncyan", "lakers", "aurora", "blueprint", "coastal", "citrusink", "chocolate", "burgundy", "harmonynavy", "harmonyviolet", "harmonymauve", "harmonycream", "harmonymocha", "harmonyroyale", "harmonyteal", "harmonyvintage"];
       var storedPalette = localStorage.getItem("peptidesLabsPalette");
       var palette = validPalettes.indexOf(storedPalette) !== -1 ? storedPalette : (typeof THEME_SETTINGS !== "undefined" ? THEME_SETTINGS.defaultPaletteId : null);
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
@@ -20,13 +17,24 @@
   </script>
   <title>All Products — trusted-peptide.com</title>
   <meta name="description" content="Browse 120+ research peptides with transparent variant pricing and wholesale discounts." />
+  <link rel="canonical" href="https://trusted-peptide.com/products" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Trusted-Peptide" />
+  <meta property="og:title" content="All Products — trusted-peptide.com" />
+  <meta property="og:description" content="Browse 120+ research peptides with transparent variant pricing and wholesale discounts." />
+  <meta property="og:url" content="https://trusted-peptide.com/products" />
+  <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="All Products — trusted-peptide.com" />
+  <meta name="twitter:description" content="Browse 120+ research peptides with transparent variant pricing and wholesale discounts." />
+  <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" />
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/main.css?v=<?php echo filemtime(__DIR__ . '/css/main.css'); ?>" />
+  <link rel="stylesheet" href="css/animations.css?v=<?php echo filemtime(__DIR__ . '/css/animations.css'); ?>" />
+  <link rel="stylesheet" href="css/hero.css?v=<?php echo filemtime(__DIR__ . '/css/hero.css'); ?>" />
 </head>
 <body>
 
@@ -40,11 +48,13 @@
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="blog">Blog</a>
         <a href="tips">Tips &amp; Guide</a>
-        <a href="peptide-guide">دليلك الشامل</a>
+        <a href="peptide-guide">Peptide Guide</a>
         <a href="contact">Contact</a>
       </nav>
       <div class="header-actions">
+        <a href="/ar/products" class="lang-switch" title="التبديل إلى العربية">عربي</a>
         <button class="theme-toggle" aria-label="Switch to light theme" title="Toggle light/dark theme">
           <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
@@ -55,22 +65,25 @@
           </button>
           <div class="palette-menu"></div>
         </div>
-        <a href="cart" class="cart-link">Cart <span class="cart-count">0</span></a>
+        <a href="cart" class="cart-link"><span class="cart-link-word">Cart</span> <span class="cart-count">0</span></a>
         <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
+  </header>
+
     <nav class="mobile-nav">
       <a href="/">Home</a>
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
+      <a href="blog">Blog</a>
       <a href="tips">Tips &amp; Guide</a>
-      <a href="peptide-guide">دليلك الشامل</a>
+      <a href="peptide-guide">Peptide Guide</a>
+      <a href="gallery">Gallery</a>
       <a href="contact">Contact</a>
-      <a href="cart">Cart</a>
+      <a href="/ar/products" class="lang-switch">عربي</a>
     </nav>
-  </header>
 
   <main class="section container" style="padding-top:56px;">
     <div class="section-head reveal">
@@ -84,7 +97,9 @@
       <label for="search-input" class="visually-hidden">Search peptides</label>
       <input type="text" id="search-input" class="search-input" placeholder="Search peptides…" />
     </div>
-    <div class="filter-bar" id="filter-bar"></div>
+    <div class="filter-bar-scroll-wrap">
+      <div class="filter-bar" id="filter-bar"></div>
+    </div>
 
     <div class="product-grid" id="product-grid"></div>
   </main>
@@ -109,11 +124,11 @@
         </div>
         <div>
           <h4>Company</h4>
-          <ul><li><a href="about">About</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="peptide-guide">دليلك الشامل</a></li><li><a href="contact">Contact</a></li></ul>
+          <ul><li><a href="about">About</a></li><li><a href="blog">Blog</a></li><li><a href="tips">Tips &amp; Guide</a></li><li><a href="peptide-guide">Peptide Guide</a></li><li><a href="contact">Contact</a></li></ul>
         </div>
         <div>
           <h4>Contact</h4>
-          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><span class="badge-eu">EU Certified Lab</span></li></ul>
+          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><img class="badge-eu" src="assets/brand/eu-seal.png" alt="EU Certified Lab" width="72" height="72" loading="lazy" /></li></ul>
         </div>
       </div>
       <div class="footer-methods">
@@ -152,10 +167,11 @@
     </div>
   </footer>
 
-  <script src="js/pricing.js" data-cfasync="false"></script>
+  <script src="js/pricing.js?v=<?php echo filemtime(__DIR__ . '/js/pricing.js'); ?>" data-cfasync="false"></script>
   <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <script src="js/category-tile-labels.js?v=<?php echo filemtime(__DIR__ . '/js/category-tile-labels.js'); ?>" data-cfasync="false"></script>
   <script src="js/catalog.js?v=<?php echo filemtime(__DIR__ . '/js/catalog.js'); ?>" data-cfasync="false"></script>
-  <script src="js/theme.js" data-cfasync="false"></script>
-  <script src="js/main.js" data-cfasync="false"></script>
+  <script src="js/theme.js?v=<?php echo filemtime(__DIR__ . '/js/theme.js'); ?>" data-cfasync="false"></script>
+  <script src="js/main.js?v=<?php echo filemtime(__DIR__ . '/js/main.js'); ?>" data-cfasync="false"></script>
 </body>
 </html>

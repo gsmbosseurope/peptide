@@ -15,6 +15,35 @@ function productCategories(product) {
     : [product.category].filter(Boolean);
 }
 
+/** Renders the "Gallery" section for a product page — empty string (no heading) when nothing is tagged. */
+function renderProductGallerySection(productId) {
+  if (typeof GALLERY_ITEMS === "undefined") return "";
+  const items = GALLERY_ITEMS.filter((g) => (g.productIds || []).includes(productId) && g.src);
+  if (!items.length) return "";
+  return `
+    <div class="pd-gallery-section">
+      <div class="section-title-row"><h2>Gallery</h2></div>
+      <div class="gallery-grid" id="pd-gallery-grid">
+        ${items
+          .map(
+            (g) => `
+          <div class="gallery-tile" data-gallery-src="${g.src}" data-gallery-type="${g.type}" data-gallery-caption="${g.caption || ""}">
+            ${
+              g.type === "video" && !g.thumbnail
+                ? `<video src="${g.src}" muted preload="metadata"></video>`
+                : `<img src="${g.type === "video" ? g.thumbnail : g.src}" alt="${g.caption || ""}" loading="lazy" />`
+            }
+            ${g.type === "video" ? `<span class="gallery-tile-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>` : ""}
+            ${g.caption ? `<span class="gallery-tile-caption">${g.caption}</span>` : ""}
+          </div>
+        `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
 function initProductDetailPage() {
   const root = document.getElementById("product-detail-root");
   if (!root) return;
@@ -90,11 +119,12 @@ function initProductDetailPage() {
         <div class="pd-actions">
           <button class="btn btn-primary" id="add-to-cart-btn">Add to Cart</button>
           <a class="btn btn-secondary" id="whatsapp-order-btn" target="_blank" rel="noopener">Order via WhatsApp</a>
+          <span id="pd-share-wrap"></span>
         </div>
 
         <div class="pd-tabs">
-          <div class="pd-tab active" data-tab="composition">Composition</div>
-          <div class="pd-tab" data-tab="uses">Uses</div>
+          <div class="pd-tab active" data-tab="composition">Details</div>
+          <div class="pd-tab" data-tab="uses">How to Use</div>
           <div class="pd-tab" data-tab="video">Video</div>
         </div>
         <div class="pd-tab-panel active" data-panel="composition">
@@ -110,7 +140,16 @@ function initProductDetailPage() {
         </div>
       </div>
     </div>
+    ${renderProductGallerySection(product.id)}
   `;
+
+  formatProductDescParagraphs(document.querySelector(".pd-desc"));
+
+  const descText = document.querySelector(".pd-desc").textContent.trim();
+  renderShareButton(document.getElementById("pd-share-wrap"), {
+    title: product.name,
+    text: `${product.name} — ${descText}`,
+  });
 
   function renderTierHints(wholesaleTiers, currentQty) {
     if (!wholesaleTiers || !wholesaleTiers.length) {
@@ -219,6 +258,41 @@ function initProductDetailPage() {
   });
 
   render();
+
+  if (typeof initGalleryLightbox === "function") initGalleryLightbox("#pd-gallery-grid");
+}
+
+// Detects Arabic (and other RTL-script) text per paragraph and marks
+// heading-shaped lines ("Name:" or "Name — description") for tighter
+// spacing — same approach as js/blog.js's formatBlogPostParagraphs(),
+// needed here for the same reason: Quill's rich-text output carries no
+// direction attribute and treats every line as a structurally identical
+// paragraph.
+const PD_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/;
+
+function formatProductDescParagraphs(container) {
+  if (!container) return;
+  const nbspPattern = new RegExp(String.fromCharCode(160), "g");
+  const paragraphs = Array.from(container.querySelectorAll(":scope > p, :scope > h2, :scope > h3"));
+  const texts = paragraphs.map((p) => (p.textContent || "").replace(nbspPattern, " ").trim());
+
+  paragraphs.forEach((p, i) => {
+    const text = texts[i];
+    const isEmpty = !text;
+    const endsWithColon = /[:：]\s*$/.test(text);
+    const hasDashSeparator = /\s[—–-]\s/.test(text);
+    const isHeadingLine = !isEmpty && (endsWithColon || hasDashSeparator) && text.length <= 140;
+
+    if (!isEmpty) {
+      const ownIsRtl = PD_RTL_PATTERN.test(text);
+      const dirSourceText = isHeadingLine && !ownIsRtl ? texts[i + 1] || text : text;
+      p.dir = PD_RTL_PATTERN.test(dirSourceText) ? "rtl" : "ltr";
+    }
+
+    if (isHeadingLine) {
+      p.classList.add("pd-desc-heading-line");
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", initProductDetailPage);

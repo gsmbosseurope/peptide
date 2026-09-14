@@ -72,6 +72,76 @@
 .catalog-banner-content h1 { color: var(--ice-blue); margin-top: 14px; line-height: 1.05; }
 .catalog-banner-content .eyebrow { color: var(--lab-gold-bright); margin-top: -46px; line-height: 1.4; display: inline-block; }
 
+/* ---------- "Shop by Category" pill (index.php, between the banner and
+   the Most Requested grid) — a quick jump-link down to the full category
+   grid, so visitors don't have to scroll past featured products first.
+   A compact, centered, self-contained pill (not full-width, no overlap
+   with the banner above it) so it reads as its own element. ---------- */
+.shop-by-category-pill-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 20px 24px 0;
+  margin-bottom: -8px;
+}
+.shop-by-category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px 10px 10px;
+  max-width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+  color: var(--text-primary);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.shop-by-category-pill:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 14px 28px -16px color-mix(in srgb, var(--accent) 45%, transparent), var(--shadow-card);
+}
+.shop-by-category-pill-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+.shop-by-category-pill-icon svg { width: 18px; height: 18px; }
+.shop-by-category-pill-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.shop-by-category-pill-text strong { font-family: var(--font-display); font-size: 0.92rem; font-weight: 700; white-space: nowrap; }
+.shop-by-category-pill-text span { font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.shop-by-category-pill-arrow {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  color: var(--accent);
+  animation: shopByCategoryBounce 2.2s ease-in-out infinite;
+}
+.shop-by-category-pill-arrow svg { width: 15px; height: 15px; }
+@keyframes shopByCategoryBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-by-category-pill-arrow { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .shop-by-category-pill-wrap { padding: 16px 20px 0; }
+  .shop-by-category-pill { gap: 10px; padding: 8px 16px 8px 8px; }
+  .shop-by-category-pill-icon { width: 34px; height: 34px; }
+  .shop-by-category-pill-text span { display: none; }
+}
+
 :root[data-theme="light"] .catalog-banner { background: var(--bg); }
 :root[data-theme="light"] .catalog-banner-fade {
   background:
@@ -306,6 +376,12 @@
 
 @media (max-width: 520px) {
   .hero-lede { max-width: 100%; font-size: 1rem; padding: 0 6px; }
+  /* At this width the CTA row's line-break (in the HTML) plus this gap
+     was enough to push the 3rd stat ("EU / Sourced & Tested") onto its
+     own row while the first two shared one — an uneven, orphaned look.
+     A tighter gap keeps all three stats together on one row. */
+  .hero-stats { gap: 20px; }
+  .hero-stat .num { font-size: 1.5rem; }
 }
 
 /* ---------- Trust strip ---------- */
@@ -360,6 +436,12 @@
   gap: 56px;
   align-items: flex-start;
 }
+/* Grid items default to min-width:auto, so a track can be forced wider
+   than its actual grid column by its own content (e.g. .pd-tabs' three
+   labels, or a long variant-chip row) instead of wrapping — this was
+   letting .pd-info push past its column and trigger page-level
+   horizontal scroll on narrow phones. */
+.pd-gallery, .pd-info { min-width: 0; }
 
 .pd-gallery-main {
   aspect-ratio: 1;
@@ -387,7 +469,7 @@
 .pd-thumb.active { border-color: var(--accent); }
 
 .pd-info .badge-purity { position: static; display: inline-flex; margin-bottom: 14px; }
-.pd-cat { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); text-transform: capitalize; letter-spacing: 0.08em; margin-bottom: 8px; }
+.pd-cat { font-family: var(--font-body); font-size: 0.8rem; color: var(--text-muted); text-transform: capitalize; letter-spacing: normal; margin-bottom: 8px; }
 .pd-name { margin-bottom: 12px; }
 .pd-desc { font-size: 1.02rem; margin-bottom: 28px; }
 
@@ -533,6 +615,87 @@
 
 .pd-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
+/* ---------- Share button (product, Tips & Guide, Peptide Guide pages) ---------- */
+.share-widget { position: relative; display: inline-flex; align-items: center; }
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  color: var(--void-navy);
+  border: none;
+  font-weight: 700;
+  box-shadow: 0 10px 26px -12px color-mix(in srgb, var(--accent) 65%, transparent);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+.share-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 32px -12px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+.share-btn:active { transform: translateY(0) scale(0.98); }
+.share-btn-icon { display: inline-flex; width: 17px; height: 17px; animation: shareBtnWiggle 3.2s ease-in-out infinite; }
+.share-btn-icon svg { width: 100%; height: 100%; }
+@keyframes shareBtnWiggle {
+  0%, 80%, 100% { transform: rotate(0deg); }
+  84% { transform: rotate(-12deg); }
+  88% { transform: rotate(10deg); }
+  92% { transform: rotate(-6deg); }
+  96% { transform: rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .share-btn-icon { animation: none; }
+}
+
+.share-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  min-width: 200px;
+  padding: 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+.share-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+}
+.share-menu-item:hover { background: var(--bg-hover, color-mix(in srgb, var(--text-primary) 6%, transparent)); }
+.share-menu-item-icon { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; }
+.share-menu-item-icon svg { width: 100%; height: 100%; }
+
+.share-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%) translateY(12px);
+  padding: 12px 20px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 200;
+}
+.share-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 .pd-tabs { display: flex; gap: 4px; margin-top: 56px; border-bottom: 1px solid var(--border-subtle); }
 .pd-tab { padding: 12px 20px; font-family: var(--font-display); font-weight: 600; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .pd-tab.active { color: var(--text-primary); border-color: var(--accent); }
@@ -615,45 +778,31 @@
   .stat-card .label { font-size: 0.68rem; }
 }
 
-/* ---------- Guide article detail ---------- */
-.guide-article h1 { margin-bottom: 12px; }
-.guide-article-summary { font-size: 1.05rem; margin-bottom: 28px; }
-.guide-article-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin-bottom: 28px;
+@media (max-width: 560px) {
+  /* The fixed WhatsApp float button sits bottom-left at this width
+     (main.css: left:12px, bottom:12px, 40px), which visually collides
+     with whatever content is scrolled into that corner — the last
+     wrapped variant-size chip on the product page, and the shipping
+     carrier chips in the footer. Reserve clearance in both places
+     instead of relying on the button's own reduced opacity to make the
+     overlap unnoticeable. */
+  .variant-chips { margin-bottom: 44px; }
+  .pd-cat {
+    font-size: 0.72rem;
+    /* Long multi-part category names ("Recovery, Tendon/Joint Repair &
+       Anti-Inflammatory") wrap to 2 lines at phone width and push the
+       product title down — clamp to a single line with an ellipsis
+       instead; the full name is still on the page as the breadcrumb. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
 }
-.guide-article-gallery img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-media);
-}
-.guide-article-video {
-  aspect-ratio: 16/9;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  background: var(--deep-navy);
-  margin-bottom: 28px;
-}
-.guide-article-video video { width: 100%; height: 100%; display: block; }
-.guide-article-body p {
-  font-size: 1.02rem;
-  line-height: 1.75;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-}
-.guide-article-entry strong {
-  display: block;
-  font-size: 1.12rem;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
-.guide-article-entry + .guide-article-entry {
-  padding-top: 20px;
-  border-top: 1px solid var(--border-subtle);
-}
+
+/* Guide article detail styling (h1, summary, gallery, video, entries,
+   blog-post-body, etc.) lives entirely in main.css — this file used to
+   carry a full duplicate set of the same selectors, which (since
+   hero.css loads after main.css) silently won the cascade and undid
+   fixes made in main.css, including the white-frame border removed from
+   .guide-article-gallery img and the tightened blog-post-body spacing. */

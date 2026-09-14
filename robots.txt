@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin-php/
+Disallow: /api/
+Disallow: /cart
+Disallow: /checkout
+
+Sitemap: https://trusted-peptide.com/sitemap.xml

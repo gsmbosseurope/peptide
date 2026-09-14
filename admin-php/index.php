@@ -11,14 +11,12 @@ require_login_page();
   <script>
     (function() {
       var stored = localStorage.getItem("peptidesLabsTheme");
-      var theme = stored === "light" || stored === "dark" ? stored : (function() {
-        var h = new Date().getHours();
-        return h >= 6 && h < 18 ? "light" : "dark";
-      })();
+      var theme = stored === "light" || stored === "dark" ? stored : "light";
       document.documentElement.setAttribute("data-theme", theme);
     })();
   </script>
   <title>Trusted-Peptide Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" />
   <link rel="stylesheet" href="admin.css?v=<?php echo filemtime(__DIR__ . '/admin.css'); ?>" />
 </head>
 <body>
@@ -34,6 +32,9 @@ require_login_page();
       </button>
       <button class="btn" id="manage-categories-btn">Categories</button>
       <button class="btn" id="manage-theme-btn">Theme</button>
+      <button class="btn" id="manage-category-labels-btn">Category Labels</button>
+      <a class="btn" href="../peptide-guide" target="_blank" rel="noopener">View Peptide Guide</a>
+      <a class="btn" href="../blog" target="_blank" rel="noopener">View Blog</a>
       <button class="btn btn-primary" id="new-item-btn">+ New Product</button>
       <a class="btn" href="logout.php">Log Out</a>
     </div>
@@ -42,6 +43,9 @@ require_login_page();
   <nav class="tab-bar">
     <button class="tab-btn active" id="tab-products" data-tab="products">Products</button>
     <button class="tab-btn" id="tab-guides" data-tab="guides">Tips &amp; Guide</button>
+    <button class="tab-btn" id="tab-peptide-guide" data-tab="peptide-guide">Peptide Guide</button>
+    <button class="tab-btn" id="tab-blog" data-tab="blog">Blog</button>
+    <button class="tab-btn" id="tab-gallery" data-tab="gallery">Gallery</button>
   </nav>
 
   <main class="admin-layout" id="admin-layout">
@@ -88,9 +92,24 @@ require_login_page();
     </div>
   </div>
 
+  <div id="category-labels-modal" class="modal-overlay" hidden>
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Category Tile Labels</h2>
+        <button class="modal-close" id="category-labels-modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-hint">Rename the short label shown on each "Shop by Category" icon tile on the homepage (English), and the Arabic label shown on the same tiles at trusted-peptide.com/ar. Leave a field blank to use the default label.</p>
+        <div id="category-labels-list"></div>
+        <button class="btn btn-primary btn-sm" id="save-category-labels-btn" style="margin-top:16px;">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast" hidden></div>
 
   <script src="../js/theme-settings.js?v=<?php echo filemtime(__DIR__ . '/../js/theme-settings.js'); ?>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
   <script src="admin.js?v=<?php echo filemtime(__DIR__ . '/admin.js'); ?>" data-cfasync="false"></script>
 </body>
 </html>

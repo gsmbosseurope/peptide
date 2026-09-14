@@ -1,0 +1,207 @@
+/**
+ * trusted-peptide.com — RTL layout overrides for /ar/ pages
+ * ------------------------------------------------------------
+ * Loaded only on Arabic pages (html[dir="rtl"]), after main.css/hero.css.
+ * Most layout already mirrors automatically from the page's dir="rtl"
+ * attribute (flexbox axis, default text-align) — this file only patches
+ * the handful of rules in main.css/hero.css that hardcode a physical
+ * left/right value instead of a logical start/end one, and flips the "→"
+ * arrow glyphs embedded in a few UI strings so they point toward reading
+ * direction instead of always pointing right.
+ */
+
+html[dir="rtl"] body {
+  font-family: 'Cairo', var(--font-body, 'Inter'), sans-serif;
+}
+
+/* .pd-cat (the category line on the product page) explicitly sets
+   font-family: var(--font-mono) ("Roboto Mono") in hero.css — that font
+   has no real Arabic glyph support, so translated category names render
+   with broken/disconnected letterforms. Everything else that uses
+   --font-mono on Arabic pages is numbers/prices (fine in monospace);
+   this is the one spot holding actual Arabic prose, so override it back
+   to the page's Arabic-capable font. */
+html[dir="rtl"] .pd-cat {
+  font-family: 'Cairo', var(--font-body, 'Inter'), sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* .variant-chip (size/price chips like "1500 ملغم — 49 €") and
+   .tier-hint-item (wholesale tier buttons like "اشترِ 5+ ووفّر 10%")
+   both set font-family: var(--font-mono) in hero.css — same broken-
+   Arabic-letterforms problem as .pd-cat, since these mix Arabic words
+   with numbers rather than holding numbers alone. */
+html[dir="rtl"] .variant-chip,
+html[dir="rtl"] .tier-hint-item {
+  font-family: 'Cairo', var(--font-body, 'Inter'), sans-serif;
+}
+
+/* Standalone "تواصل معنا" section: its own block below the 4-column
+   footer grid (not nested inside any column) — a heading, then the
+   "إتصل بنا" label, phone number, and WhatsApp icon link in a row. */
+html[dir="rtl"] .footer-contact-section {
+  padding: 24px 0;
+  border-top: 1px solid var(--border-subtle);
+  margin-bottom: 24px;
+}
+html[dir="rtl"] .footer-contact-heading {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+html[dir="rtl"] .footer-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+html[dir="rtl"] .footer-contact-label {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+/* Seal-only column: the EU certification mark left alone, enlarged and
+   centered in its own grid column instead of sharing space with links. */
+html[dir="rtl"] .footer-seal-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+html[dir="rtl"] .footer-whatsapp-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #25d366;
+  flex-shrink: 0;
+}
+html[dir="rtl"] .footer-whatsapp-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* .eyebrow (small labels like "الأكثر طلباً", "تسوق حسب الفئة") has the
+   same --font-mono problem — thin, hard-to-read Arabic letterforms with
+   wide uppercase-style letter-spacing that doesn't apply to Arabic script.
+   Switch to the page's Arabic font and make it bigger/bolder/clearer. */
+html[dir="rtl"] .eyebrow {
+  font-family: 'Cairo', var(--font-body, 'Inter'), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+
+/* Header: logo stays first visually, nav/actions mirror naturally via
+   flexbox reversal from dir="rtl" — no explicit override needed there.
+   The language-switch pill needs its own spacing since it's new. */
+html[dir="rtl"] .lang-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+html[dir="rtl"] .lang-switch:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+html[dir="rtl"] .mobile-nav .lang-switch {
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 10px 0;
+  border: none;
+  text-align: right;
+}
+
+
+/* Filter chip icons rotate on hover toward the left in the LTR design;
+   mirror the rotation direction so it still reads as "toward the chip". */
+html[dir="rtl"] .filter-chip:hover .filter-chip-icon {
+  transform: rotate(8deg) scale(1.1);
+}
+
+/* Product detail: quantity stepper and price rows use flex, which
+   mirrors automatically — only the badge/category row spacing (originally
+   a left-margin in main.css) needs a logical flip. */
+html[dir="rtl"] .pd-cat {
+  direction: rtl;
+}
+
+/* Breadcrumb separators ("/") stay visually correct without changes since
+   they're symmetric, but the row itself should read right-to-left. */
+html[dir="rtl"] .breadcrumb {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Category icon tiles + product/guide cards: force RTL text alignment on
+   labels that main.css left-aligns by default on some breakpoints. */
+html[dir="rtl"] .category-icon-tile-label,
+html[dir="rtl"] .product-card-name,
+html[dir="rtl"] .product-card-desc,
+html[dir="rtl"] .guide-card-title,
+html[dir="rtl"] .guide-card-summary {
+  text-align: right;
+}
+
+/* Search input + filter bar: RTL placeholder/caret alignment. */
+html[dir="rtl"] .search-input {
+  text-align: right;
+}
+
+/* Share dropdown: main.css anchors it with a physical left:0, which on a
+   narrow viewport pushes it off the right edge of the screen once the
+   share button itself sits further toward that edge under RTL flex
+   ordering. Anchor to the opposite physical side and align text/icons
+   accordingly instead of relying on the LTR-only left:0. */
+html[dir="rtl"] .share-menu {
+  left: auto;
+  right: 0;
+}
+html[dir="rtl"] .share-menu-item {
+  text-align: right;
+}
+
+/* Hero banner: image, crop (object-position), and gradient stay exactly
+   as in the English version — untouched — per explicit instruction. Only
+   the text block itself is right-aligned for Arabic. */
+html[dir="rtl"] .catalog-banner-content {
+  align-items: flex-end;
+  text-align: right;
+}
+/* Both lines stack directly on top of each other in the same left-aligned
+   column (not spread across the banner, not centered separately) — the
+   eyebrow directly above the h1, same block, same alignment. */
+html[dir="rtl"] .catalog-banner-content {
+  justify-content: center;
+}
+html[dir="rtl"] .catalog-banner-content .eyebrow {
+  align-self: flex-end;
+  text-align: right;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  margin-top: 0;
+  margin-bottom: 8px;
+  display: block;
+}
+html[dir="rtl"] .catalog-banner-content .eyebrow .eyebrow-center-line {
+  display: block;
+  text-align: center;
+}
