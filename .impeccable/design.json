@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-19T18:20:00Z",
+  "title": "Design System: Trusted Peptide",
+  "extensions": {
+    "colorMeta": {
+      "void-navy": {
+        "role": "neutral",
+        "displayName": "Void Navy",
+        "canonical": "oklch(15% 0.04 255)",
+        "tonalRamp": ["#020509", "#040a14", "#07111f", "#0c1b33", "#152540", "#2a3f68", "#7da0ca", "#c1e8ff"]
+      },
+      "panel-navy": {
+        "role": "neutral",
+        "displayName": "Panel Navy",
+        "canonical": "oklch(20% 0.045 255)",
+        "tonalRamp": ["#030710", "#081228", "#0f1e35", "#152540", "#1f3457", "#2f4a75", "#5483b3", "#ffffff"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ice Blue Ink",
+        "canonical": "oklch(90% 0.02 235)",
+        "tonalRamp": ["#0c1c35", "#1b3358", "#2d4460", "#5483b3", "#7da0ca", "#a8c0d6", "#c1e8ff", "#dce8f4"]
+      },
+      "lab-gold": {
+        "role": "primary",
+        "displayName": "Lab Gold",
+        "canonical": "oklch(70% 0.11 75)",
+        "tonalRamp": ["#3d2e13", "#5f4a1e", "#856012", "#9b7320", "#a67c3d", "#c9a045", "#d4b060", "#e2c478"]
+      },
+      "verified-emerald": {
+        "role": "secondary",
+        "displayName": "Verified Emerald",
+        "canonical": "oklch(48% 0.09 165)",
+        "tonalRamp": ["#0a2a1f", "#0f4231", "#14503f", "#196350", "#1e7a5a", "#1f7a62", "#25896b", "#7fd8a4"]
+      },
+      "danger": {
+        "role": "status",
+        "displayName": "Signal Red",
+        "canonical": "oklch(65% 0.13 20)",
+        "tonalRamp": ["#3a1414", "#7a2a2a", "#c94b4b", "#e88a8a"]
+      }
+    },
+    "typographyMeta": {
+      "display-hero": { "displayName": "Hero Display", "purpose": "H1 on hero and landing sections only. text-wrap: balance." },
+      "headline": { "displayName": "Section Headline", "purpose": "H2 section titles. text-wrap: balance." },
+      "body": { "displayName": "Body", "purpose": "Paragraph copy. text-wrap: pretty; cap near 65-75ch when long." },
+      "label": { "displayName": "Mono Label", "purpose": "Filter chips, eyebrows, metadata rows." },
+      "price": { "displayName": "Price", "purpose": "Every price on the site. tabular-nums, mono, 600 weight." }
+    },
+    "shadows": [
+      { "name": "ambient-glow-dark", "value": "0 0 40px rgba(193, 232, 255, 0.08)", "purpose": "Diffuse halo on hover, paired with shadow-card. Dark theme." },
+      { "name": "ambient-glow-light", "value": "0 0 40px rgba(84, 131, 179, 0.08)", "purpose": "Diffuse halo on hover, paired with shadow-card. Light theme." },
+      { "name": "card-elevated-dark", "value": "0 12px 32px rgba(2, 16, 36, 0.55)", "purpose": "Structural weight on sticky header and card hover. Dark theme." },
+      { "name": "card-elevated-light", "value": "0 12px 32px rgba(5, 38, 89, 0.12)", "purpose": "Structural weight on sticky header and card hover. Light theme." },
+      { "name": "button-primary-glow", "value": "0 8px 24px rgba(201, 161, 90, 0.25)", "purpose": "Primary button's own tinted glow at rest." },
+      { "name": "button-primary-glow-hover", "value": "0 10px 30px rgba(201, 161, 90, 0.4)", "purpose": "Primary button glow deepens on hover, paired with translateY(-1px)." },
+      { "name": "chip-active-glow", "value": "0 4px 14px rgba(201, 161, 90, 0.35)", "purpose": "Gold glow under an active filter/variant chip." }
+    ],
+    "motion": [
+      { "name": "ease-spring", "value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "purpose": "The system's signature bounce: chip hover lift, icon rotate-scale, chip-pop entrance. Tactile-and-confident register." },
+      { "name": "ease-standard", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Card transform transitions (hover lift, entrance)." },
+      { "name": "duration-fast", "value": "0.18s", "purpose": "Chip transform." },
+      { "name": "duration-standard", "value": "0.2s", "purpose": "Buttons, inputs, general micro-interactions." },
+      { "name": "duration-card", "value": "0.35s", "purpose": "Card hover lift and entrance." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "560px" },
+      { "name": "tablet-header", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Buy Now / primary CTA. Gold gradient fill, navy text, tinted glow, compresses on press.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Buy Now</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; border-radius: 6px; font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; border: 1px solid transparent; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease; } .ds-btn:active { transform: translateY(1px) scale(0.98); } .ds-btn:focus-visible { outline: 2px solid #c1e8ff; outline-offset: 2px; } .ds-btn-primary { background: linear-gradient(135deg, #e2c478, #c9a045); color: #07111f; box-shadow: 0 8px 24px rgba(201, 161, 90, 0.25); } .ds-btn-primary:hover { box-shadow: 0 10px 30px rgba(201, 161, 90, 0.4); transform: translateY(-1px); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "WhatsApp / fallback CTA. Transparent fill, full border, ink text.",
+      "html": "<button class=\"ds-btn ds-btn-secondary\">Order via WhatsApp</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; border-radius: 6px; font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease; } .ds-btn:active { transform: translateY(1px) scale(0.98); } .ds-btn-secondary { background: rgba(125, 160, 202, 0.08); border: 1px solid rgba(184, 202, 214, 0.35); color: #dce8f4; } .ds-btn-secondary:hover { background: rgba(125, 160, 202, 0.16); border-color: #dce8f4; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Category/filter pill. Springs on hover, gold fill when active.",
+      "html": "<button class=\"ds-chip\">Weight Loss</button> <button class=\"ds-chip ds-chip-active\">Growth Support</button>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 7px; font-family: 'Roboto Mono', monospace; font-size: 0.8rem; padding: 8px 16px 8px 12px; border-radius: 999px; border: 1px solid rgba(184, 202, 214, 0.10); background: rgba(84, 131, 179, 0.08); color: #a8c0d6; cursor: pointer; transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease; margin-right: 8px; } .ds-chip:hover { border-color: #7da0ca; color: #dce8f4; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(84, 131, 179, 0.18); } .ds-chip:active { transform: translateY(0) scale(0.96); } .ds-chip-active { background: #c9a045; border-color: #c9a045; color: #07111f; font-weight: 600; box-shadow: 0 4px 14px rgba(201, 161, 90, 0.35); }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Catalog card: translucent navy panel, lifts and glows on hover, no shadow at rest.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-media\"></div><div class=\"ds-card-body\"><span class=\"ds-card-label\">Weight Loss &amp; Metabolic</span><h3 class=\"ds-card-title\">5-Amino-1MQ</h3><span class=\"ds-card-price\">&euro; 45</span></div></div>",
+      "css": ".ds-card { background: linear-gradient(165deg, rgba(21,37,64,0.7), rgba(7,17,31,0.85)); border: 1px solid rgba(184, 202, 214, 0.10); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.35s ease; } .ds-card:hover { transform: translateY(-6px); border-color: rgba(184, 202, 214, 0.18); box-shadow: 0 12px 32px rgba(2, 16, 36, 0.55), 0 0 40px rgba(193, 232, 255, 0.08); } .ds-card-media { height: 140px; background: #ffffff; } .ds-card-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 8px; } .ds-card-label { font-family: 'Roboto Mono', monospace; font-size: 0.72rem; color: #196350; } .ds-card-title { font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 600; font-size: 1.1rem; color: #dce8f4; margin: 0; } .ds-card-price { font-family: 'Roboto Mono', monospace; font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; color: #dce8f4; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Form field: label above, translucent navy fill, border-shift focus. 16px font on mobile to prevent iOS zoom.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-name\">Full name</label><input class=\"ds-field-input\" id=\"ds-name\" type=\"text\" /></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; } .ds-field-label { font-size: 0.85rem; color: #a8c0d6; font-weight: 500; font-family: Inter, sans-serif; } .ds-field-input { background: rgba(21,37,64,0.5); border: 1px solid rgba(184, 202, 214, 0.10); border-radius: 6px; padding: 12px 14px; color: #dce8f4; font-family: Inter, sans-serif; font-size: 16px; } .ds-field-input:focus { outline: none; border-color: #dce8f4; }"
+    },
+    {
+      "name": "Sticky Header",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "76px translucent header, solidifies on scroll. Icon controls get an invisible extended tap area on mobile.",
+      "html": "<header class=\"ds-header\"><div class=\"ds-header-brand\">Trusted <span class=\"ds-header-brand-accent\">Peptide</span></div><div class=\"ds-header-actions\"><button class=\"ds-header-icon\" aria-label=\"Search\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M21 21l-4.3-4.3\"/></svg></button><button class=\"ds-header-cart\">Cart</button></div></header>",
+      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; height: 76px; padding: 0 24px; background: rgba(7,17,31,0.82); backdrop-filter: blur(12px); } .ds-header-brand { font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 600; font-size: 1.1rem; color: #dce8f4; } .ds-header-brand-accent { color: #c9a045; } .ds-header-actions { display: flex; align-items: center; gap: 14px; } .ds-header-icon { position: relative; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid rgba(184, 202, 214, 0.10); background: transparent; color: #dce8f4; cursor: pointer; } .ds-header-icon::after { content: ''; position: absolute; inset: -7px -3px; } .ds-header-cart { padding: 8px 14px; border-radius: 6px; border: 1px solid rgba(184, 202, 214, 0.35); background: rgba(125, 160, 202, 0.08); color: #dce8f4; font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 600; font-size: 0.85rem; cursor: pointer;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Verified Vial",
+    "overview": "The system takes its cue from the product itself: a navy-labeled vial with a gold cap, sealed and checkable. Every surface should feel like it's showing its work rather than asking for trust on faith, exact prices in tabular mono digits, HPLC purity numbers, EU sourcing badges stated plainly rather than dressed up. The default mode is dark: a deep navy field (#07111f) that reads closer to a lab-notebook-at-night than a consumer storefront, with an ice-blue text scale and a single warm gold accent standing in for the vial's cap. Light mode inverts the same relationships rather than introducing a second identity: same navy, same gold, same emerald, just swapped onto a pale ice-blue field. This is premium and refined, not clinical and cold, and not loud. The gold accent is rationed: it marks the primary action and the brand mark, nothing else. A second color, emerald, is reserved specifically as a 'verified/good' signal, category labels and savings hints, so it never competes with gold for the buyer's attention. The system explicitly rejects the low-trust-reseller look this category is full of: no stock-photo hero clichés, no cluttered upsell chrome, no generic 'Acme'-style branding standing in for a real identity.",
+    "keyCharacteristics": [
+      "Dark-first navy field with a single warm gold accent, rationed to brand mark and primary CTA",
+      "Emerald as a dedicated verification/savings signal, never a general second brand color",
+      "Roboto Mono for every price and label; numbers are meant to be scanned, not designed",
+      "Ambient glow and translucent panel layering over crisp drop shadows",
+      "Tactile, confident interaction: buttons compress on press, chips spring on hover"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Gold appears on exactly one thing per screen at a time: the primary CTA, or the active chip, or the brand mark. It never doubles up. A second point of color is emerald's job, not a second use of gold.", "section": "colors" },
+      { "name": "The Verified-Text Exception", "body": "Where gold is used as text rather than a button fill in light mode, use the darker text-accent step (#856012) instead of the button gold (#9b7320). The button gold fails WCAG AA as text on the light background.", "section": "colors" },
+      { "name": "The Mono-Numbers Rule", "body": "Any number a buyer needs to compare (price, quantity, purity percentage, discount tier) renders in Roboto Mono with tabular-nums. Body copy stays in Inter even when it contains a number in passing.", "section": "typography" },
+      { "name": "The Glow-Not-Shadow Rule", "body": "When something needs to feel elevated, reach for a tinted, diffuse glow in the element's own hue family before reaching for a neutral drop shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep gold to one use per screen: the primary CTA, the active chip, or the brand mark — never more than one at once (the One Accent Rule).",
+      "Do render every price and comparable number in Roboto Mono with tabular-nums.",
+      "Do use the darker text-accent gold step (#856012) for any gold text in light mode; the button gold fails contrast as text.",
+      "Do build elevation from tinted ambient glow, not neutral drop shadows.",
+      "Do give buttons and chips a physical, compressing press state (scale(0.98) on active).",
+      "Do keep the two-language site (English, Arabic/RTL) at visual parity: same tokens, same trust signals, mirrored layout, not a simplified second version."
+    ],
+    "donts": [
+      "Don't use a stock-photo hero, generic 'Acme'-style branding, or cluttered upsell chrome — this reads as the low-trust reseller look the category is already full of.",
+      "Don't use emerald as a general second brand color or button fill; it is reserved for the verified/savings signal only.",
+      "Don't use border-left/border-right as a colored accent stripe on cards or list rows.",
+      "Don't use background-clip: text gradient headings; a single solid ink color carries emphasis through weight, not a gradient.",
+      "Don't apply glassmorphism decoratively; the translucent card backgrounds exist for the navy-field layering effect specifically, not as a generic blur-everything treatment.",
+      "Don't default to identical three-card feature grids; vary composition per section.",
+      "Don't let the WhatsApp secondary CTA get buried behind or below the primary action; the belief ladder depends on it staying reachable."
+    ]
+  }
+}
