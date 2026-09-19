@@ -1497,3 +1497,16 @@ h1.pd-name,
   .footer-grid > div:nth-child(n+4) { grid-column: 1 / -1; }
   .footer-grid a[href^="https://wa.me"] { white-space: nowrap; }
 }
+
+/* Cart quantity controls: Remove link and qty stepper are decorative-height
+   by default (17px/28px); extend the tap area on phones without changing size. */
+@media (max-width: 560px) {
+  .cart-item-remove { position: relative; padding: 4px 2px; }
+  .cart-item-remove::after { content: ""; position: absolute; inset: -12px -8px; }
+}
+
+/* Checkout/contact form fields: 0.95rem computes to ~15.2px, under the 16px
+   iOS Safari needs to avoid zooming the page on input focus. */
+@media (max-width: 560px) {
+  .field input, .field textarea, .field select { font-size: 16px; }
+}
