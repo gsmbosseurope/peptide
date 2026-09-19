@@ -13,6 +13,7 @@
  */
 
 const CATEGORY_LABELS_AR = {
+  "All": "الكل",
   "Weight Loss, Metabolic Regulation & Insulin Resistance": "إنقاص الوزن وتنظيم الأيض ومقاومة الإنسولين",
   "Growth Hormone Secretagogues, Hypertrophy & Endurance": "محفزات هرمون النمو، بناء العضلات والتحمل",
   "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "التعافي وإصلاح الأوتار/المفاصل ومضادات الالتهاب",

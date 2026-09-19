@@ -1,10 +1,9 @@
 <?php
 /**
- * Reads/writes the site's data files: ../js/products-data.js and
- * ../js/guides-data.js. These are plain JS files containing
- * `const CATEGORY_LIST = [...]; const PRODUCTS = [...];` (and
- * `const GUIDES = [...];`), parsed here as JSON since every value in them
- * is JSON-compatible (the admin panel always writes valid JSON literals).
+ * Reads/writes the site's data files, e.g. ../js/products-data.js. These
+ * are plain JS files containing `const CATEGORY_LIST = [...]; const
+ * PRODUCTS = [...];`, parsed here as JSON since every value in them is
+ * JSON-compatible (the admin panel always writes valid JSON literals).
  */
 
 require_once __DIR__ . '/config.php';
@@ -430,42 +429,6 @@ function normalize_category_tile_labels($incoming) {
     return $labels;
 }
 
-/* ---------- Guides ---------- */
-
-function load_guides() {
-    if (!file_exists(GUIDES_DATA_FILE)) return [];
-    $code = file_get_contents(GUIDES_DATA_FILE);
-    return extract_const_json($code, 'GUIDES') ?: [];
-}
-
-function serialize_guides_data($guides) {
-    $header = <<<'HEADER'
-/**
- * trusted-peptide.com — Tips & Guide Articles
- * ------------------------------------------------------------
- * Managed by the Admin Panel (/admin), "Guides" tab. Independent of the
- * product catalog — general educational articles (storage, handling,
- * reconstitution, etc.), not tied to any specific product.
- *
- * Field reference:
- *   id          unique slug, used in URLs: tip.html?id=...
- *   title       article title
- *   summary     1-2 lines shown on the guide card in the listing
- *   body        array of paragraph strings — the article content
- *   images      array of image paths (optional)
- *   video       path or embed URL to a video (optional)
- */
-
-
-HEADER;
-    $body = "const GUIDES = " . json_pretty($guides) . ";\n";
-    return $header . $body;
-}
-
-function save_guides($guides) {
-    file_put_contents(GUIDES_DATA_FILE, serialize_guides_data($guides));
-}
-
 /* ---------- Peptide Guide topics (peptide-guide.php / topic.php) ---------- */
 
 function load_peptide_topics() {
@@ -481,8 +444,7 @@ function serialize_peptide_topics_data($topics) {
  * ------------------------------------------------------------
  * Managed by the Admin Panel (/admin), "Peptide Guide" tab. Standalone
  * topic articles shown on peptide-guide.php (English "Peptide Guide"
- * listing) — independent of the product catalog and of the Tips &
- * Guide (GUIDES) storage/handling articles.
+ * listing) — independent of the product catalog.
  *
  * Field reference:
  *   id          unique slug, used in URLs: peptide-guide-topic.html?id=...
@@ -538,10 +500,9 @@ function serialize_blog_posts_data($posts) {
  * trusted-peptide.com — Blog Posts
  * ------------------------------------------------------------
  * Managed by the Admin Panel (/admin), "Blog" tab. Independent of the
- * product catalog, Tips & Guide, and Peptide Guide — long-form
- * educational articles with a rich-text body (bold/italic/underline/
- * color/headings/links/inline images), authored via the Quill editor
- * in the admin panel.
+ * product catalog and Peptide Guide — long-form educational articles
+ * with a rich-text body (bold/italic/underline/color/headings/links/
+ * inline images), authored via the Quill editor in the admin panel.
  *
  * Field reference:
  *   id           unique slug, used in URLs: blog-post.html?id=...
@@ -661,23 +622,3 @@ function normalize_gallery_item($item) {
     ];
 }
 
-function normalize_guide($g) {
-    $toLines = function ($val) {
-        if (is_array($val)) {
-            return array_values(array_filter($val, fn($v) => $v !== '' && $v !== null));
-        }
-        $lines = preg_split('/\r\n|\r|\n/', (string) $val);
-        $lines = array_map('trim', $lines);
-        return array_values(array_filter($lines, fn($v) => $v !== ''));
-    };
-    return [
-        'id' => $g['id'] ?? '',
-        'title' => $g['title'] ?? '',
-        'summary' => $g['summary'] ?? '',
-        'body' => $toLines($g['body'] ?? []),
-        'images' => isset($g['images']) && is_array($g['images'])
-            ? array_values(array_filter($g['images'], fn($v) => $v !== '' && $v !== null))
-            : [],
-        'video' => $g['video'] ?? '',
-    ];
-}

@@ -1,9 +1,8 @@
 /**
  * Renders the Peptide Guide listing (peptide-guide.php) and topic detail
  * (peptide-guide-topic.php?id=...) pages from PEPTIDE_TOPICS in
- * peptide-guide-data.js. Mirrors guides.js (Tips & Guide) exactly —
- * a separate, independent topic list managed from its own "Peptide
- * Guide" tab in the Admin Panel.
+ * peptide-guide-data.js, managed from the "Peptide Guide" tab in the
+ * Admin Panel.
  */
 
 function peptideTopicQueryParam(name) {

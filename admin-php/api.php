@@ -240,63 +240,6 @@ try {
         send(['ok' => true]);
     }
 
-    // ---------- /api/guides ----------
-    if ($segments === ['api', 'guides'] && $method === 'GET') {
-        send(load_guides());
-    }
-
-    if ($segments === ['api', 'guides'] && $method === 'POST') {
-        $guides = load_guides();
-        $incoming = read_json_body();
-        if (empty($incoming['id'])) $incoming['id'] = slugify($incoming['title'] ?? 'guide');
-        // slugify() strips non-Latin characters, so a title that's entirely
-        // Arabic (or any non a-z0-9 script) produces an empty id — fall back
-        // to a timestamp-based id rather than saving with a blank one.
-        if ($incoming['id'] === '') $incoming['id'] = 'guide-' . round(microtime(true) * 1000);
-        foreach ($guides as $g) {
-            if ($g['id'] === $incoming['id']) send_error('A guide with id "' . $incoming['id'] . '" already exists.', 400);
-        }
-        $guides[] = normalize_guide($incoming);
-        save_guides($guides);
-        @mkdir(GUIDES_ASSETS_DIR . '/' . $incoming['id'], 0755, true);
-        send(['ok' => true, 'id' => $incoming['id']]);
-    }
-
-    if (count($segments) === 3 && $segments[0] === 'api' && $segments[1] === 'guides' && $method === 'PUT') {
-        $id = urldecode($segments[2]);
-        $guides = load_guides();
-        $idx = null;
-        foreach ($guides as $i => $g) if ($g['id'] === $id) { $idx = $i; break; }
-        if ($idx === null) send_error('Guide not found.', 404);
-        $incoming = read_json_body();
-        $guides[$idx] = normalize_guide(array_merge($guides[$idx], $incoming, ['id' => $id]));
-        save_guides($guides);
-        send(['ok' => true]);
-    }
-
-    if (count($segments) === 3 && $segments[0] === 'api' && $segments[1] === 'guides' && $method === 'DELETE') {
-        $id = urldecode($segments[2]);
-        $guides = load_guides();
-        $filtered = array_values(array_filter($guides, fn($g) => $g['id'] !== $id));
-        save_guides($filtered);
-        send(['ok' => true]);
-    }
-
-    if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'guides' && $segments[3] === 'upload' && $method === 'POST') {
-        $id = urldecode($segments[2]);
-        if (empty($_FILES['file'])) send_error('No file uploaded.', 400);
-        $file = $_FILES['file'];
-        if ($file['error'] !== UPLOAD_ERR_OK) send_error('Upload failed.', 400);
-        if ($file['size'] > MAX_UPLOAD_BYTES) send_error('File too large.', 400);
-        $dir = GUIDES_ASSETS_DIR . '/' . $id;
-        @mkdir($dir, 0755, true);
-        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $base = slugify(pathinfo($file['name'], PATHINFO_FILENAME)) ?: 'file';
-        $filename = $base . '-' . round(microtime(true) * 1000) . ($ext ? '.' . $ext : '');
-        move_uploaded_file($file['tmp_name'], $dir . '/' . $filename);
-        send(['ok' => true, 'path' => "assets/guides/$id/$filename"]);
-    }
-
     // ---------- /api/peptide-topics ----------
     if ($segments === ['api', 'peptide-topics'] && $method === 'GET') {
         send(load_peptide_topics());

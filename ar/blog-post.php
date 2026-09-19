@@ -41,6 +41,7 @@ $pageImage = $post && !empty($post['coverImage'])
   <?php if ($post): ?>
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/blog-post?id=<?php echo rawurlencode($post['id']); ?>" />
   <link rel="alternate" hreflang="ar" href="<?php echo htmlspecialchars($pageUrl); ?>" />
+  <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/blog-post?id=<?php echo rawurlencode($post['id']); ?>" />
   <?php endif; ?>
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Trusted-Peptide" />
@@ -55,7 +56,9 @@ $pageImage = $post && !empty($post['coverImage'])
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" /></noscript></noscript>
   <link rel="stylesheet" href="../css/main.css?v=<?php echo filemtime(__DIR__ . '/../css/main.css'); ?>" />
   <link rel="stylesheet" href="../css/animations.css?v=<?php echo filemtime(__DIR__ . '/../css/animations.css'); ?>" />
   <link rel="stylesheet" href="../css/hero.css?v=<?php echo filemtime(__DIR__ . '/../css/hero.css'); ?>" />
@@ -71,13 +74,13 @@ $pageImage = $post && !empty($post['coverImage'])
       </a>
       <nav class="main-nav">
         <a href="/ar/">الرئيسية</a>
-        <a href="../about">من نحن</a>
-        <a href="../best-sellers">الأكثر مبيعاً</a>
+        <a href="about">من نحن</a>
+        <a href="best-sellers">الأكثر مبيعاً</a>
         <a href="blog">المدونة</a>
-        <a href="../tips">نصائح ودليل</a>
-        <a href="../peptide-guide">دليل الببتيد</a>
-        <a href="../gallery">معرض الصور</a>
-        <a href="../contact">تواصل معنا</a>
+
+        <a href="peptide-guide">دليل الببتيد</a>
+        <a href="gallery">معرض الصور</a>
+        <a href="contact">تواصل معنا</a>
       </nav>
       <div class="header-actions">
         <a href="<?php echo $post ? '/blog-post?id=' . rawurlencode($post['id']) : '/blog'; ?>" class="lang-switch" title="Switch to English">EN</a>
@@ -91,7 +94,7 @@ $pageImage = $post && !empty($post['coverImage'])
           </button>
           <div class="palette-menu"></div>
         </div>
-        <a href="../cart" class="cart-link">السلة <span class="cart-count">0</span></a>
+        <a href="cart" class="cart-link">السلة <span class="cart-count">0</span></a>
         <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -101,13 +104,13 @@ $pageImage = $post && !empty($post['coverImage'])
 
     <nav class="mobile-nav">
       <a href="/ar/">الرئيسية</a>
-      <a href="../about">من نحن</a>
-      <a href="../best-sellers">الأكثر مبيعاً</a>
+      <a href="about">من نحن</a>
+      <a href="best-sellers">الأكثر مبيعاً</a>
       <a href="blog">المدونة</a>
-      <a href="../tips">نصائح ودليل</a>
-      <a href="../peptide-guide">دليل الببتيد</a>
-      <a href="../gallery">معرض الصور</a>
-      <a href="../contact">تواصل معنا</a>
+
+      <a href="peptide-guide">دليل الببتيد</a>
+      <a href="gallery">معرض الصور</a>
+      <a href="contact">تواصل معنا</a>
       <a href="<?php echo $post ? '/blog-post?id=' . rawurlencode($post['id']) : '/blog'; ?>" class="lang-switch">English</a>
     </nav>
 
@@ -153,22 +156,22 @@ $pageImage = $post && !empty($post['coverImage'])
         </div>
         <div>
           <h4>المتجر</h4>
-          <ul><li><a href="../products">كل المنتجات</a></li><li><a href="../cart">السلة</a></li><li><a href="../checkout">إتمام الطلب</a></li></ul>
+          <ul><li><a href="products">كل المنتجات</a></li><li><a href="cart">السلة</a></li><li><a href="checkout">إتمام الطلب</a></li></ul>
         </div>
         <div>
           <h4>الشركة</h4>
-          <ul><li><a href="../about">من نحن</a></li><li><a href="blog">المدونة</a></li><li><a href="../tips">نصائح ودليل</a></li><li><a href="../peptide-guide">دليل الببتيد</a></li></ul>
+          <ul><li><a href="about">من نحن</a></li><li><a href="blog">المدونة</a></li><li></li><li><a href="peptide-guide">دليل الببتيد</a></li></ul>
         </div>
         <div class="footer-seal-col">
           <img class="badge-eu" src="../assets/brand/eu-seal.png" alt="مختبر معتمد أوروبي" width="96" height="96" loading="lazy" />
         </div>
       </div>
-      <div class="footer-contact-section">
+                  <div class="footer-contact-section">
         <h4 class="footer-contact-heading">تواصل معنا</h4>
         <div class="footer-contact-row">
           <span class="footer-contact-label">إتصل بنا</span>
-          <a href="tel:+32469126244" dir="ltr">+32 469 12 62 44</a>
-          <a class="footer-whatsapp-icon" href="https://wa.me/32469126244" target="_blank" rel="noopener" aria-label="واتساب"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 6.32A7.85 7.85 0 0012.05 4a7.94 7.94 0 00-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 003.83 1H12a7.94 7.94 0 007.94-7.94 7.9 7.9 0 00-2.34-5.64zm-5.55 12.2h-.02a6.58 6.58 0 01-3.36-.92l-.24-.14-2.5.65.67-2.43-.16-.25a6.6 6.6 0 1112.28-3.5 6.6 6.6 0 01-6.67 6.59zm3.62-4.94c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1-.13.19-.51.64-.62.77-.11.13-.23.15-.43.05-.2-.1-.83-.31-1.58-.98-.58-.52-.98-1.16-1.09-1.36-.11-.2-.01-.3.09-.4.09-.1.2-.23.3-.35.1-.11.13-.19.2-.32.07-.13.03-.25-.02-.35-.05-.1-.44-1.06-.6-1.45-.16-.38-.32-.33-.44-.34h-.38c-.13 0-.34.05-.52.24-.18.19-.68.67-.68 1.63s.7 1.9.8 2.03c.1.13 1.38 2.1 3.34 2.95.47.2.83.32 1.12.41.47.15.9.13 1.24.08.38-.06 1.17-.48 1.33-.94.16-.46.16-.86.11-.94-.05-.08-.18-.13-.38-.23z" fill="#fff"/></svg></a>
+          <a href="tel:+32469126244" style="white-space:nowrap;">+32 469 12 62 44</a>
+          <a class="footer-whatsapp-icon" href="https://wa.me/32469126244" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 6.32A7.85 7.85 0 0012.05 4a7.94 7.94 0 00-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 003.83 1H12a7.94 7.94 0 007.94-7.94 7.9 7.9 0 00-2.34-5.64zm-5.55 12.2h-.02a6.58 6.58 0 01-3.36-.92l-.24-.14-2.5.65.67-2.43-.16-.25a6.6 6.6 0 1112.28-3.5 6.6 6.6 0 01-6.67 6.59zm3.62-4.94c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1-.13.19-.51.64-.62.77-.11.13-.23.15-.43.05-.2-.1-.83-.31-1.58-.98-.58-.52-.98-1.16-1.09-1.36-.11-.2-.01-.3.09-.4.09-.1.2-.23.3-.35.1-.11.13-.19.2-.32.07-.13.03-.25-.02-.35-.05-.1-.44-1.06-.6-1.45-.16-.38-.32-.33-.44-.34h-.38c-.13 0-.34.05-.52.24-.18.19-.68.67-.68 1.63s.7 1.9.8 2.03c.1.13 1.38 2.1 3.34 2.95.47.2.83.32 1.12.41.47.15.9.13 1.24.08.38-.06 1.17-.48 1.33-.94.16-.46.16-.86.11-.94-.05-.08-.18-.13-.38-.23z" fill="#fff"/></svg></a>
         </div>
       </div>
       <div class="footer-methods">
@@ -182,6 +185,7 @@ $pageImage = $post && !empty($post['coverImage'])
             <span class="icon-chip brand-postnl">PostNL</span>
             <span class="icon-chip brand-ups">UPS</span>
             <span class="icon-chip brand-dpd">DPD</span>
+            <span class="icon-chip brand-tnt">TNT</span>
           </div>
         </div>
         <div class="footer-methods-group">
@@ -190,8 +194,15 @@ $pageImage = $post && !empty($post['coverImage'])
             <span class="icon-chip brand-visa">Visa</span>
             <span class="icon-chip brand-mastercard">Mastercard</span>
             <span class="icon-chip brand-paypal">PayPal</span>
+            <span class="icon-chip brand-applepay">Apple Pay</span>
+            <span class="icon-chip brand-googlepay">Google Pay</span>
+            <span class="icon-chip brand-digitalwallet">Digital Wallet</span>
             <span class="icon-chip brand-klarna">Klarna</span>
             <span class="icon-chip brand-ideal">iDEAL</span>
+            <span class="icon-chip brand-bnpfortis">BNP Fortis</span>
+            <span class="icon-chip brand-belfius">Belfius</span>
+            <span class="icon-chip brand-kbc">KBC</span>
+            <span class="icon-chip brand-ing">ING</span>
             <span class="icon-chip brand-debitcard">Debit Card</span>
             <span class="icon-chip brand-payafter">Pay After Delivery</span>
             <span class="icon-chip brand-bitcoin">Bitcoin</span>
@@ -209,7 +220,7 @@ $pageImage = $post && !empty($post['coverImage'])
 
   <script src="../js/pricing.js?v=<?php echo filemtime(__DIR__ . '/../js/pricing.js'); ?>" data-cfasync="false"></script>
   <script src="../js/products-data-ar.js?v=<?php echo filemtime(__DIR__ . '/../js/products-data-ar.js'); ?>" data-cfasync="false"></script>
-  <script src="../js/category-tile-labels.js?v=<?php echo filemtime(__DIR__ . '/../js/category-tile-labels.js'); ?>" data-cfasync="false"></script>
+  <script src="../js/category-labels-ar.js?v=<?php echo filemtime(__DIR__ . '/../js/category-labels-ar.js'); ?>" data-cfasync="false"></script>  <script src="../js/category-tile-labels.js?v=<?php echo filemtime(__DIR__ . '/../js/category-tile-labels.js'); ?>" data-cfasync="false"></script>
   <script src="../js/blog-data.js?v=<?php echo filemtime(__DIR__ . '/../js/blog-data.js'); ?>" data-cfasync="false"></script>
   <script src="../js/share.js?v=<?php echo filemtime(__DIR__ . '/../js/share.js'); ?>" data-cfasync="false"></script>
   <script src="../js/blog-ar.js?v=<?php echo filemtime(__DIR__ . '/../js/blog-ar.js'); ?>" data-cfasync="false"></script>

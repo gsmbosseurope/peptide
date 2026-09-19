@@ -16,6 +16,14 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 # ---------- Sitemap ----------
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
+# ---------- Retired "Tips & Guide" section ----------
+# Migrated into Peptide Guide and removed; without this, /tips.php's clean-URL
+# redirect (rule below) sends visitors to /tips, which 404s since tips.php no
+# longer exists — a dead-end redirect chain. Send both straight to the
+# replacement instead.
+RewriteRule ^tips(\.php)?$ /peptide-guide [R=301,L]
+RewriteRule ^ar/tips(\.php)?$ /ar/peptide-guide [R=301,L]
+
 # The admin panel's frontend (admin.js) calls /api/... at the site root
 # (matching how it worked as a standalone Node server). Route those
 # requests to the PHP API router living in /admin-php/.

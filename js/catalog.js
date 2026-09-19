@@ -138,6 +138,31 @@ function initCatalogPage() {
   let activeCategory = urlCategory && PRODUCT_CATEGORIES.includes(urlCategory) ? urlCategory : "All";
   let searchTerm = "";
 
+  // Inject a category-label element once, after the <h1> in .section-head
+  let catLabelEl = document.getElementById("catalog-cat-label");
+  if (!catLabelEl) {
+    const sectionHead = document.querySelector(".section-head");
+    if (sectionHead) {
+      catLabelEl = document.createElement("p");
+      catLabelEl.id = "catalog-cat-label";
+      catLabelEl.style.cssText =
+        "margin:6px 0 0;font-size:1.1rem;font-weight:600;color:var(--accent,#6366f1);opacity:0;transition:opacity .22s ease,transform .22s ease;transform:translateY(-6px);pointer-events:none;";
+      sectionHead.querySelector("div").appendChild(catLabelEl);
+    }
+  }
+
+  function updateCatLabel() {
+    if (!catLabelEl) return;
+    if (activeCategory === "All") {
+      catLabelEl.style.opacity = "0";
+      catLabelEl.style.transform = "translateY(-6px)";
+    } else {
+      catLabelEl.textContent = categoryShortLabel(activeCategory);
+      catLabelEl.style.opacity = "1";
+      catLabelEl.style.transform = "translateY(0)";
+    }
+  }
+
   function applyFilters() {
     const filtered = PRODUCTS.filter((p) => {
       const cats = productCategories(p);
@@ -150,6 +175,7 @@ function initCatalogPage() {
       return matchesCategory && matchesSearch;
     });
     renderProductGrid(grid, filtered);
+    updateCatLabel();
   }
 
   if (filterBar) {
@@ -184,11 +210,23 @@ function initCatalogPage() {
 function initFeaturedGrid() {
   const grid = document.getElementById("featured-grid");
   if (!grid) return;
-  const featured = PRODUCTS.slice(0, 4);
-  renderProductGrid(grid, featured);
+  // Use products marked featured:true; fall back to first 4 if none are marked
+  const marked = PRODUCTS.filter((p) => p.featured);
+  const featured = marked.length ? marked : PRODUCTS.slice(0, 4);
+  renderProductGrid(grid, featured, { sort: false });
+}
+
+function initBestSellersGrid() {
+  const grid = document.getElementById("best-sellers-grid");
+  if (!grid) return;
+  // Use products marked bestSeller:true; fall back to first 8 if none are marked
+  const marked = PRODUCTS.filter((p) => p.bestSeller);
+  const list = marked.length ? marked : PRODUCTS.slice(0, 8);
+  renderProductGrid(grid, list, { sort: false });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   initCatalogPage();
   initFeaturedGrid();
+  initBestSellersGrid();
 });

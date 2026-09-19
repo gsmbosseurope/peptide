@@ -4,6 +4,7 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+  initThemeToggle();   // ← وضع ليلي / نهاري — يشتغل قبل كل شيء
   initMobileNav();
   initScrollReveal();
   initActiveNavLink();
@@ -11,7 +12,64 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollButtons();
   initWhatsAppButton();
   initCategoryIconsSection();
+  initQuickSearch();
 });
+
+/* ══════════════════════════════════════════════════════════════════
+   THEME TOGGLE — وضع ليلي / نهاري
+   يقرأ الاختيار من localStorage، يطبّقه فوراً على <html>،
+   ويربط كل الأزرار التي تحمل class="theme-toggle-btn"
+   ══════════════════════════════════════════════════════════════════ */
+(function applyThemeEarly() {
+  // نطبّق الثيم قبل رسم الصفحة لتجنّب الوميض
+  try {
+    const saved = localStorage.getItem("tp-theme");
+    if (saved === "dark")  document.documentElement.setAttribute("data-theme", "dark");
+    if (saved === "light") document.documentElement.setAttribute("data-theme", "light");
+  } catch (_) {}
+})();
+
+function initThemeToggle() {
+  const root = document.documentElement;
+
+  function getTheme() {
+    try { return localStorage.getItem("tp-theme") || "auto"; } catch { return "auto"; }
+  }
+
+  function applyTheme(t) {
+    if (t === "dark")       root.setAttribute("data-theme", "dark");
+    else if (t === "light") root.setAttribute("data-theme", "light");
+    else                    root.removeAttribute("data-theme");
+  }
+
+  function isDark() {
+    const t = getTheme();
+    if (t === "dark")  return true;
+    if (t === "light") return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  // اربط كل الأزرار التي تحمل class="theme-toggle-btn"
+  document.querySelectorAll(".theme-toggle-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const next = isDark() ? "light" : "dark";
+      try { localStorage.setItem("tp-theme", next); } catch {}
+      applyTheme(next);
+    });
+  });
+
+  // إذا لم يُضف الزر بعد (مثلاً يُضاف بـ JS لاحقاً) — delegate على الـ body
+  document.body.addEventListener("click", e => {
+    const btn = e.target.closest(".theme-toggle-btn");
+    if (!btn) return;
+    // تجنّب التطبيق مرتين إذا كان querySelector أمسك الزر أعلاه
+    if (document.querySelectorAll(".theme-toggle-btn").length === 0) {
+      const next = isDark() ? "light" : "dark";
+      try { localStorage.setItem("tp-theme", next); } catch {}
+      applyTheme(next);
+    }
+  });
+}
 
 /**
  * Renders the "Shop by Category" icon grid (a standalone section placed
@@ -53,17 +111,17 @@ const CATEGORY_ICON_FALLBACK_STANDALONE = `<svg viewBox="0 0 24 24" fill="none" 
  * (a colored circle behind the icon) so each category reads distinctly at
  * a glance instead of every tile sharing the same monochrome outline.
  */
-const CATEGORY_ACCENTS_STANDALONE = {
-  "Weight Loss, Metabolic Regulation & Insulin Resistance": "#FF6B4A",
-  "Growth Hormone Secretagogues, Hypertrophy & Endurance": "#4A9BFF",
-  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": "#3DD9B4",
-  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": "#C77DFF",
-  "Brain, Cognitive Function, Mood & Sleep": "#7B8CFF",
-  "Male Hormones, Fertility, Sexual Health & Tanning": "#FF8FB1",
-  "Organ-Specific Bioregulators & Therapeutic Compounds": "#FFB84A",
-  "Skin, Hair Care": "#5EE0D0",
-  "Digestive & Gut Health": "#8FD654",
-  "Accessories & Supplies": "#B8C4D9",
+const CATEGORY_HUE_OFFSETS = {
+  "Weight Loss, Metabolic Regulation & Insulin Resistance": 0,
+  "Growth Hormone Secretagogues, Hypertrophy & Endurance": 40,
+  "Recovery, Tendon/Joint Repair & Anti-Inflammatory": 80,
+  "Anti-Aging, Cellular Immunity & Mitochondrial Repair": 140,
+  "Brain, Cognitive Function, Mood & Sleep": 200,
+  "Male Hormones, Fertility, Sexual Health & Tanning": 260,
+  "Organ-Specific Bioregulators & Therapeutic Compounds": 300,
+  "Skin, Hair Care": 170,
+  "Digestive & Gut Health": 110,
+  "Accessories & Supplies": 230,
 };
 // Every label is exactly two words, so the category tiles read as one
 // consistent set instead of a mix of one-word and two-word labels.
@@ -91,9 +149,9 @@ function initCategoryIconsSection() {
   grid.innerHTML = PRODUCT_CATEGORIES.map((cat) => {
     const label = labelsAr[cat] || labelOverrides[cat] || CATEGORY_SHORT_LABELS_STANDALONE[cat] || cat;
     const icon = CATEGORY_ICONS_STANDALONE[cat] || CATEGORY_ICON_FALLBACK_STANDALONE;
-    const accent = CATEGORY_ACCENTS_STANDALONE[cat] || "#B8C4D9";
+    const hue = CATEGORY_HUE_OFFSETS[cat] ?? 0;
     return `
-      <a class="category-icon-tile" href="products?cat=${encodeURIComponent(cat)}" title="${cat}" style="--tile-accent:${accent};">
+      <a class="category-icon-tile" href="products?cat=${encodeURIComponent(cat)}" title="${cat}" style="--tile-hue:${hue}deg;">
         <span class="category-icon-tile-icon"><span class="category-icon-tile-badge">${icon}</span></span>
         <span class="category-icon-tile-label">${label}</span>
       </a>
@@ -241,6 +299,110 @@ function initActiveNavLink() {
     if (href === path || (path === "" && (href === "index" || href === ""))) {
       a.classList.add("active");
     }
+  });
+}
+
+/* ---------- Quick Search ---------- */
+function initQuickSearch() {
+  if (typeof PRODUCTS === "undefined") return;
+
+  const isAr = document.documentElement.lang === "ar" ||
+               document.documentElement.getAttribute("dir") === "rtl";
+  const placeholder = isAr ? "ابحث عن منتج…" : "Search products…";
+  const hintText    = isAr ? "اضغط Esc للإغلاق" : "Press Esc to close";
+  const emptyText   = isAr ? "لا توجد نتائج" : "No results found";
+  // رابط صفحة المنتج بحسب اللغة
+  const productBase = isAr ? "/ar/product" : "/product";
+
+  // ── زر البحث في الهيدر ──
+  const btn = document.createElement("button");
+  btn.className = "quick-search-btn";
+  btn.setAttribute("aria-label", isAr ? "بحث" : "Search");
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+
+  // أدرج الزر قبل زر اللغة في header-actions
+  const actions = document.querySelector(".header-actions");
+  if (actions) {
+    const langSwitch = actions.querySelector(".lang-switch");
+    actions.insertBefore(btn, langSwitch || actions.firstChild);
+  }
+
+  // ── الـ overlay ──
+  const overlay = document.createElement("div");
+  overlay.className = "quick-search-overlay";
+  overlay.innerHTML = `
+    <div class="quick-search-box" role="dialog" aria-modal="true" aria-label="${isAr ? "بحث سريع" : "Quick search"}">
+      <div class="quick-search-input-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="quick-search-input" type="search" placeholder="${placeholder}" autocomplete="off" spellcheck="false" dir="${isAr ? 'rtl' : 'ltr'}" />
+        <button class="quick-search-close" aria-label="Close">✕</button>
+      </div>
+      <div class="quick-search-results"></div>
+      <div class="quick-search-hint">${hintText}</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const input   = overlay.querySelector(".quick-search-input");
+  const results = overlay.querySelector(".quick-search-results");
+  const closeBtn = overlay.querySelector(".quick-search-close");
+
+  function open() {
+    overlay.classList.add("is-open");
+    setTimeout(() => input.focus(), 50);
+    renderResults("");
+  }
+  function close() {
+    overlay.classList.remove("is-open");
+    input.value = "";
+    results.innerHTML = "";
+  }
+
+  btn.addEventListener("click", open);
+  closeBtn.addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+    if ((e.key === "k" && (e.metaKey || e.ctrlKey))) { e.preventDefault(); open(); }
+  });
+
+  function renderResults(query) {
+    const q = query.trim().toLowerCase();
+    const all = Object.values(PRODUCTS);
+    const matched = q
+      ? all.filter(p =>
+          (p.name || "").toLowerCase().includes(q) ||
+          (p.nameAr || "").includes(query.trim()) ||
+          (p.category || "").toLowerCase().includes(q) ||
+          (p.description || "").toLowerCase().includes(q) ||
+          (p.descriptionAr || "").includes(query.trim())
+        ).slice(0, 8)
+      : all.slice(0, 6);
+
+    if (!matched.length) {
+      results.innerHTML = `<div class="quick-search-empty">${emptyText}</div>`;
+      return;
+    }
+    results.innerHTML = matched.map(p => {
+      const img = p.images && p.images[0]
+        ? `<img class="quick-search-item-img" src="${p.images[0]}" alt="${p.name}" loading="lazy" />`
+        : `<span class="quick-search-item-img"></span>`;
+      const name = isAr && p.nameAr ? p.nameAr : p.name;
+      const cat  = isAr && p.categoryAr ? p.categoryAr : (p.category || "");
+      return `<a class="quick-search-item" href="${productBase}?id=${encodeURIComponent(p.id || p.name)}">
+        ${img}
+        <div>
+          <div class="quick-search-item-name">${name}</div>
+          <div class="quick-search-item-cat">${cat}</div>
+        </div>
+      </a>`;
+    }).join("");
+  }
+
+  let debounceTimer;
+  input.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => renderResults(input.value), 180);
   });
 }
 

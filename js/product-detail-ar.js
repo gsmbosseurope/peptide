@@ -71,6 +71,60 @@ function renderProductGallerySectionAr(productId) {
   `;
 }
 
+/* ── Animation helpers ─────────────────────────────────────────────────── */
+(function injectAnimStyles() {
+  if (document.getElementById("pdp-anim-css")) return;
+  const s = document.createElement("style");
+  s.id = "pdp-anim-css";
+  s.textContent = `
+    @keyframes pdpFlipIn {
+      0%   { transform: perspective(700px) rotateY(-65deg) scale(0.9); opacity: 0; filter: brightness(1.3); }
+      55%  { transform: perspective(700px) rotateY(6deg)  scale(1.02); opacity: 1; filter: brightness(1.15); }
+      80%  { transform: perspective(700px) rotateY(-2deg) scale(1);    filter: brightness(1); }
+      100% { transform: perspective(700px) rotateY(0deg)  scale(1);    opacity: 1; filter: brightness(1); }
+    }
+    #pd-main-image.pdp-flip {
+      animation: pdpFlipIn 0.42s cubic-bezier(0.22,1,0.36,1) both;
+      transform-origin: center center;
+    }
+    @keyframes pdpChipPress {
+      0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--accent-rgb,99,102,241),.0); }
+      28%  { transform: scale(0.91); box-shadow: 0 0 0 7px rgba(var(--accent-rgb,99,102,241),.22); }
+      62%  { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(var(--accent-rgb,99,102,241),.10); }
+      100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--accent-rgb,99,102,241),.0); }
+    }
+    .pdp-chip-press { animation: pdpChipPress 0.38s ease both !important; }
+    @keyframes pdpQtyPulse {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(0.86); }
+      72%  { transform: scale(1.09); }
+      100% { transform: scale(1); }
+    }
+    .pdp-qty-pulse { animation: pdpQtyPulse 0.26s ease both !important; }
+    @keyframes pdpThumbFlash {
+      0%,100% { box-shadow: 0 0 0 0 transparent; }
+      45%     { box-shadow: 0 0 0 4px var(--accent,#6366f1); transform: scale(1.08); }
+    }
+    .pd-thumb.pdp-thumb-flash { animation: pdpThumbFlash 0.3s ease both; }
+  `;
+  document.head.appendChild(s);
+})();
+
+function animMainImg(img) {
+  if (!img) return;
+  img.classList.remove("pdp-flip");
+  void img.offsetWidth;
+  img.classList.add("pdp-flip");
+}
+
+function animBtn(el, cls) {
+  if (!el) return;
+  el.classList.remove(cls);
+  void el.offsetWidth;
+  el.classList.add(cls);
+  el.addEventListener("animationend", () => el.classList.remove(cls), { once: true });
+}
+
 function initProductDetailPage() {
   const root = document.getElementById("product-detail-root");
   if (!root) return;
@@ -80,6 +134,12 @@ function initProductDetailPage() {
 
   if (!product) {
     root.innerHTML = `<div class="empty-state"><h3>المنتج غير موجود</h3><p>عد إلى <a href="products">الكتالوج الكامل</a>.</p></div>`;
+    return;
+  }
+
+  if (!product.name) {
+    root.innerHTML = `<div class="empty-state"><h3>هذا المنتج قيد الترجمة حالياً</h3><p>لم تتم إضافة النسخة العربية لهذا المنتج بعد. عد إلى <a href="products">الكتالوج الكامل</a> أو تصفح <a href="/product?id=${encodeURIComponent(product.id)}">النسخة الإنجليزية</a>.</p></div>`;
+    document.title = "المنتج قيد الترجمة — trusted-peptide.com";
     return;
   }
 
@@ -119,7 +179,7 @@ function initProductDetailPage() {
             ${product.variants
               .map(
                 (v, i) =>
-                  `<button class="variant-chip${i === 0 ? " active" : ""}" data-idx="${i}">${sizeLabelAr(v.size)} – ${formatEURHtml(v.price)}</button>`
+                  `<button class="variant-chip${i === 0 ? " active" : ""}" data-idx="${i}" data-dose="${parseInt(v.size) || 0}">${sizeLabelAr(v.size)} – ${formatEURHtml(v.price)}</button>`
               )
               .join("")}
           </div>
@@ -150,15 +210,13 @@ function initProductDetailPage() {
         </div>
 
         <div class="pd-tabs">
-          <div class="pd-tab active" data-tab="composition">التفاصيل</div>
-          <div class="pd-tab" data-tab="uses">طريقة الاستخدام</div>
+          <div class="pd-tab active" data-tab="main">فوائد الاستخدام</div>
           <div class="pd-tab" data-tab="video">فيديو</div>
         </div>
-        <div class="pd-tab-panel active" data-panel="composition">
-          <ul>${product.composition.map((c) => `<li>${c}</li>`).join("")}</ul>
-        </div>
-        <div class="pd-tab-panel" data-panel="uses">
+        <div class="pd-tab-panel active" data-panel="main">
           <ul>${product.uses.map((u) => `<li>${u}</li>`).join("")}</ul>
+          <h4 class="pd-composition-heading"><strong>التركيبة العلمية</strong></h4>
+          <ul>${product.composition.map((c) => `<li>${c}</li>`).join("")}</ul>
         </div>
         <div class="pd-tab-panel" data-panel="video">
           <div class="pd-video">
@@ -194,7 +252,7 @@ function initProductDetailPage() {
         return `
           <button type="button" class="tier-hint-item${stateClass}" data-min-qty="${tier.minQty}">
             <span class="tier-hint-check">${mark}</span>
-            <span>اشترِ ${tier.minQty}+ ووفّر ${tier.discountPercent}%</span>
+            <span>اشترِ ${tier.minQty} ووفّر ${tier.discountPercent} %</span>
           </button>
         `;
       })
@@ -237,7 +295,17 @@ function initProductDetailPage() {
     if (!chip) return;
     document.querySelectorAll(".variant-chip").forEach((c) => c.classList.remove("active"));
     chip.classList.add("active");
+    animBtn(chip, "pdp-chip-press");
     activeVariantIndex = Number(chip.dataset.idx);
+    // If the product has an image matching this variant index, switch to it
+    if (product.images[activeVariantIndex]) {
+      animMainImg(mainImage);
+      mainImage.src = "/" + product.images[activeVariantIndex];
+      activeImageIndex = activeVariantIndex;
+      document.querySelectorAll(".pd-thumb").forEach((t, i) => {
+        t.classList.toggle("active", i === activeVariantIndex);
+      });
+    }
     render();
   });
 
@@ -246,7 +314,9 @@ function initProductDetailPage() {
     if (!thumb) return;
     document.querySelectorAll(".pd-thumb").forEach((t) => t.classList.remove("active"));
     thumb.classList.add("active");
+    animBtn(thumb, "pdp-thumb-flash");
     activeImageIndex = Number(thumb.dataset.idx);
+    animMainImg(mainImage);
     mainImage.src = "/" + product.images[activeImageIndex];
   });
 
@@ -265,8 +335,8 @@ function initProductDetailPage() {
     render();
   }
 
-  document.getElementById("qty-minus").addEventListener("click", () => setQty(qty - 1));
-  document.getElementById("qty-plus").addEventListener("click", () => setQty(qty + 1));
+  document.getElementById("qty-minus").addEventListener("click", (e) => { animBtn(e.currentTarget, "pdp-qty-pulse"); setQty(qty - 1); });
+  document.getElementById("qty-plus").addEventListener("click", (e) => { animBtn(e.currentTarget, "pdp-qty-pulse"); setQty(qty + 1); });
   qtyInput.addEventListener("input", (e) => setQty(Number(e.target.value) || 1));
 
   tierHintsEl.addEventListener("click", (e) => {

@@ -1,12 +1,11 @@
 let PRODUCTS = [];
 let CATEGORIES = [];
-let GUIDES = [];
 let PEPTIDE_TOPICS = [];
 let BLOG_POSTS = [];
 let GALLERY_ITEMS = [];
 let currentId = null;
 let isNew = false;
-let activeTab = "products"; // "products" | "guides" | "peptide-guide" | "blog" | "gallery"
+let activeTab = "products"; // "products" | "peptide-guide" | "blog" | "gallery"
 
 /**
  * Floating scroll-to-top / scroll-to-bottom buttons for the editor pane
@@ -150,11 +149,6 @@ async function loadCategories() {
   CATEGORIES = await api("/api/categories");
 }
 
-async function loadGuides() {
-  GUIDES = await api("/api/guides");
-  if (activeTab === "guides") renderList();
-}
-
 async function loadPeptideTopics() {
   PEPTIDE_TOPICS = await api("/api/peptide-topics");
   if (activeTab === "peptide-guide") renderList();
@@ -207,8 +201,8 @@ function renderList() {
         moveGalleryItem(filtered[idx].id, delta);
       });
     });
-  } else if (activeTab === "guides" || activeTab === "peptide-guide" || activeTab === "blog") {
-    const source = activeTab === "guides" ? GUIDES : activeTab === "peptide-guide" ? PEPTIDE_TOPICS : BLOG_POSTS;
+  } else if (activeTab === "peptide-guide" || activeTab === "blog") {
+    const source = activeTab === "peptide-guide" ? PEPTIDE_TOPICS : BLOG_POSTS;
     const filtered = source.filter((g) => !term || g.title.toLowerCase().includes(term)).sort((a, b) =>
       a.title.localeCompare(b.title)
     );
@@ -252,9 +246,7 @@ newItemBtn.addEventListener("click", () => {
   isNew = true;
   currentId = null;
   showMobileEditor();
-  if (activeTab === "guides") {
-    renderGuideEditor({ id: "", title: "", summary: "", body: [], images: [], video: "" });
-  } else if (activeTab === "peptide-guide") {
+  if (activeTab === "peptide-guide") {
     renderPeptideTopicEditor({ id: "", title: "", summary: "", body: [], images: [], video: "" });
   } else if (activeTab === "blog") {
     renderBlogPostEditor({ id: "", title: "", summary: "", bodyHtml: "", coverImage: "", video: "", embedHtml: "" });
@@ -286,10 +278,7 @@ function openEditor(id) {
   currentId = id;
   renderList();
   showMobileEditor();
-  if (activeTab === "guides") {
-    const guide = GUIDES.find((g) => g.id === id);
-    if (guide) renderGuideEditor(guide);
-  } else if (activeTab === "peptide-guide") {
+  if (activeTab === "peptide-guide") {
     const topic = PEPTIDE_TOPICS.find((t) => t.id === id);
     if (topic) renderPeptideTopicEditor(topic);
   } else if (activeTab === "blog") {
@@ -314,14 +303,13 @@ function switchTab(tab) {
   document.getElementById("manage-categories-btn").hidden = tab !== "products";
 
   document.getElementById("tab-products").classList.toggle("active", tab === "products");
-  document.getElementById("tab-guides").classList.toggle("active", tab === "guides");
   document.getElementById("tab-peptide-guide").classList.toggle("active", tab === "peptide-guide");
   document.getElementById("tab-blog").classList.toggle("active", tab === "blog");
   document.getElementById("tab-gallery").classList.toggle("active", tab === "gallery");
 
-  const placeholders = { guides: "Search guides…", "peptide-guide": "Search topics…", blog: "Search posts…", products: "Search products…", gallery: "Search gallery…" };
-  const newLabels = { guides: "+ New Guide", "peptide-guide": "+ New Topic", blog: "+ New Post", products: "+ New Product", gallery: "+ New Gallery Item" };
-  const emptyLabels = { guides: "a guide", "peptide-guide": "a topic", blog: "a post", products: "a product", gallery: "a gallery item" };
+  const placeholders = { "peptide-guide": "Search topics…", blog: "Search posts…", products: "Search products…", gallery: "Search gallery…" };
+  const newLabels = { "peptide-guide": "+ New Topic", blog: "+ New Post", products: "+ New Product", gallery: "+ New Gallery Item" };
+  const emptyLabels = { "peptide-guide": "a topic", blog: "a post", products: "a product", gallery: "a gallery item" };
 
   searchBox.value = "";
   searchBox.placeholder = placeholders[tab];
@@ -331,15 +319,23 @@ function switchTab(tab) {
 }
 
 document.getElementById("tab-products").addEventListener("click", () => switchTab("products"));
-document.getElementById("tab-guides").addEventListener("click", () => switchTab("guides"));
 document.getElementById("tab-peptide-guide").addEventListener("click", () => switchTab("peptide-guide"));
 document.getElementById("tab-blog").addEventListener("click", () => switchTab("blog"));
-document.getElementById("tab-gallery").addEventListener("click", () => switchTab("gallery"));
 document.getElementById("tab-gallery").addEventListener("click", () => switchTab("gallery"));
 
 function renderEditor(product) {
   editorEl.innerHTML = `
     <div class="section-title">Basic Info</div>
+    <div class="field-group" style="display:flex;gap:24px;flex-wrap:wrap;padding:10px 14px;border:1px solid var(--border-strong);border-radius:8px;background:rgba(201,161,90,0.06);margin-bottom:18px;">
+      <label class="checkbox-label" style="font-weight:700;">
+        <input type="checkbox" id="f-featured" ${product.featured ? "checked" : ""} />
+        ⭐ Featured — يظهر في الصفحة الرئيسية
+      </label>
+      <label class="checkbox-label" style="font-weight:700;">
+        <input type="checkbox" id="f-bestSeller" ${product.bestSeller ? "checked" : ""} />
+        🔥 Best Seller — يظهر في صفحة الأكثر طلباً
+      </label>
+    </div>
     <div class="field-row">
       <div class="field-group">
         <label>Product Name</label>
@@ -623,6 +619,8 @@ function collectFormData(base) {
   ).map((cb) => cb.value);
   return {
     name: document.getElementById("f-name").value.trim(),
+    featured: document.getElementById("f-featured").checked,
+    bestSeller: document.getElementById("f-bestSeller").checked,
     category: selectedCategories[0] || "",
     categories: selectedCategories,
     purity: document.getElementById("f-purity").value.trim(),
@@ -734,78 +732,6 @@ async function deleteProduct(id) {
   }
 }
 
-/* ---------- Guide (Tips & Guide) editor ---------- */
-function renderGuideEditor(guide) {
-  editorEl.innerHTML = `
-    <div class="section-title">Guide Info</div>
-    <div class="field-group">
-      <label>Title</label>
-      <input type="text" id="g-title" value="${escapeAttr(guide.title)}" placeholder="e.g. How to Store Your Peptides Correctly" />
-    </div>
-    <div class="field-group">
-      <label>Guide ID / URL slug ${isNew ? "" : "(locked)"}</label>
-      <input type="text" id="g-id" value="${escapeAttr(guide.id)}" ${isNew ? "" : "disabled"} placeholder="auto-generated from title if left blank" />
-    </div>
-    <div class="field-group">
-      <label>Summary</label>
-      <textarea id="g-summary" placeholder="1-2 lines shown on the guide card">${escapeHtml(guide.summary)}</textarea>
-    </div>
-
-    <div class="section-title">Article Body (blank line = new paragraph)</div>
-    <div class="field-group">
-      <textarea id="g-body" rows="8">${escapeHtml((guide.body || []).join("\n"))}</textarea>
-      <button type="button" class="btn btn-sm" id="g-dedupe-btn" style="margin-top:8px;">Remove Duplicate Paragraphs</button>
-    </div>
-
-    <div class="section-title">Photos &amp; Video</div>
-    <div class="media-grid" id="media-grid"></div>
-    <div class="upload-drop" id="upload-drop">
-      ${isNew ? "Save the guide once first, then come back to upload media." : "Click to upload images or a video for this guide"}
-    </div>
-    <input type="file" id="file-input" accept="image/*,video/*" multiple hidden ${isNew ? "disabled" : ""} />
-
-    <div class="editor-actions">
-      <button class="btn btn-primary" id="save-guide-btn">${isNew ? "Create Guide" : "Save Changes"}</button>
-      ${isNew ? "" : '<button class="btn btn-danger" id="delete-guide-btn">Delete Guide</button>'}
-    </div>
-  `;
-
-  renderMedia(guide.images || [], guide.video || "");
-
-  document.getElementById("save-guide-btn").addEventListener("click", () => saveGuide(guide));
-  const deleteBtn = document.getElementById("delete-guide-btn");
-  if (deleteBtn) deleteBtn.addEventListener("click", () => deleteGuide(guide.id));
-  document.getElementById("g-dedupe-btn").addEventListener("click", () => dedupeParagraphTextarea("g-body"));
-
-  if (!isNew) {
-    const dropZone = document.getElementById("upload-drop");
-    const fileInput = document.getElementById("file-input");
-    dropZone.addEventListener("click", () => fileInput.click());
-    fileInput.addEventListener("change", () => handleGuideUpload(guide.id, fileInput.files));
-  }
-}
-
-async function handleGuideUpload(guideId, files) {
-  for (const file of files) {
-    const formData = new FormData();
-    formData.append("file", file);
-    try {
-      const res = await fetch(`/api/guides/${encodeURIComponent(guideId)}/upload`, { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      if (file.type.startsWith("video/")) {
-        currentVideo = data.path;
-      } else {
-        currentImages.push(data.path);
-      }
-    } catch (e) {
-      showToast(`Upload failed: ${e.message}`, "error");
-    }
-  }
-  renderMedia(currentImages, currentVideo);
-  showToast("Media uploaded — remember to Save Changes to keep it linked.");
-}
-
 // Groups the textarea's lines into paragraphs: consecutive non-blank lines
 // are joined into one paragraph, a blank line (or a "---" divider line)
 // starts a new paragraph. This way pasting text that has one sentence per
@@ -825,49 +751,6 @@ function splitGuideBody(text) {
   });
   if (current.length) paragraphs.push(current.join(" "));
   return paragraphs;
-}
-
-function collectGuideFormData(base) {
-  return {
-    title: document.getElementById("g-title").value.trim(),
-    summary: document.getElementById("g-summary").value.trim(),
-    body: splitGuideBody(document.getElementById("g-body").value),
-    images: currentImages,
-    video: currentVideo,
-    id: isNew ? document.getElementById("g-id").value.trim() : base.id,
-  };
-}
-
-async function saveGuide(base) {
-  const payload = collectGuideFormData(base);
-  try {
-    if (isNew) {
-      const result = await api("/api/guides", { method: "POST", body: JSON.stringify(payload) });
-      showToast("Guide created.");
-      isNew = false;
-      currentId = result.id;
-    } else {
-      await api(`/api/guides/${encodeURIComponent(base.id)}`, { method: "PUT", body: JSON.stringify(payload) });
-      showToast("Changes saved.");
-    }
-    await loadGuides();
-    openEditor(currentId);
-  } catch (e) {
-    showToast(e.message, "error");
-  }
-}
-
-async function deleteGuide(id) {
-  if (!confirm("Delete this guide? This cannot be undone.")) return;
-  try {
-    await api(`/api/guides/${encodeURIComponent(id)}`, { method: "DELETE" });
-    currentId = null;
-    showToast("Guide deleted.");
-    await loadGuides();
-    editorEl.innerHTML = '<div class="empty-editor">Select a guide from the list, or create a new one.</div>';
-  } catch (e) {
-    showToast(e.message, "error");
-  }
 }
 
 /* ---------- Peptide Guide topic editor ---------- */
@@ -1772,4 +1655,4 @@ async function deleteBlogPost(id) {
   }
 }
 
-Promise.all([loadCategories(), loadProducts(), loadGuides(), loadPeptideTopics(), loadBlogPosts(), loadGalleryItems()]).catch((e) => showToast(e.message, "error"));
+Promise.all([loadCategories(), loadProducts(), loadPeptideTopics(), loadBlogPosts(), loadGalleryItems()]).catch((e) => showToast(e.message, "error"));

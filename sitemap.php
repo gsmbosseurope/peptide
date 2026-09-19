@@ -1,9 +1,9 @@
 <?php
 /**
  * Dynamic XML sitemap — reads the same data files the site itself uses
- * (js/products-data.js, js/guides-data.js, js/peptide-guide-data.js) so it
- * never drifts out of sync with what's actually on the site. Served at
- * /sitemap.xml via .htaccess rewrite (see below).
+ * (js/products-data.js, js/peptide-guide-data.js) so it never drifts out
+ * of sync with what's actually on the site. Served at /sitemap.xml via
+ * .htaccess rewrite (see below).
  */
 
 require_once __DIR__ . '/admin-php/config.php';
@@ -19,7 +19,6 @@ $staticPages = [
     ['path' => '/products', 'priority' => '0.9', 'changefreq' => 'daily'],
     ['path' => '/best-sellers', 'priority' => '0.8', 'changefreq' => 'weekly'],
     ['path' => '/blog', 'priority' => '0.7', 'changefreq' => 'weekly'],
-    ['path' => '/tips', 'priority' => '0.6', 'changefreq' => 'weekly'],
     ['path' => '/peptide-guide', 'priority' => '0.6', 'changefreq' => 'weekly'],
     ['path' => '/contact', 'priority' => '0.4', 'changefreq' => 'yearly'],
     ['path' => '/ar/', 'priority' => '0.9', 'changefreq' => 'daily'],
@@ -53,7 +52,6 @@ function sitemap_load_products_ar() {
 
 $products = load_products();
 $productsAr = sitemap_load_products_ar();
-$guides = load_guides();
 $topics = load_peptide_topics();
 $blogPosts = load_blog_posts();
 
@@ -79,13 +77,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     <loc><?php echo htmlspecialchars($baseUrl . '/ar/product?id=' . rawurlencode($p['id'])); ?></loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  </url>
-<?php endforeach; ?>
-<?php foreach ($guides as $g): if (empty($g['id'])) continue; ?>
-  <url>
-    <loc><?php echo htmlspecialchars($baseUrl . '/tip?id=' . rawurlencode($g['id'])); ?></loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
 <?php endforeach; ?>
 <?php foreach ($topics as $t): if (empty($t['id'])) continue; ?>

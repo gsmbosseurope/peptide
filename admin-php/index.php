@@ -42,7 +42,6 @@ require_login_page();
 
   <nav class="tab-bar">
     <button class="tab-btn active" id="tab-products" data-tab="products">Products</button>
-    <button class="tab-btn" id="tab-guides" data-tab="guides">Tips &amp; Guide</button>
     <button class="tab-btn" id="tab-peptide-guide" data-tab="peptide-guide">Peptide Guide</button>
     <button class="tab-btn" id="tab-blog" data-tab="blog">Blog</button>
     <button class="tab-btn" id="tab-gallery" data-tab="gallery">Gallery</button>

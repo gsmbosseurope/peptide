@@ -14,6 +14,14 @@ html[dir="rtl"] body {
   font-family: 'Cairo', var(--font-body, 'Inter'), sans-serif;
 }
 
+/* .gallery-tile-tag hardcodes left:10px in main.css (LTR reading order —
+   corner tag sits where the eye lands first); mirror it to the right
+   corner for RTL. */
+html[dir="rtl"] .gallery-tile-tag {
+  left: auto;
+  right: 10px;
+}
+
 /* .pd-cat (the category line on the product page) explicitly sets
    font-family: var(--font-mono) ("Roboto Mono") in hero.css — that font
    has no real Arabic glyph support, so translated category names render
@@ -41,10 +49,11 @@ html[dir="rtl"] .tier-hint-item {
    footer grid (not nested inside any column) — a heading, then the
    "إتصل بنا" label, phone number, and WhatsApp icon link in a row. */
 html[dir="rtl"] .footer-contact-section {
-  padding: 24px 0;
+  padding: 20px 0;
   border-top: 1px solid var(--border-subtle);
-  margin-bottom: 24px;
+  margin-bottom: 0;
 }
+
 html[dir="rtl"] .footer-contact-heading {
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -107,12 +116,12 @@ html[dir="rtl"] .lang-switch {
   min-width: 34px;
   height: 34px;
   padding: 0 10px;
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
-  font-family: var(--font-mono, monospace);
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-family: 'Cairo', var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
   text-decoration: none;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -152,11 +161,24 @@ html[dir="rtl"] .breadcrumb {
 
 /* Category icon tiles + product/guide cards: force RTL text alignment on
    labels that main.css left-aligns by default on some breakpoints. */
-html[dir="rtl"] .category-icon-tile-label,
-html[dir="rtl"] .product-card-name,
+html[dir="rtl"] .category-icon-tile-label {
+  text-align: center;
+}
 html[dir="rtl"] .product-card-desc,
 html[dir="rtl"] .guide-card-title,
 html[dir="rtl"] .guide-card-summary {
+  text-align: right;
+}
+
+/* توسيط بطاقة الفئة عمودياً وأفقياً في النسخة العربية */
+html[dir="rtl"] .category-icon-tile {
+  justify-content: center;
+  align-items: center;
+}
+
+/* أسماء المنتجات إنجليزية — تُقرأ من اليسار لليمين لكن تُحاذى لليمين */
+html[dir="rtl"] .product-card-name {
+  direction: ltr;
   text-align: right;
 }
 
@@ -205,3 +227,28 @@ html[dir="rtl"] .catalog-banner-content .eyebrow .eyebrow-center-line {
   display: block;
   text-align: center;
 }
+
+/* .filter-bar-scroll-wrap's fade-out edge (::after, main.css) hardcodes
+   right:0 — correct for LTR where the scrollable row continues past the
+   right edge, but in RTL the row scrolls toward the left, so the fade
+   needs to sit on the left edge instead or it just clips the last chip
+   with no visual cue that more content continues. */
+@media (max-width: 768px) {
+  html[dir="rtl"] .filter-bar-scroll-wrap::after {
+    right: auto;
+    left: 0;
+    background: linear-gradient(270deg, transparent, var(--bg) 85%);
+  }
+  html[dir="rtl"] .catalog-toolbar .filter-bar-scroll-wrap::after {
+    background: linear-gradient(270deg, transparent, var(--bg-elevated, var(--bg-card)) 85%);
+  }
+  html[dir="rtl"] .filter-bar {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  html[dir="rtl"] .catalog-toolbar .filter-bar {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
