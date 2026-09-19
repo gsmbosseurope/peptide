@@ -84,7 +84,7 @@
 
   <main class="section container" style="padding-top:48px; max-width:900px;">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:0;">
-      <img src="../assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:36px;height:36px;flex-shrink:0;" aria-hidden="true" />
+      <img src="../assets/brand/logo-icon.png" alt="Trusted Peptide" width="36" height="36" style="flex-shrink:0;" aria-hidden="true" />
       <h1 style="margin:0;">إتمام الطلب</h1>
     </div>
     <div class="cart-layout checkout-layout">
@@ -93,15 +93,15 @@
           <form id="checkout-form">
             <div class="field">
               <label for="name">الاسم الكامل</label>
-              <input type="text" id="name" name="name" required />
+              <input type="text" id="name" name="name" autocomplete="name" required />
             </div>
             <div class="field">
               <label for="phone">رقم الهاتف / واتساب</label>
-              <input type="tel" id="phone" name="phone" required dir="ltr" />
+              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required dir="ltr" />
             </div>
             <div class="field">
               <label for="address">عنوان الشحن</label>
-              <textarea id="address" name="address" required></textarea>
+              <textarea id="address" name="address" autocomplete="street-address" required></textarea>
             </div>
             <div class="field">
               <label for="notes">ملاحظات الطلب (اختياري)</label>

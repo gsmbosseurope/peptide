@@ -52,7 +52,7 @@
   <header class="site-header">
     <div class="container">
       <a href="/" class="brand">
-<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" />
+<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" width="64" height="64" />
         <span class="brand-name">Trusted<span class="lab"><span class="brand-dash">-</span>Peptide</span></span>
       </a>
       <nav class="main-nav">
@@ -97,7 +97,7 @@
     </nav>
 
   <main class="section container" style="padding-top:56px;">
-    <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:44px;height:44px;margin-bottom:16px;" aria-hidden="true" />
+    <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" width="44" height="44" style="margin-bottom:16px;" aria-hidden="true" />
     <span class="eyebrow">Get in touch</span>
     <h1>Questions about an order or a compound?</h1>
     <p style="max-width:52ch;">Our team responds fastest via WhatsApp. For bulk/wholesale inquiries or certificates of analysis, email us directly.</p>
@@ -125,11 +125,11 @@
       <form style="max-width:520px;" onsubmit="event.preventDefault(); window.location.href='mailto:sale@trusted-peptide.com?subject=' + encodeURIComponent('Website inquiry from ' + this.name.value) + '&body=' + encodeURIComponent(this.message.value + '\n\nReply to: ' + this.email.value);">
         <div class="field">
           <label for="c-name">Name</label>
-          <input type="text" id="c-name" name="name" required />
+          <input type="text" id="c-name" name="name" autocomplete="name" required />
         </div>
         <div class="field">
           <label for="c-email">Email</label>
-          <input type="email" id="c-email" name="email" required />
+          <input type="email" id="c-email" name="email" autocomplete="email" inputmode="email" spellcheck="false" required />
         </div>
         <div class="field">
           <label for="c-message">Message</label>

@@ -93,7 +93,7 @@
     </nav>
 
   <main class="section container" style="padding-top:56px;">
-    <img src="../assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:44px;height:44px;margin-bottom:16px;" aria-hidden="true" />
+    <img src="../assets/brand/logo-icon.png" alt="Trusted Peptide" width="44" height="44" style="margin-bottom:16px;" aria-hidden="true" />
     <span class="eyebrow">تواصل معنا</span>
     <h1>لديك سؤال عن طلب أو مركّب؟</h1>
     <p style="max-width:52ch;">فريقنا يرد بأسرع وقت عبر واتساب. للاستفسارات عن الجملة أو شهادات التحليل، راسلنا مباشرة عبر البريد الإلكتروني.</p>
@@ -121,11 +121,11 @@
       <form style="max-width:520px;" onsubmit="event.preventDefault(); window.location.href='mailto:sale@trusted-peptide.com?subject=' + encodeURIComponent('استفسار من الموقع من ' + this.name.value) + '&body=' + encodeURIComponent(this.message.value + '\n\nالرد على: ' + this.email.value);">
         <div class="field">
           <label for="c-name">الاسم</label>
-          <input type="text" id="c-name" name="name" required />
+          <input type="text" id="c-name" name="name" autocomplete="name" required />
         </div>
         <div class="field">
           <label for="c-email">البريد الإلكتروني</label>
-          <input type="email" id="c-email" name="email" required dir="ltr" />
+          <input type="email" id="c-email" name="email" autocomplete="email" inputmode="email" spellcheck="false" required dir="ltr" />
         </div>
         <div class="field">
           <label for="c-message">الرسالة</label>

@@ -69,6 +69,23 @@ function initCheckoutPageAr() {
     <div class="price-row total"><span>الإجمالي</span><span>${formatEURHtml(total)}</span></div>
   `;
 
+  // Warn on navigating away with unsaved order details — see checkout.js
+  // for the English twin of this same fix.
+  let formTouched = false;
+  const onBeforeUnload = (e) => {
+    if (!formTouched) return;
+    e.preventDefault();
+    e.returnValue = "";
+  };
+  form.addEventListener(
+    "input",
+    () => {
+      formTouched = true;
+    },
+    { once: true }
+  );
+  window.addEventListener("beforeunload", onBeforeUnload);
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = {
@@ -90,6 +107,9 @@ function initCheckoutPageAr() {
     document.getElementById("checkout-mailto-link").href = mailtoUrl;
     document.getElementById("checkout-form-panel").style.display = "none";
     document.getElementById("checkout-confirm-panel").style.display = "block";
+
+    formTouched = false;
+    window.removeEventListener("beforeunload", onBeforeUnload);
   });
 }
 

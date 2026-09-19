@@ -74,7 +74,7 @@ $websiteSchema = [
   <header class="site-header">
     <div class="container">
       <a href="/" class="brand">
-<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" />
+<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" width="64" height="64" />
         <span class="brand-name">Trusted<span class="lab"><span class="brand-dash">-</span>Peptide</span></span>
       </a>
       <nav class="main-nav">
@@ -162,7 +162,7 @@ $websiteSchema = [
     <div class="container">
       <div class="footer-grid">
         <div>
-          <div class="brand" style="margin-bottom:12px;gap:10px;"><img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:32px;height:32px;flex-shrink:0;" aria-hidden="true" /><span>Trusted<span style="color:var(--accent);"> Peptide</span></span></div>
+          <div class="brand" style="margin-bottom:12px;gap:10px;"><img src="assets/brand/logo-icon.png" alt="Trusted Peptide" width="32" height="32" style="flex-shrink:0;" aria-hidden="true" /><span>Trusted<span style="color:var(--accent);"> Peptide</span></span></div>
           <p style="max-width:32ch;">EU-sourced research peptides, certified for purity and consistency. For laboratory and research use only.</p>
         </div>
         <div>

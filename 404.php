@@ -39,7 +39,7 @@
   <header class="site-header">
     <div class="container">
       <a href="/" class="brand">
-<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" />
+<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" width="64" height="64" />
         <span class="brand-name">Trusted<span class="lab"><span class="brand-dash">-</span>Peptide</span></span>
       </a>
       <nav class="main-nav">
@@ -84,7 +84,7 @@
     </nav>
 
   <main class="section container" style="text-align:center;">
-    <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:44px;height:44px;margin-bottom:16px;" aria-hidden="true" />
+    <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" width="44" height="44" style="margin-bottom:16px;" aria-hidden="true" />
     <span class="eyebrow">404</span>
     <h1>Page not found</h1>
     <p style="max-width:52ch; margin:0 auto;">The page you're looking for doesn't exist or may have moved. Try the catalog or head back home.</p>

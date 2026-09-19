@@ -71,6 +71,24 @@ function initCheckoutPage() {
     <div class="price-row total"><span>Total</span><span>${formatEURHtml(total)}</span></div>
   `;
 
+  // Warn on navigating away with unsaved order details — a buyer who typed
+  // name/address/phone and then hits back or closes the tab shouldn't lose
+  // it silently. Cleared once the order is actually submitted below.
+  let formTouched = false;
+  const onBeforeUnload = (e) => {
+    if (!formTouched) return;
+    e.preventDefault();
+    e.returnValue = "";
+  };
+  form.addEventListener(
+    "input",
+    () => {
+      formTouched = true;
+    },
+    { once: true }
+  );
+  window.addEventListener("beforeunload", onBeforeUnload);
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = {
@@ -92,6 +110,11 @@ function initCheckoutPage() {
     document.getElementById("checkout-mailto-link").href = mailtoUrl;
     document.getElementById("checkout-form-panel").style.display = "none";
     document.getElementById("checkout-confirm-panel").style.display = "block";
+
+    // Order details have been handed off to WhatsApp/email at this point;
+    // stop warning so the confirm-panel links (which navigate away) work.
+    formTouched = false;
+    window.removeEventListener("beforeunload", onBeforeUnload);
   });
 }
 

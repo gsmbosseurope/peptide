@@ -42,7 +42,7 @@
   <header class="site-header">
     <div class="container">
       <a href="/" class="brand">
-<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" />
+<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" width="64" height="64" />
         <span class="brand-name">Trusted<span class="lab"><span class="brand-dash">-</span>Peptide</span></span>
       </a>
       <nav class="main-nav">

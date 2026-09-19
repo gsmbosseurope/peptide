@@ -42,7 +42,7 @@
   <header class="site-header">
     <div class="container">
       <a href="/" class="brand">
-<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" />
+<img src="assets/brand/logo-icon.png" alt="Trusted Peptide" class="brand-logo" width="64" height="64" />
         <span class="brand-name">Trusted<span class="lab"><span class="brand-dash">-</span>Peptide</span></span>
       </a>
       <nav class="main-nav">
@@ -88,7 +88,7 @@
 
   <main class="section container" style="padding-top:48px; max-width:900px;">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:0;">
-      <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:36px;height:36px;flex-shrink:0;" aria-hidden="true" />
+      <img src="assets/brand/logo-icon.png" alt="Trusted Peptide" width="36" height="36" style="flex-shrink:0;" aria-hidden="true" />
       <h1 style="margin:0;">Checkout</h1>
     </div>
     <div class="cart-layout checkout-layout">
@@ -97,15 +97,15 @@
           <form id="checkout-form">
             <div class="field">
               <label for="name">Full name</label>
-              <input type="text" id="name" name="name" required />
+              <input type="text" id="name" name="name" autocomplete="name" required />
             </div>
             <div class="field">
               <label for="phone">Phone / WhatsApp number</label>
-              <input type="tel" id="phone" name="phone" required />
+              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required />
             </div>
             <div class="field">
               <label for="address">Shipping address</label>
-              <textarea id="address" name="address" required></textarea>
+              <textarea id="address" name="address" autocomplete="street-address" required></textarea>
             </div>
             <div class="field">
               <label for="notes">Order notes (optional)</label>

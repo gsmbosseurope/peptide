@@ -78,7 +78,7 @@
     </nav>
 
   <main class="section container" style="text-align:center;">
-    <img src="../assets/brand/logo-icon.png" alt="Trusted Peptide" style="width:44px;height:44px;margin-bottom:16px;" aria-hidden="true" />
+    <img src="../assets/brand/logo-icon.png" alt="Trusted Peptide" width="44" height="44" style="margin-bottom:16px;" aria-hidden="true" />
     <span class="eyebrow">404</span>
     <h1>الصفحة غير موجودة</h1>
     <p style="max-width:52ch; margin:0 auto;">الصفحة التي تبحث عنها غير موجودة أو ربما تم نقلها. جرّب تصفح الكتالوج أو عد إلى الرئيسية.</p>
