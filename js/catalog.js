@@ -59,7 +59,9 @@ function categoryShortLabel(category) {
   if (typeof CATEGORY_LABELS_AR !== "undefined" && CATEGORY_LABELS_AR[category]) {
     return CATEGORY_LABELS_AR[category];
   }
-  return CATEGORY_SHORT_LABELS[category] || category;
+  if (CATEGORY_SHORT_LABELS[category]) return CATEGORY_SHORT_LABELS[category];
+  // Sub-category "Cosmetics › Face Care › Face Cream" → show just "Face Cream".
+  return category.includes(" › ") ? category.split(" › ").pop() : category;
 }
 
 /** A product's full set of categories — the `categories` array when present, else its single `category`. */
@@ -92,7 +94,7 @@ function productCardHTML(product) {
           ${product.showPurity !== false && product.purity ? `<span class="badge-purity badge-purity-inline">${isAr ? `نقاء ${product.purity}` : `${product.purity} purity`}</span>` : ""}
         </div>
         <span class="product-card-name">${product.name}</span>
-        <p class="product-card-desc">${product.shortDescription}</p>
+        <div class="product-card-desc">${product.shortDescription}</div>
         <div class="product-card-footer">
           <span class="price-tag">${isAr ? "من" : "from"} ${formatEURHtml(price)} <small>${isAr ? "/ الوحدة" : "/ unit"}</small></span>
           <span class="btn btn-ghost">${isAr ? "عرض ←" : "View →"}</span>
@@ -102,11 +104,16 @@ function productCardHTML(product) {
   `;
 }
 
-function renderProductGrid(container, products, options) {
-  const sortAlphabetically = !options || options.sort !== false;
-  if (sortAlphabetically) {
-    products = [...products].sort((a, b) => a.name.localeCompare(b.name));
-  }
+// A→Z by Latin name on every page. Arabic pages carry Arabic names, so
+// fall back to the id slug (always Latin) whenever a name isn't Latin.
+function productSortKey(p) {
+  return /^[A-Za-z0-9]/.test(p.name || "") ? p.name : p.id || "";
+}
+
+function renderProductGrid(container, products) {
+  products = [...products].sort((a, b) =>
+    productSortKey(a).localeCompare(productSortKey(b), "en", { numeric: true, sensitivity: "base" })
+  );
   if (!products.length) {
     container.innerHTML = isArabicPage()
       ? `
@@ -133,6 +140,80 @@ function initCatalogPage() {
 
   const filterBar = document.getElementById("filter-bar");
   const searchInput = document.getElementById("search-input");
+
+  // Dedicated section pages (cosmetics.php, vitamins.php) pin the grid to one
+  // category via data-section="cosmetic" — matched loosely against category
+  // names so "Cosmetics", "Cosmetic & Beauty" etc. all count.
+  const section = (grid.dataset.section || "").toLowerCase();
+  if (section) {
+    let term = "";
+    // Sub-categories are stored as "Parent › Child" (created in the admin
+    // panel); show them as filter chips above the grid. ?sub=<full name>
+    // (from the nav hover menu) preselects one.
+    const SEP = " › ";
+    const subs = PRODUCT_CATEGORIES.filter((c) => c.includes(SEP) && c.split(SEP)[0].toLowerCase().includes(section));
+    const urlSub = new URLSearchParams(window.location.search).get("sub");
+    let activeSub = urlSub && subs.includes(urlSub) ? urlSub : "All";
+    // Two chip rows: level-1 groups (e.g. "Face Care"), and — when a group
+    // with children is selected — that group's own items (Face Cream…).
+    const depth = (c) => c.split(SEP).length - 1;
+    const parentOf = (c) => c.split(SEP).slice(0, -1).join(SEP);
+    const topOf = (c) => c.split(SEP).slice(0, 2).join(SEP);
+    if (subs.length) {
+      const isAr = isArabicPage();
+      const labelsAr = typeof CATEGORY_LABELS_AR !== "undefined" ? CATEGORY_LABELS_AR : {};
+      const subLabel = (c) => (isAr && labelsAr[c]) || c.split(SEP).pop();
+      const chip = (value, label, on) =>
+        `<button class="filter-chip${on ? " active" : ""}" data-sub="${value.replace(/"/g, "&quot;")}"><span>${label}</span></button>`;
+      const bar = document.createElement("div");
+      bar.className = "filter-bar subcat-bar";
+      const bar2 = document.createElement("div");
+      bar2.className = "filter-bar subcat-bar subcat-bar--l2";
+      const draw = () => {
+        const top = activeSub === "All" ? "All" : topOf(activeSub);
+        bar.innerHTML = chip("All", isAr ? "الكل" : "All", top === "All") +
+          subs.filter((c) => depth(c) === 1).map((c) => chip(c, subLabel(c), top === c)).join("");
+        const kids = top === "All" ? [] : subs.filter((c) => depth(c) === 2 && parentOf(c) === top);
+        bar2.hidden = !kids.length;
+        bar2.innerHTML = kids.length
+          ? chip(top, isAr ? "الكل" : "All", activeSub === top) + kids.map((c) => chip(c, subLabel(c), activeSub === c)).join("")
+          : "";
+      };
+      grid.before(bar);
+      grid.before(bar2);
+      draw();
+      const onClick = (e) => {
+        const btn = e.target.closest(".filter-chip");
+        if (!btn) return;
+        activeSub = btn.dataset.sub;
+        draw();
+        render();
+      };
+      bar.addEventListener("click", onClick);
+      bar2.addEventListener("click", onClick);
+    }
+    const render = () => {
+      const list = PRODUCTS.filter((p) => {
+        const cats = productCategories(p);
+        const inSection = cats.some((c) => c.toLowerCase().includes(section));
+        // A group matches its own products plus everything under it.
+        const inSub = activeSub === "All" || cats.some((c) => c === activeSub || c.startsWith(activeSub + SEP));
+        const matchesSearch = !term || p.name.toLowerCase().includes(term) || p.shortDescription.toLowerCase().includes(term);
+        return inSection && inSub && matchesSearch;
+      });
+      if (!list.length && !term) {
+        grid.innerHTML = isArabicPage()
+          ? `<div class="empty-state"><h3>قريباً</h3><p>نجهّز منتجات هذا القسم حالياً — تابعنا قريباً.</p></div>`
+          : `<div class="empty-state"><h3>Coming soon</h3><p>We're preparing this collection — check back shortly.</p></div>`;
+        return;
+      }
+      renderProductGrid(grid, list);
+    };
+    const input = document.getElementById("search-input");
+    if (input) input.addEventListener("input", (e) => { term = e.target.value.trim().toLowerCase(); render(); });
+    render();
+    return;
+  }
 
   const urlCategory = new URLSearchParams(window.location.search).get("cat");
   let activeCategory = urlCategory && PRODUCT_CATEGORIES.includes(urlCategory) ? urlCategory : "All";
@@ -179,7 +260,8 @@ function initCatalogPage() {
   }
 
   if (filterBar) {
-    const categories = ["All", ...PRODUCT_CATEGORIES];
+    // Sub-categories ("Parent › Child") live on their section pages only.
+    const categories = ["All", ...PRODUCT_CATEGORIES.filter((c) => !c.includes(" › "))];
     filterBar.innerHTML = categories
       .map(
         (cat) =>
@@ -213,7 +295,7 @@ function initFeaturedGrid() {
   // Use products marked featured:true; fall back to first 4 if none are marked
   const marked = PRODUCTS.filter((p) => p.featured);
   const featured = marked.length ? marked : PRODUCTS.slice(0, 4);
-  renderProductGrid(grid, featured, { sort: false });
+  renderProductGrid(grid, featured);
 }
 
 function initBestSellersGrid() {
@@ -222,7 +304,7 @@ function initBestSellersGrid() {
   // Use products marked bestSeller:true; fall back to first 8 if none are marked
   const marked = PRODUCTS.filter((p) => p.bestSeller);
   const list = marked.length ? marked : PRODUCTS.slice(0, 8);
-  renderProductGrid(grid, list, { sort: false });
+  renderProductGrid(grid, list);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

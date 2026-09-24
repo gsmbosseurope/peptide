@@ -1510,3 +1510,80 @@ h1.pd-name,
 @media (max-width: 560px) {
   .field input, .field textarea, .field select { font-size: 16px; }
 }
+
+/* ==========================================================================
+   Larger numbers for readability — many customers are older, so sizes,
+   prices and quantities get a clear step up on every screen size.
+   ========================================================================== */
+.variant-chip { font-size: 1.05rem; font-weight: 600; min-height: 52px; }
+.qty-stepper button { width: 48px; height: 48px; font-size: 1.3rem; }
+.qty-stepper input { width: 64px; height: 48px; font-size: 1.2rem; font-weight: 600; }
+.price-row { font-size: 1.02rem; }
+.price-row.total { font-size: 1.5rem; }
+.price-tag { font-size: 1.15rem; }
+.currency-symbol { font-size: 0.82em; }
+@media (max-width: 600px) {
+  .variant-chip { font-size: 1rem; }
+  .price-tag { font-size: 1rem; }
+  .price-row.total { font-size: 1.35rem; }
+}
+
+/* Product main image: always a 1:1 square that the photo fills edge to edge
+   (no letterbox bands), on every screen size. */
+.pd-gallery-main,
+.pd-gallery-main[class] { aspect-ratio: 1 / 1; max-height: none; background: transparent; }
+.pd-gallery-main img { object-fit: cover; }
+
+/* Images inserted through the rich-text editor (product descriptions, blog
+   posts, guide topics) scale down to fit their column on every screen. */
+.pd-desc img,
+.pd-tab-panel img,
+.guide-article-body img,
+.guide-article-summary img {
+  display: block;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 16px auto;
+  border-radius: 12px;
+}
+.pd-desc, .pd-tab-panel { overflow-wrap: anywhere; }
+/* Grid/flex children default to min-width:auto, so a wide description image
+   stretched the whole info column past the screen. Let columns shrink. */
+.product-detail > *, .pd-info, .pd-gallery, .pd-tab-panel, .pd-desc,
+.guide-article, .guide-article-body { min-width: 0; max-width: 100%; }
+/* Belt-and-braces: any image in the product info column fits the screen. */
+.pd-info img { max-width: 100% !important; height: auto !important; }
+
+/* Alignment / direction set in the admin rich-text editor (Quill classes). */
+.ql-align-center { text-align: center; }
+.ql-align-right { text-align: right; }
+.ql-align-left { text-align: left; }
+.ql-align-justify { text-align: justify; }
+.ql-direction-rtl { direction: rtl; text-align: inherit; }
+.ql-align-center img { margin-inline: auto; }
+.ql-align-right img { margin-inline: auto 0; }
+.ql-align-left img { margin-inline: 0 auto; }
+
+/* Product description: short one-line paragraphs (typical when text is
+   pasted line by line) read as a tight list, not double-spaced lines. */
+.pd-desc { line-height: 1.6; }
+.pd-desc p { margin: 0 0 6px; }
+.pd-desc ul, .pd-desc ol { margin: 4px 0 12px; padding-inline-start: 1.3em; }
+.pd-desc li { margin: 0 0 4px; }
+.pd-desc h2, .pd-desc h3 { margin: 18px 0 8px; }
+.pd-desc p:has(> img) { margin: 14px 0; }
+
+/* Product cards: equal height per row, description capped at 3 lines, and
+   the price/View row pinned to the bottom — no ragged gaps between cards. */
+.product-grid { align-items: stretch; }
+.product-card { height: 100%; display: flex; flex-direction: column; }
+.product-card-body { flex: 1; display: flex; flex-direction: column; }
+.product-card-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.product-card-desc * { display: inline; margin: 0; } /* rich-text <p>/<ul> inside the clamp */
+.product-card-footer { margin-top: auto; }

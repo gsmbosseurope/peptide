@@ -59,6 +59,9 @@
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="cosmetics">Cosmetics</a>
+        <a href="vitamins">Vitamins</a>
+        <a href="gallery">Gallery</a>
         <a href="blog">Blog</a>
         
         <a href="peptide-guide">Peptide Guide</a>
@@ -88,6 +91,8 @@
       <a href="/">Home</a>
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
+      <a href="cosmetics">Cosmetics</a>
+      <a href="vitamins">Vitamins</a>
       <a href="blog">Blog</a>
       
       <a href="peptide-guide">Peptide Guide</a>
@@ -142,6 +147,7 @@
 
   <footer class="site-footer">
     <div class="container">
+      <div class="footer-seal-col footer-seal-solo"><img class="badge-eu badge-eu--light" src="assets/brand/purity-badge-light.webp" alt="99% Pure Peptide" width="96" height="96" loading="lazy" /><img class="badge-eu badge-eu--dark" src="assets/brand/purity-badge-dark.webp" alt="99% Pure Peptide" width="96" height="96" loading="lazy" /></div>
                         <div class="footer-contact-section">
         <h4 class="footer-contact-heading">Get in Touch</h4>
         <div class="footer-contact-row">

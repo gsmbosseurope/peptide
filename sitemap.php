@@ -18,11 +18,15 @@ $staticPages = [
     ['path' => '/about', 'priority' => '0.6', 'changefreq' => 'monthly'],
     ['path' => '/products', 'priority' => '0.9', 'changefreq' => 'daily'],
     ['path' => '/best-sellers', 'priority' => '0.8', 'changefreq' => 'weekly'],
+    ['path' => '/cosmetics', 'priority' => '0.8', 'changefreq' => 'weekly'],
+    ['path' => '/vitamins', 'priority' => '0.8', 'changefreq' => 'weekly'],
     ['path' => '/blog', 'priority' => '0.7', 'changefreq' => 'weekly'],
     ['path' => '/peptide-guide', 'priority' => '0.6', 'changefreq' => 'weekly'],
     ['path' => '/contact', 'priority' => '0.4', 'changefreq' => 'yearly'],
     ['path' => '/ar/', 'priority' => '0.9', 'changefreq' => 'daily'],
     ['path' => '/ar/products', 'priority' => '0.8', 'changefreq' => 'daily'],
+    ['path' => '/ar/cosmetics', 'priority' => '0.7', 'changefreq' => 'weekly'],
+    ['path' => '/ar/vitamins', 'priority' => '0.7', 'changefreq' => 'weekly'],
 ];
 
 /** Arabic product ids — same balanced-bracket extractor pattern as admin-php/data.php, duplicated here since the Arabic catalog isn't wired into that data layer yet. */

@@ -386,7 +386,20 @@ textarea { resize: vertical; min-height: 80px; }
 .category-usage { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
 .category-row .btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.add-category-row { display: flex; gap: 10px; margin-top: 16px; }
+.add-category-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.add-category-row select { flex: 0 1 260px; min-width: 0; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(128,128,128,.35); font: inherit; background: inherit; color: inherit; }
+.add-category-row textarea { flex: 1 1 240px; min-height: 44px; resize: vertical; }
+.category-row.is-subcat { padding-inline-start: calc(var(--depth, 1) * 24px + 4px); position: relative; }
+.category-row .subcat-mark { position: absolute; inset-inline-start: calc(var(--depth, 1) * 24px - 16px); top: 50%; transform: translateY(-50%); color: #00a3ae; font-weight: 700; }
+.url-import-row { display: flex; gap: 8px; margin: 10px 0 4px; }
+.url-import-row input { flex: 1; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-primary); font: inherit; }
+.ar-images-field #ar-own-images { margin-top: 10px; }
+.ar-upload-btn { display: inline-block; margin-top: 10px; text-transform: none; letter-spacing: normal; cursor: pointer; }
+.promo-field { margin-top: 8px; padding: 14px; border-radius: 12px; border: 1px solid rgba(0,184,196,.35); background: rgba(0,184,196,.06); }
+.promo-filter { width: 100%; margin: 6px 0 8px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-primary); font: inherit; }
+.promo-list { max-height: 220px; overflow-y: auto; }
+.promo-mutual { margin-top: 10px; font-weight: 500; }
+.checkbox-label.is-subcat { padding-inline-start: calc(var(--depth, 1) * 22px); color: #00838c; }
 .add-category-row input {
   flex: 1;
   padding: 10px 12px;
@@ -455,3 +468,8 @@ textarea { resize: vertical; min-height: 80px; }
 
   .media-thumb { width: 80px; height: 80px; }
 }
+
+/* Rich-text (Quill) editors: at least 7 lines tall so there's room to write,
+   growing with the content beyond that. */
+.ql-container { font-size: 15px; }
+.ql-container .ql-editor { min-height: calc(7 * 1.6em + 24px); line-height: 1.6; }

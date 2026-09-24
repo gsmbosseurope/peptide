@@ -98,6 +98,22 @@ function animBtn(el, cls) {
   el.addEventListener("animationend", () => el.classList.remove(cls), { once: true });
 }
 
+/**
+ * Category line under the product title. A product tagged with a whole path
+ * ("Cosmetics", "Cosmetics › Face Care", "… › Face Serum") shows only the
+ * most specific entry, as its last segment: "Face Serum".
+ */
+function pdCategoryLine(cats, labelFn) {
+  const SEP = " › ";
+  const leaves = cats.filter((c) => !cats.some((o) => o !== c && o.startsWith(c + SEP)));
+  return leaves
+    .map((c) => {
+      const label = labelFn(c);
+      return label && label !== c ? label : c.split(SEP).pop();
+    })
+    .join(" · ");
+}
+
 function initProductDetailPage() {
   const root = document.getElementById("product-detail-root");
   if (!root) return;
@@ -136,9 +152,9 @@ function initProductDetailPage() {
       </div>
       <div class="pd-info">
         ${product.showPurity !== false && product.purity ? `<span class="badge-purity">${product.purity} purity</span>` : ""}
-        <div class="pd-cat">${productCategories(product).join(" · ")}</div>
+        <div class="pd-cat">${pdCategoryLine(productCategories(product), (c) => c)}</div>
         <h1 class="pd-name">${product.name}</h1>
-        <p class="pd-desc">${product.shortDescription}</p>
+        <div class="pd-desc">${product.shortDescription}</div>
 
         <div class="variant-select">
           <label>Select size</label>
@@ -146,7 +162,7 @@ function initProductDetailPage() {
             ${product.variants
               .map(
                 (v, i) =>
-                  `<button class="variant-chip${i === 0 ? " active" : ""}" data-idx="${i}" data-dose="${parseInt(v.size) || 0}">${v.size} — ${formatEURHtml(v.price)}</button>`
+                  `<button class="variant-chip${i === 0 ? " active" : ""}" data-idx="${i}" data-dose="${parseInt(v.size) || 0}">${v.size}&nbsp;—&nbsp;${formatEURHtml(v.price)}</button>`
               )
               .join("")}
           </div>

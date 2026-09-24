@@ -38,6 +38,63 @@ function send_error($message, $status = 500) {
     send(['error' => $message], $status);
 }
 
+/** [filesystem dir, web path] for a product's media; kind "desc" = description/editor images. */
+function product_media_dir($id, $kind) {
+    $id = preg_replace('/[^a-z0-9_-]/i', '', (string) $id);
+    if ($id === '') send_error('Invalid product id.', 400);
+    if ($kind === 'desc') return [ROOT_DIR . '/assets/descriptions/' . $id, "assets/descriptions/$id"];
+    return [PRODUCTS_ASSETS_DIR . '/' . $id, "assets/products/$id"];
+}
+
+/**
+ * Downloads an image from a public http(s) URL. Refuses private/internal
+ * addresses (re-checked on every redirect), non-images and oversized files.
+ * Returns [bytes, extension, filename hint].
+ */
+function fetch_remote_image($url) {
+    $types = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'image/gif' => 'gif', 'image/avif' => 'avif'];
+    for ($hop = 0; $hop < 4; $hop++) {
+        $parts = parse_url($url);
+        $scheme = strtolower($parts['scheme'] ?? '');
+        $host = $parts['host'] ?? '';
+        if (!in_array($scheme, ['http', 'https'], true) || $host === '') send_error('Please paste a full http(s):// image link.', 400);
+        $ips = gethostbynamel($host) ?: [];
+        if (!$ips) send_error('Could not reach that address.', 400);
+        foreach ($ips as $ip) {
+            if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) send_error('That address is not allowed.', 400);
+        }
+        $ch = curl_init($url);
+        $data = '';
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => false,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_RESOLVE => [$host . ':' . ($parts['port'] ?? ($scheme === 'https' ? 443 : 80)) . ':' . $ips[0]],
+            CURLOPT_CONNECTTIMEOUT => 8,
+            CURLOPT_TIMEOUT => 25,
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (TrustedPeptide admin image import)',
+            CURLOPT_WRITEFUNCTION => function ($ch, $chunk) use (&$data) {
+                $data .= $chunk;
+                return strlen($data) > MAX_UPLOAD_BYTES ? 0 : strlen($chunk); // abort when too big
+            },
+        ]);
+        curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        $location = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+        $err = curl_errno($ch);
+        curl_close($ch);
+        if ($status >= 300 && $status < 400 && $location) { $url = $location; continue; }
+        if (strlen($data) > MAX_UPLOAD_BYTES) send_error('Image is too large.', 400);
+        if ($err || $status !== 200 || $data === '') send_error('Could not download the image (HTTP ' . $status . ').', 400);
+        $info = @getimagesizefromstring($data);
+        $mime = $info['mime'] ?? '';
+        if (!isset($types[$mime])) send_error('That link is not a supported image (JPG, PNG, WebP, GIF, AVIF).', 400);
+        $hint = pathinfo(parse_url($url, PHP_URL_PATH) ?? '', PATHINFO_FILENAME);
+        return [$data, $types[$mime], $hint];
+    }
+    send_error('Too many redirects.', 400);
+}
+
 // Path comes from the rewritten URL, e.g. /api/products/bpc-157/upload
 $path = $_GET['path'] ?? '';
 $path = '/' . trim($path, '/');
@@ -73,8 +130,45 @@ try {
         foreach ($products as $i => $p) if ($p['id'] === $id) { $idx = $i; break; }
         if ($idx === null) send_error('Product not found.', 404);
         $incoming = read_json_body();
-        $products[$idx] = normalize_product(array_merge($products[$idx], $incoming, ['id' => $id]));
+        $mutual = !empty($incoming['promotedMutual']);
+        unset($incoming['promotedMutual']);
+        // The editor always sends the full list, so an empty list clears it.
+        $merged = array_merge($products[$idx], $incoming, ['id' => $id]);
+        if (array_key_exists('promoted', $incoming) && empty($incoming['promoted'])) unset($merged['promoted']);
+        $products[$idx] = normalize_product($merged);
+
+        // "Link both ways": add this product to each promoted product's own list.
+        $touched = [$id];
+        if ($mutual && !empty($products[$idx]['promoted'])) {
+            foreach ($products as $i => $p) {
+                if (!in_array($p['id'], $products[$idx]['promoted'], true)) continue;
+                $list = $p['promoted'] ?? [];
+                if (in_array($id, $list, true)) continue;
+                $list[] = $id;
+                $p['promoted'] = $list;
+                $products[$i] = normalize_product($p);
+                $touched[] = $p['id'];
+            }
+        }
         save_products($products);
+
+        // Keep the Arabic catalog's featured/best-seller/promoted fields in
+        // step with English, so /ar pages update without re-saving translations.
+        $byId = [];
+        foreach ($products as $p) $byId[$p['id']] = $p;
+        $productsAr = load_products_ar();
+        $arChanged = false;
+        foreach ($productsAr as $i => $pa) {
+            if (!in_array($pa['id'], $touched, true) || !isset($byId[$pa['id']])) continue;
+            $en = $byId[$pa['id']];
+            unset($pa['featured'], $pa['bestSeller'], $pa['promoted']);
+            if (!empty($en['featured'])) $pa['featured'] = true;
+            if (!empty($en['bestSeller'])) $pa['bestSeller'] = true;
+            if (!empty($en['promoted'])) $pa['promoted'] = $en['promoted'];
+            $productsAr[$i] = $pa;
+            $arChanged = true;
+        }
+        if ($arChanged) save_products_ar($productsAr);
         send(['ok' => true]);
     }
 
@@ -143,12 +237,19 @@ try {
         if ($newName !== $oldName && in_array($newName, $data['categoryList'], true)) {
             send_error('Category "' . $newName . '" already exists.', 400);
         }
-        $updatedList = array_map(fn($c) => $c === $oldName ? $newName : $c, $data['categoryList']);
-        $updatedProducts = array_map(function ($p) use ($oldName, $newName) {
+        // Renaming a parent also renames its sub-categories ("Parent › Child").
+        $subPrefix = $oldName . ' › ';
+        $rename = function ($c) use ($oldName, $newName, $subPrefix) {
+            if ($c === $oldName) return $newName;
+            if (strpos((string) $c, $subPrefix) === 0) return $newName . ' › ' . substr($c, strlen($subPrefix));
+            return $c;
+        };
+        $updatedList = array_map($rename, $data['categoryList']);
+        $updatedProducts = array_map(function ($p) use ($rename) {
             $hadCategories = !empty($p['categories']) && is_array($p['categories']);
-            $nextCategory = $p['category'] === $oldName ? $newName : $p['category'];
+            $nextCategory = $rename($p['category']);
             if ($hadCategories) {
-                $p['categories'] = array_map(fn($c) => $c === $oldName ? $newName : $c, $p['categories']);
+                $p['categories'] = array_map($rename, $p['categories']);
             }
             $p['category'] = $nextCategory;
             return $p;
@@ -209,19 +310,36 @@ try {
     }
 
     // ---------- /api/products/:id/upload ----------
+    // kind=desc (description/editor images) → assets/descriptions/<id>/,
+    // otherwise product photos → assets/products/<id>/.
     if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'products' && $segments[3] === 'upload' && $method === 'POST') {
-        $id = urldecode($segments[2]);
+        [$dir, $webDir] = product_media_dir(urldecode($segments[2]), $_POST['kind'] ?? '');
         if (empty($_FILES['file'])) send_error('No file uploaded.', 400);
         $file = $_FILES['file'];
         if ($file['error'] !== UPLOAD_ERR_OK) send_error('Upload failed.', 400);
         if ($file['size'] > MAX_UPLOAD_BYTES) send_error('File too large.', 400);
-        $dir = PRODUCTS_ASSETS_DIR . '/' . $id;
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowedExt = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'avif', 'mp4', 'webm', 'mov'];
+        if (!in_array($ext, $allowedExt, true)) send_error('Unsupported file type.', 400);
         @mkdir($dir, 0755, true);
-        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
         $base = slugify(pathinfo($file['name'], PATHINFO_FILENAME)) ?: 'file';
-        $filename = $base . '-' . round(microtime(true) * 1000) . ($ext ? '.' . $ext : '');
+        $filename = $base . '-' . round(microtime(true) * 1000) . '.' . $ext;
         move_uploaded_file($file['tmp_name'], $dir . '/' . $filename);
-        send(['ok' => true, 'path' => "assets/products/$id/$filename"]);
+        send(['ok' => true, 'path' => "$webDir/$filename"]);
+    }
+
+    // ---------- /api/products/:id/upload-url ----------
+    // Downloads an image from a public URL onto this server (so the site
+    // never hot-links someone else's image). Body: { url, kind }.
+    if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'products' && $segments[3] === 'upload-url' && $method === 'POST') {
+        $body = read_json_body();
+        [$dir, $webDir] = product_media_dir(urldecode($segments[2]), $body['kind'] ?? '');
+        [$bytes, $ext, $nameHint] = fetch_remote_image(trim((string) ($body['url'] ?? '')));
+        @mkdir($dir, 0755, true);
+        $base = slugify($nameHint) ?: 'image';
+        $filename = substr($base, 0, 60) . '-' . round(microtime(true) * 1000) . '.' . $ext;
+        file_put_contents($dir . '/' . $filename, $bytes);
+        send(['ok' => true, 'path' => "$webDir/$filename"]);
     }
 
     if (count($segments) === 4 && $segments[0] === 'api' && $segments[1] === 'products' && $segments[3] === 'files' && $method === 'GET') {

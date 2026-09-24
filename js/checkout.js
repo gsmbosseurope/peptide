@@ -101,20 +101,56 @@ function initCheckoutPage() {
     const message = buildOrderMessage(formData);
     if (!message) return;
 
+    // --- UX: disable submit button and show spinner while "processing" ---
+    const submitBtn = form.querySelector('[type="submit"]');
+    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : null;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<svg style="display:inline-block;vertical-align:middle;margin-right:6px;animation:spin 0.8s linear infinite" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2.5" stroke-dasharray="28" stroke-dashoffset="10" stroke-linecap="round"/></svg>Processing…';
+    }
+    if (!document.getElementById("_co-spin-style")) {
+      const s = document.createElement("style");
+      s.id = "_co-spin-style";
+      s.textContent = "@keyframes spin{to{transform:rotate(360deg)}}";
+      document.head.appendChild(s);
+    }
+
     const whatsappUrl = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     const mailtoUrl = `mailto:${STORE_EMAIL}?subject=${encodeURIComponent(
       "New order — trusted-peptide.com"
     )}&body=${encodeURIComponent(message)}`;
 
-    document.getElementById("checkout-whatsapp-link").href = whatsappUrl;
-    document.getElementById("checkout-mailto-link").href = mailtoUrl;
-    document.getElementById("checkout-form-panel").style.display = "none";
-    document.getElementById("checkout-confirm-panel").style.display = "block";
+    // Short delay so the user sees the Processing state before panel swap
+    setTimeout(() => {
+      document.getElementById("checkout-whatsapp-link").href = whatsappUrl;
+      document.getElementById("checkout-mailto-link").href = mailtoUrl;
+      document.getElementById("checkout-form-panel").style.display = "none";
 
-    // Order details have been handed off to WhatsApp/email at this point;
-    // stop warning so the confirm-panel links (which navigate away) work.
-    formTouched = false;
-    window.removeEventListener("beforeunload", onBeforeUnload);
+      const confirmPanel = document.getElementById("checkout-confirm-panel");
+      confirmPanel.style.display = "block";
+
+      // --- UX: "Order placed!" success message above the send buttons ---
+      if (!confirmPanel.querySelector(".order-placed-msg")) {
+        const msg = document.createElement("p");
+        msg.className = "order-placed-msg";
+        msg.style.cssText =
+          "color:#38a169;font-weight:600;font-size:1rem;margin-bottom:12px;";
+        msg.textContent = "Order placed! Please choose how to send your details:";
+        confirmPanel.insertBefore(msg, confirmPanel.querySelector("div"));
+      }
+
+      // Re-enable button in case user navigates back (edge case)
+      if (submitBtn && originalBtnHtml) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+
+      // Order details have been handed off to WhatsApp/email at this point;
+      // stop warning so the confirm-panel links (which navigate away) work.
+      formTouched = false;
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    }, 600);
   });
 }
 

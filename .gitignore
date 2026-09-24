@@ -15,3 +15,17 @@ Trusted-Peptide/admin-php/config.php
 # OS/editor cruft
 .DS_Store
 Thumbs.db
+
+# Local tooling / scratch — not part of the site
+.agents/
+.claude/
+.playwright-mcp/
+.impeccable/
+0/
+Claude outputs/
+node_modules/
+skills-lock.json
+
+# Archives (manual upload bundles, backups)
+*.zip
+*.rar

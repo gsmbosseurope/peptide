@@ -116,6 +116,8 @@ if (!isset($schemaJson)) {
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="cosmetics">Cosmetics</a>
+        <a href="vitamins">Vitamins</a>
         <a href="blog">Blog</a>
         <a href="peptide-guide">Peptide Guide</a>
         <a href="gallery">Gallery</a>
@@ -144,6 +146,8 @@ if (!isset($schemaJson)) {
     <a href="/">Home</a>
     <a href="about">About</a>
     <a href="best-sellers">Best Sellers</a>
+    <a href="cosmetics">Cosmetics</a>
+    <a href="vitamins">Vitamins</a>
     <a href="blog">Blog</a>
     <a href="peptide-guide">Peptide Guide</a>
     <a href="gallery">Gallery</a>

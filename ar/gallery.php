@@ -59,6 +59,8 @@ $galleryItems = load_gallery_items();
         <a href="/ar/"">الرئيسية</a>
         <a href="about">من نحن</a>
         <a href="best-sellers">الأكثر مبيعاً</a>
+        <a href="cosmetics">مستحضرات التجميل</a>
+        <a href="vitamins">الفيتامينات</a>
         <a href="blog">المدونة</a>
 
         <a href="peptide-guide">دليل الببتيد</a>
@@ -89,6 +91,8 @@ $galleryItems = load_gallery_items();
       <a href="/ar/"">الرئيسية</a>
       <a href="about">من نحن</a>
       <a href="best-sellers">الأكثر مبيعاً</a>
+      <a href="cosmetics">مستحضرات التجميل</a>
+      <a href="vitamins">الفيتامينات</a>
       <a href="blog">المدونة</a>
 
       <a href="peptide-guide">دليل الببتيد</a>
@@ -162,14 +166,14 @@ $galleryItems = load_gallery_items();
         </div>
         <div>
           <h4>تواصل معنا</h4>
-          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener" dir="ltr">+32 469 12 62 44</a></li><li><a href="contact">الدعم</a></li><li><img class="badge-eu" src="../assets/brand/eu-seal.png" alt="مختبر معتمد أوروبي" width="72" height="72" loading="lazy" /></li></ul>
+          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener" dir="ltr">+32 469 12 62 44</a></li><li><a href="contact">الدعم</a></li><li><img class="badge-eu badge-eu--light" src="../assets/brand/purity-badge-light.webp" alt="ببتيد نقي 99%" width="72" height="72" loading="lazy" /><img class="badge-eu badge-eu--dark" src="../assets/brand/purity-badge-dark.webp" alt="ببتيد نقي 99%" width="72" height="72" loading="lazy" /></li></ul>
         </div>
       </div>
                   <div class="footer-contact-section">
         <h4 class="footer-contact-heading">تواصل معنا</h4>
         <div class="footer-contact-row">
           <span class="footer-contact-label">إتصل بنا</span>
-          <a href="tel:+32469126244" style="white-space:nowrap;">+32 469 12 62 44</a>
+          <a href="tel:+32469126244" dir="ltr" style="white-space:nowrap;">+32 469 12 62 44</a>
           <a class="footer-whatsapp-icon" href="https://wa.me/32469126244" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.6 6.32A7.85 7.85 0 0012.05 4a7.94 7.94 0 00-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 003.83 1H12a7.94 7.94 0 007.94-7.94 7.9 7.9 0 00-2.34-5.64zm-5.55 12.2h-.02a6.58 6.58 0 01-3.36-.92l-.24-.14-2.5.65.67-2.43-.16-.25a6.6 6.6 0 1112.28-3.5 6.6 6.6 0 01-6.67 6.59zm3.62-4.94c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1-.13.19-.51.64-.62.77-.11.13-.23.15-.43.05-.2-.1-.83-.31-1.58-.98-.58-.52-.98-1.16-1.09-1.36-.11-.2-.01-.3.09-.4.09-.1.2-.23.3-.35.1-.11.13-.19.2-.32.07-.13.03-.25-.02-.35-.05-.1-.44-1.06-.6-1.45-.16-.38-.32-.33-.44-.34h-.38c-.13 0-.34.05-.52.24-.18.19-.68.67-.68 1.63s.7 1.9.8 2.03c.1.13 1.38 2.1 3.34 2.95.47.2.83.32 1.12.41.47.15.9.13 1.24.08.38-.06 1.17-.48 1.33-.94.16-.46.16-.86.11-.94-.05-.08-.18-.13-.38-.23z" fill="#fff"/></svg></a>
         </div>
       </div>

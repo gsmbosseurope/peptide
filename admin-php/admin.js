@@ -348,14 +348,33 @@ function renderEditor(product) {
             const selected = Array.isArray(product.categories) && product.categories.length
               ? product.categories
               : [product.category].filter(Boolean);
-            return CATEGORIES.map(
+            return orderedCategories().map(
               (c) =>
-                `<label class="checkbox-label"><input type="checkbox" value="${escapeAttr(c)}" ${selected.includes(c) ? "checked" : ""} /> ${escapeHtml(c)}</label>`
+                `<label class="checkbox-label${isSubcat(c) ? " is-subcat" : ""}" style="--depth:${subcatDepth(c)}"><input type="checkbox" value="${escapeAttr(c)}" ${selected.includes(c) ? "checked" : ""} /> ${isSubcat(c) ? "↳ " + escapeHtml(subcatLabel(c)) : escapeHtml(c)}</label>`
             ).join("");
           })()}
         </div>
         <span class="field-hint">Select one or more. The first checked category is used as the primary one shown first. Manage the list via the "Categories" button above.</span>
       </div>
+    </div>
+    <div class="field-group promo-field">
+      <label>📣 Promoted products — shown as an ad on this product's page</label>
+      <input type="search" id="f-promoted-filter" class="promo-filter" placeholder="Search products…" />
+      <div class="category-checkbox-list promo-list" id="f-promoted">
+        ${PRODUCTS.filter((p) => p.id !== product.id)
+          .slice()
+          .sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true }))
+          .map((p) => {
+            const on = Array.isArray(product.promoted) && product.promoted.includes(p.id);
+            return `<label class="checkbox-label" data-name="${escapeAttr(p.name.toLowerCase())}"><input type="checkbox" value="${escapeAttr(p.id)}" ${on ? "checked" : ""} /> ${escapeHtml(p.name)}</label>`;
+          })
+          .join("")}
+      </div>
+      <label class="checkbox-label promo-mutual">
+        <input type="checkbox" id="f-promoted-mutual" checked />
+        🔁 Link both ways — also show <strong>this</strong> product as an ad on the ones checked above
+      </label>
+      <span class="field-hint">Shown next to "Add to Cart" and in a "You may also like" section at the bottom of the page (English &amp; Arabic).</span>
     </div>
     <div class="field-row">
       <div class="field-group">
@@ -394,6 +413,10 @@ function renderEditor(product) {
       ${isNew ? "Save the product once first, then come back to upload media." : "Click to upload images or a video for this product"}
     </div>
     <input type="file" id="file-input" accept="image/*,video/*" multiple hidden ${isNew ? "disabled" : ""} />
+    ${isNew ? "" : `<div class="url-import-row">
+      <input type="url" id="image-url-input" placeholder="…or paste an image link (https://…)" />
+      <button type="button" class="btn btn-sm" id="image-url-btn">🔗 Add from link</button>
+    </div>`}
 
     <div class="section-title">Variants (size &amp; price)</div>
     <div id="variants-list"></div>
@@ -406,10 +429,28 @@ function renderEditor(product) {
     ${isNew ? "" : `
     <div class="ar-translation-block" style="border:2px solid #c9a15a; border-radius:10px; padding:16px; margin-top:8px; background:rgba(201,161,90,0.06);">
       <div class="section-title" style="margin-top:0;">Arabic Translation (trusted-peptide.com/ar)</div>
-      <p class="modal-hint">Category, purity, images, video, sizes and prices always match the English product above — only the text fields below are translated. These are saved exactly as written; leaving a field blank saves it blank (no automatic fallback to the English text).</p>
+      <p class="modal-hint">Category, purity, video, sizes and prices always match the English product above. Images are shared by default — untick "Same images as English" to give the Arabic page its own. Text fields are saved exactly as written; leaving a field blank saves it blank (no automatic fallback to the English text).</p>
       <div class="field-group">
         <label>Product Name (Arabic)</label>
         <input type="text" id="ar-name" dir="rtl" placeholder="جارٍ التحميل…" disabled />
+      </div>
+      <div class="field-group ar-images-field">
+        <label>Images (Arabic page)</label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="ar-shared-images" checked />
+          🔗 Same images as English (shared)
+        </label>
+        <div id="ar-own-images" hidden>
+          <div class="media-grid" id="ar-media-grid"></div>
+          <label class="btn btn-sm ar-upload-btn">📤 Upload Arabic images
+            <input type="file" id="ar-upload-input" accept="image/*" multiple hidden />
+          </label>
+          <div class="url-import-row">
+            <input type="url" id="ar-image-url-input" placeholder="…or paste an image link (https://…)" />
+            <button type="button" class="btn btn-sm" id="ar-image-url-btn">🔗 Add from link</button>
+          </div>
+          <span class="field-hint">The first image is the cover. Saved with "Save Arabic Translation".</span>
+        </div>
       </div>
       <div class="field-group">
         <label>Short Description (Arabic)</label>
@@ -452,11 +493,13 @@ function renderEditor(product) {
           [{ header: [2, 3, false] }],
           ["bold", "italic", "underline"],
           [{ color: [] }],
+          [{ align: [] }, { direction: "rtl" }],
+          [{ list: "ordered" }, { list: "bullet" }],
           ["link", "image"],
           ["clean"],
         ],
         handlers: {
-          image: () => productDescQuillImageHandler(product.id),
+          image: () => productDescQuillImageHandler(product.id, productDescQuillInstance),
         },
       },
     },
@@ -488,7 +531,34 @@ function renderEditor(product) {
     const fileInput = document.getElementById("file-input");
     dropZone.addEventListener("click", () => fileInput.click());
     fileInput.addEventListener("change", () => handleUpload(product.id, fileInput.files));
+
+    // Product photo from a link: the server downloads it into assets/products/<id>/.
+    const urlInput = document.getElementById("image-url-input");
+    const addFromLink = async () => {
+      const url = urlInput.value.trim();
+      if (!url) return;
+      try {
+        const data = await importImageFromUrl(product.id, url, "");
+        currentImages.push(data.path);
+        renderMedia(currentImages, currentVideo);
+        urlInput.value = "";
+        showToast("Image added — remember to Save Changes to keep it linked.");
+      } catch (e) {
+        showToast(`Could not add image: ${e.message}`, "error");
+      }
+    };
+    document.getElementById("image-url-btn").addEventListener("click", addFromLink);
+    urlInput.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); addFromLink(); } });
   }
+}
+
+/** Asks the server to download an image from a link. kind "desc" = description images folder. */
+async function importImageFromUrl(productId, url, kind) {
+  showToast("Downloading image…");
+  return api(`/api/products/${encodeURIComponent(productId)}/upload-url`, {
+    method: "POST",
+    body: JSON.stringify({ url, kind }),
+  });
 }
 
 function renderVariants(variants) {
@@ -613,12 +683,24 @@ async function handleUpload(productId, files) {
   showToast("Media uploaded — remember to Save Changes to keep it linked.");
 }
 
+// Live filter for the "Promoted products" checklist (editor is re-rendered
+// via innerHTML, so listen at the document level).
+document.addEventListener("input", (e) => {
+  if (e.target.id !== "f-promoted-filter") return;
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll("#f-promoted .checkbox-label").forEach((l) => {
+    l.style.display = !q || l.dataset.name.includes(q) ? "" : "none";
+  });
+});
+
 function collectFormData(base) {
   const selectedCategories = Array.from(
     document.querySelectorAll("#f-categories input[type=checkbox]:checked")
   ).map((cb) => cb.value);
   return {
     name: document.getElementById("f-name").value.trim(),
+    promoted: Array.from(document.querySelectorAll("#f-promoted input[type=checkbox]:checked")).map((cb) => cb.value),
+    promotedMutual: document.getElementById("f-promoted-mutual").checked,
     featured: document.getElementById("f-featured").checked,
     bestSeller: document.getElementById("f-bestSeller").checked,
     category: selectedCategories[0] || "",
@@ -657,6 +739,47 @@ async function saveProduct(base) {
 
 /* ---------- Arabic translation (per-product, trusted-peptide.com/ar) ---------- */
 
+// Arabic-only image set (used when "Same images as English" is unticked).
+let arImages = [];
+
+function renderArImages() {
+  const grid = document.getElementById("ar-media-grid");
+  if (!grid) return;
+  grid.innerHTML = arImages
+    .map(
+      (src, i) => `
+    <div class="media-thumb${i === 0 ? " is-cover" : ""}">
+      <img src="/${src}" />
+      <button class="remove-btn" data-src="${escapeAttr(src)}">✕</button>
+    </div>`
+    )
+    .join("") || '<p class="field-hint" style="margin:0;">No Arabic images yet — upload below.</p>';
+  grid.querySelectorAll(".remove-btn").forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      arImages = arImages.filter((s) => s !== btn.dataset.src);
+      renderArImages();
+    })
+  );
+}
+
+async function uploadArImages(productId, files) {
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch(`/api/products/${encodeURIComponent(productId)}/upload`, { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      arImages.push(data.path);
+    } catch (e) {
+      showToast(`Upload failed: ${e.message}`, "error");
+    }
+  }
+  renderArImages();
+  showToast("Arabic images uploaded — click Save Arabic Translation to keep them.");
+}
+
 async function loadArabicTranslation(productId) {
   const nameInput = document.getElementById("ar-name");
   const compositionInput = document.getElementById("ar-composition");
@@ -672,11 +795,13 @@ async function loadArabicTranslation(productId) {
           [{ header: [2, 3, false] }],
           ["bold", "italic", "underline"],
           [{ color: [] }],
+          [{ align: [] }, { direction: "rtl" }],
+          [{ list: "ordered" }, { list: "bullet" }],
           ["link", "image"],
           ["clean"],
         ],
         handlers: {
-          image: () => productDescQuillImageHandler(productId),
+          image: () => productDescQuillImageHandler(productId, productDescQuillInstanceAr),
         },
       },
     },
@@ -700,6 +825,41 @@ async function loadArabicTranslation(productId) {
   usesInput.placeholder = "";
   productDescQuillInstanceAr.root.innerHTML = ar.shortDescription || "";
 
+  // Images: shared with English unless this product has its own Arabic set.
+  const sharedBox = document.getElementById("ar-shared-images");
+  const ownWrap = document.getElementById("ar-own-images");
+  arImages = ar.ownImages && Array.isArray(ar.images) ? [...ar.images] : [];
+  sharedBox.checked = !ar.ownImages;
+  ownWrap.hidden = sharedBox.checked;
+  renderArImages();
+  sharedBox.addEventListener("change", () => {
+    ownWrap.hidden = sharedBox.checked;
+    // Start the Arabic set from the English images, to edit from there.
+    if (!sharedBox.checked && !arImages.length) { arImages = [...currentImages]; renderArImages(); }
+  });
+  document.getElementById("ar-upload-input").addEventListener("change", (e) => {
+    uploadArImages(productId, [...e.target.files]);
+    e.target.value = "";
+  });
+
+  // Arabic image from a link (server downloads it, same as the English photos).
+  const arUrlInput = document.getElementById("ar-image-url-input");
+  const addArFromLink = async () => {
+    const url = arUrlInput.value.trim();
+    if (!url) return;
+    try {
+      const data = await importImageFromUrl(productId, url, "");
+      arImages.push(data.path);
+      renderArImages();
+      arUrlInput.value = "";
+      showToast("Arabic image added — click Save Arabic Translation to keep it.");
+    } catch (err) {
+      showToast(`Could not add image: ${err.message}`, "error");
+    }
+  };
+  document.getElementById("ar-image-url-btn").addEventListener("click", addArFromLink);
+  arUrlInput.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); addArFromLink(); } });
+
   document.getElementById("ar-shortDescription-dedupe-btn").addEventListener("click", () => dedupeQuillBlocks(productDescQuillInstanceAr));
   document.getElementById("save-ar-btn").addEventListener("click", () => saveArabicTranslation(productId));
 }
@@ -711,6 +871,11 @@ async function saveArabicTranslation(productId) {
     composition: document.getElementById("ar-composition").value.split("\n").map((s) => s.trim()).filter(Boolean),
     uses: document.getElementById("ar-uses").value.split("\n").map((s) => s.trim()).filter(Boolean),
   };
+  if (!document.getElementById("ar-shared-images").checked) {
+    if (!arImages.length) { showToast("Add at least one Arabic image, or tick \"Same images as English\".", "error"); return; }
+    payload.ownImages = true;
+    payload.images = arImages;
+  }
   try {
     await api(`/api/products-ar/${encodeURIComponent(productId)}`, { method: "PUT", body: JSON.stringify(payload) });
     showToast("Arabic translation saved.");
@@ -1134,8 +1299,43 @@ function dedupeQuillBlocks(quill) {
 const categoriesModal = document.getElementById("categories-modal");
 const categoriesListEl = document.getElementById("categories-list");
 const newCategoryInput = document.getElementById("new-category-input");
+const newCategoryParent = document.getElementById("new-category-parent");
+
+// Sub-categories are stored as a path — "Parent › Child" or
+// "Parent › Child › Grandchild" — so the storefront, filters and product
+// data all keep working with plain category strings.
+const SUBCAT_SEP = " › ";
+const isSubcat = (c) => c.includes(SUBCAT_SEP);
+const subcatDepth = (c) => c.split(SUBCAT_SEP).length - 1;
+const subcatParent = (c) => c.split(SUBCAT_SEP).slice(0, -1).join(SUBCAT_SEP);
+const subcatLabel = (c) => c.split(SUBCAT_SEP).pop();
+
+// Main categories in their saved order, each followed (depth-first) by its
+// sub-categories and their own children.
+function orderedCategories() {
+  const out = [];
+  const walk = (parent) => {
+    for (const c of CATEGORIES.filter((x) => (parent === null ? !isSubcat(x) : isSubcat(x) && subcatParent(x) === parent))) {
+      out.push(c);
+      walk(c);
+    }
+  };
+  walk(null);
+  // Orphans (parent renamed/deleted) still show, at the end.
+  return out.concat(CATEGORIES.filter((c) => !out.includes(c)));
+}
 
 function renderCategoriesModal() {
+  const current = newCategoryParent.value;
+  // Any main category or first-level sub-category can be a parent (max 3 levels).
+  newCategoryParent.innerHTML =
+    `<option value="">— Main category —</option>` +
+    orderedCategories()
+      .filter((c) => subcatDepth(c) < 2)
+      .map((c) => `<option value="${escapeAttr(c)}">Under: ${escapeHtml(c)}</option>`)
+      .join("");
+  newCategoryParent.value = CATEGORIES.includes(current) ? current : "";
+
   const usageCounts = {};
   for (const p of PRODUCTS) {
     const cats = Array.isArray(p.categories) && p.categories.length ? p.categories : [p.category].filter(Boolean);
@@ -1143,9 +1343,10 @@ function renderCategoriesModal() {
   }
 
   categoriesListEl.innerHTML = CATEGORIES.length
-    ? CATEGORIES.map(
+    ? orderedCategories().map(
         (cat) => `
-    <div class="category-row" data-name="${escapeAttr(cat)}">
+    <div class="category-row${isSubcat(cat) ? " is-subcat" : ""}" data-name="${escapeAttr(cat)}" style="--depth:${subcatDepth(cat)}">
+      ${isSubcat(cat) ? `<span class="subcat-mark" aria-hidden="true">↳</span>` : ""}
       <input type="text" class="category-name-input" value="${escapeAttr(cat)}" />
       <span class="category-usage">${usageCounts[cat] || 0} product${usageCounts[cat] === 1 ? "" : "s"}</span>
       <button class="btn btn-sm rename-category-btn">Rename</button>
@@ -1212,21 +1413,45 @@ categoriesListEl.addEventListener("click", async (e) => {
 });
 
 document.getElementById("add-category-btn").addEventListener("click", async () => {
-  const name = newCategoryInput.value.trim();
-  if (!name) return;
-  try {
-    await api("/api/categories", { method: "POST", body: JSON.stringify({ name }) });
-    newCategoryInput.value = "";
-    showToast(`Added "${name}".`);
-    await loadCategories();
-    renderCategoriesModal();
-  } catch (err) {
-    showToast(err.message, "error");
+  // One name per line. Indent a line (spaces or tab) to nest it under the
+  // unindented line above it — so a whole tree can be pasted at once:
+  //   Eye Care
+  //     Eye Cream
+  //     Eye Mask
+  const parent = newCategoryParent.value;
+  const names = [];
+  let group = null;
+  for (const raw of newCategoryInput.value.split(/\r?\n/)) {
+    const text = raw.trim();
+    if (!text) continue;
+    const indented = /^[ \t ]/.test(raw);
+    const base = parent ? parent + SUBCAT_SEP : "";
+    if (indented && group) names.push(group + SUBCAT_SEP + text);
+    else { group = base + text; names.push(group); }
   }
+  const toAdd = [...new Set(names)].filter((n) => !CATEGORIES.includes(n));
+  const skipped = new Set(names).size - toAdd.length;
+  if (!toAdd.length) { showToast(skipped ? "All of these already exist." : "Nothing to add."); return; }
+  let added = 0;
+  const failed = [];
+  for (const name of toAdd) {
+    try {
+      await api("/api/categories", { method: "POST", body: JSON.stringify({ name }) });
+      added++;
+    } catch (err) {
+      failed.push(`${name.split(SUBCAT_SEP).pop()}: ${err.message}`);
+    }
+  }
+  if (!failed.length) newCategoryInput.value = "";
+  const note = skipped ? ` (${skipped} already existed)` : "";
+  showToast(failed.length ? `Added ${added}${note}. Failed: ${failed.join(" | ")}` : `Added ${added} categor${added === 1 ? "y" : "ies"}${note}.`, failed.length ? "error" : undefined);
+  await loadCategories();
+  renderCategoriesModal();
 });
 
 newCategoryInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") document.getElementById("add-category-btn").click();
+  // Enter adds; Shift+Enter starts a new line for bulk entry.
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); document.getElementById("add-category-btn").click(); }
 });
 
 // On mobile, start on the list view (hide the empty editor pane until a
@@ -1492,6 +1717,8 @@ function renderBlogPostEditor(post) {
           [{ header: [2, 3, false] }],
           ["bold", "italic", "underline"],
           [{ color: [] }],
+          [{ align: [] }, { direction: "rtl" }],
+          [{ list: "ordered" }, { list: "bullet" }],
           ["link", "image"],
           ["clean"],
         ],
@@ -1551,9 +1778,26 @@ function renderBlogPostEditor(post) {
   if (deleteBtn) deleteBtn.addEventListener("click", () => deleteBlogPost(post.id));
 }
 
-function productDescQuillImageHandler(productId) {
+// Image button in the product description editors (English or Arabic —
+// `quill` is the editor it was clicked in). Offers a link or a file; either
+// way the image is stored in assets/descriptions/<id>/, apart from the
+// product photos in assets/products/<id>/.
+function productDescQuillImageHandler(productId, quill) {
   if (isNew) {
     showToast("Save the product once first, then come back to insert images.", "error");
+    return;
+  }
+  const range = quill.getSelection(true);
+  const insert = (path) => {
+    quill.insertEmbed(range.index, "image", `/${path}`);
+    quill.setSelection(range.index + 1);
+  };
+  const url = prompt("Paste an image link (https://…)\n\n— or leave empty and press OK to choose a file from your computer:", "");
+  if (url === null) return; // cancelled
+  if (url.trim()) {
+    importImageFromUrl(productId, url.trim(), "desc")
+      .then((data) => insert(data.path))
+      .catch((e) => showToast(`Could not add image: ${e.message}`, "error"));
     return;
   }
   const input = document.createElement("input");
@@ -1565,12 +1809,11 @@ function productDescQuillImageHandler(productId) {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("kind", "desc");
       const res = await fetch(`/api/products/${encodeURIComponent(productId)}/upload`, { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      const range = productDescQuillInstance.getSelection(true);
-      productDescQuillInstance.insertEmbed(range.index, "image", `/${data.path}`);
-      productDescQuillInstance.setSelection(range.index + 1);
+      insert(data.path);
     } catch (e) {
       showToast(`Image upload failed: ${e.message}`, "error");
     }

@@ -70,7 +70,10 @@ require_login_page();
       <div class="modal-body">
         <div id="categories-list"></div>
         <div class="add-category-row">
-          <input type="text" id="new-category-input" placeholder="e.g. Accessories & Supplies" />
+          <select id="new-category-parent" title="Parent category — pick one to create a sub-category">
+            <option value="">— Main category —</option>
+          </select>
+          <textarea id="new-category-input" rows="6" placeholder="One per line. Indent a line to nest it under the line above — e.g.&#10;Eye Care&#10;  Eye Cream&#10;  Eye Mask&#10;Neck Care"></textarea>
           <button class="btn btn-primary btn-sm" id="add-category-btn">+ Add Category</button>
         </div>
       </div>

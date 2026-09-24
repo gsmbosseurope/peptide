@@ -121,6 +121,8 @@ if ($product && !empty($product['variants'])) {
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="cosmetics">Cosmetics</a>
+        <a href="vitamins">Vitamins</a>
         <a href="blog">Blog</a>
 
         <a href="peptide-guide">Peptide Guide</a>
@@ -151,6 +153,8 @@ if ($product && !empty($product['variants'])) {
       <a href="/">Home</a>
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
+      <a href="cosmetics">Cosmetics</a>
+      <a href="vitamins">Vitamins</a>
       <a href="blog">Blog</a>
 
       <a href="peptide-guide">Peptide Guide</a>
@@ -199,7 +203,7 @@ if ($product && !empty($product['variants'])) {
         </div>
         <div>
           <h4>Contact</h4>
-          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><img class="badge-eu" src="assets/brand/eu-seal.png" alt="EU Certified Lab" width="72" height="72" loading="lazy" /></li></ul>
+          <ul><li><a href="https://wa.me/32469126244" target="_blank" rel="noopener">+32 469 12 62 44</a></li><li><a href="contact">Support</a></li><li><img class="badge-eu badge-eu--light" src="assets/brand/purity-badge-light.webp" alt="99% Pure Peptide" width="72" height="72" loading="lazy" /><img class="badge-eu badge-eu--dark" src="assets/brand/purity-badge-dark.webp" alt="99% Pure Peptide" width="72" height="72" loading="lazy" /></li></ul>
         </div>
       </div>
                         <div class="footer-contact-section">
@@ -261,6 +265,7 @@ if ($product && !empty($product['variants'])) {
   <script src="js/gallery-data.js?v=<?php echo filemtime(__DIR__ . '/js/gallery-data.js'); ?>" data-cfasync="false"></script>
   <script src="js/gallery-lightbox.js?v=<?php echo filemtime(__DIR__ . '/js/gallery-lightbox.js'); ?>" data-cfasync="false"></script>
   <script src="js/product-detail.js?v=<?php echo filemtime(__DIR__ . '/js/product-detail.js'); ?>" data-cfasync="false"></script>
+  <script src="js/product-promo.js?v=<?php echo filemtime(__DIR__ . '/js/product-promo.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js?v=<?php echo filemtime(__DIR__ . '/js/theme.js'); ?>" data-cfasync="false"></script>
   <script src="js/main.js?v=<?php echo filemtime(__DIR__ . '/js/main.js'); ?>" data-cfasync="false"></script>
 </body>

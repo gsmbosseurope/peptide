@@ -32,7 +32,7 @@ const PEPTIDE_TOPICS = [
             "KPV : A tripeptide derived from $\\alpha$-MSH that inhibits the NF-$\\kappa$B inflammatory pathway, functioning as a potent anti-inflammatory and antimicrobial agent for gut inflammation, acne, and psoriasis."
         ],
         "images": [
-            "assets/guides/recovery-tendon-joint-repair-anti-inflammatory-peptides/bpc-157-10-mg-1789072053962.jpeg"
+            "assets/products/bpc-157/bpc-157-10-mg.webp"
         ],
         "video": ""
     },
@@ -57,7 +57,7 @@ const PEPTIDE_TOPICS = [
             "L-Carnitine : A carrier amino acid that shuttles long-chain fatty acids into the mitochondrial matrix for ATP generation, supporting exercise performance and fat oxidation."
         ],
         "images": [
-            "assets/guides/weight-loss-metabolic-regulation-weight-management-insulin-resistance-peptides/retatrutide-10-mg-1789072734928.jpeg"
+            "assets/products/retatrutide/retatrutide-10-mg.webp"
         ],
         "video": ""
     },
@@ -86,7 +86,7 @@ const PEPTIDE_TOPICS = [
             "EPO (Erythropoietin): A glycoprotein hormone stimulating bone marrow erythropoiesis to expand blood oxygen-carrying capacity and athletic aerobic endurance."
         ],
         "images": [
-            "assets/guides/growth-hormone-secretagogues-hypertrophy-strength-endurance-peptides/cjc-1295-10-mg-1789074311054.jpeg"
+            "assets/products/cjc-1295/cjc-1295-10-mg.webp"
         ],
         "video": ""
     },
@@ -106,7 +106,7 @@ const PEPTIDE_TOPICS = [
             "DSIP (Delta Sleep-Inducing Peptide): A neuromodulator that induces slow-wave delta brain activity, treating chronic insomnia, regulating deep sleep phases, and dampening elevated nocturnal cortisol."
         ],
         "images": [
-            "assets/guides/brain-cognitive-function-mood-sleep-peptides/semax-10-mg-1789074944405.jpeg"
+            "assets/products/semax/semax-10-mg.webp"
         ],
         "video": ""
     },
@@ -131,7 +131,7 @@ const PEPTIDE_TOPICS = [
             "VIP (Vasoactive Intestinal Peptide): A peptide hormone that dilates bronchial and vascular smooth muscle, calms inflammatory cascades, and supports immune balance in the gut and lungs."
         ],
         "images": [
-            "assets/guides/anti-aging-cellular-immunity-mitochondrial-energy-epigenetic-repair-peptides/glutathione-10-mg-1789075357266.jpeg"
+            "assets/products/glutathione/glutathione-600-mg.webp"
         ],
         "video": ""
     },
@@ -152,7 +152,7 @@ const PEPTIDE_TOPICS = [
             "Oxytocin Acetate: A neurohypophysial hormone that reduces cortisol and blood pressure, fosters emotional bonding and social ease, and enhances sexual intimacy."
         ],
         "images": [
-            "assets/guides/male-hormones-fertility-sexual-health-tanning-peptides/kiss-peptin-10-mg-1789075619785.jpeg"
+            "assets/products/kiss-peptin/kiss-peptin-10-mg.webp"
         ],
         "video": ""
     },
@@ -174,7 +174,7 @@ const PEPTIDE_TOPICS = [
             "Melatonin: A pineal hormone that synchronizes circadian sleep-wake cycles while offering direct antioxidant neuroprotection."
         ],
         "images": [
-            "assets/guides/organ-specific-bioregulators-therapeutic-compounds-reconstitution-solvents/snap-8-10-mg-1789075906429.jpeg"
+            "assets/products/snap-8/snap-8-10-mg.webp"
         ],
         "video": ""
     },

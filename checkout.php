@@ -35,6 +35,8 @@
     .footer-phone-num{font-size:1.05rem;font-weight:600;white-space:nowrap;color:var(--accent,#4f8ef7);text-decoration:none;}
     .footer-phone-num:hover{text-decoration:underline;}
     .footer-bottom{display:flex;flex-wrap:nowrap;justify-content:space-between;gap:8px;padding-top:14px;border-top:1px solid rgba(128,128,128,.15);margin-top:8px;font-size:.78rem;opacity:.6;}
+    .field-error{color:#e53e3e;font-size:0.8rem;display:block;margin-top:2px;}
+    .field-valid-mark{color:#38a169;font-size:0.85rem;display:block;margin-top:2px;}
   </style>
 </head>
 <body>
@@ -49,6 +51,9 @@
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="cosmetics">Cosmetics</a>
+        <a href="vitamins">Vitamins</a>
+        <a href="gallery">Gallery</a>
         <a href="blog">Blog</a>
         
         <a href="peptide-guide">Peptide Guide</a>
@@ -78,6 +83,8 @@
       <a href="/">Home</a>
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
+      <a href="cosmetics">Cosmetics</a>
+      <a href="vitamins">Vitamins</a>
       <a href="blog">Blog</a>
       
       <a href="peptide-guide">Peptide Guide</a>
@@ -97,15 +104,24 @@
           <form id="checkout-form">
             <div class="field">
               <label for="name">Full name</label>
-              <input type="text" id="name" name="name" autocomplete="name" required />
+              <input type="text" id="name" name="name" autocomplete="name" required
+                onblur="(function(el){var err=el.parentNode.querySelector('.field-error'),ok=el.parentNode.querySelector('.field-valid-mark');if(!el.value.trim()){if(err)err.textContent='Please enter your full name.';if(ok)ok.textContent='';}else{if(err)err.textContent='';if(ok)ok.textContent='✓';}})(this)" />
+              <span class="field-error"></span>
+              <span class="field-valid-mark"></span>
             </div>
             <div class="field">
               <label for="phone">Phone / WhatsApp number</label>
-              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required />
+              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required
+                onblur="(function(el){var err=el.parentNode.querySelector('.field-error'),ok=el.parentNode.querySelector('.field-valid-mark'),v=el.value.trim();var valid=v.length>0&&/^[+\d][\d\s\-().]{5,}$/.test(v);if(!v){if(err)err.textContent='Please enter your phone number.';if(ok)ok.textContent='';}else if(!valid){if(err)err.textContent='Please enter a valid phone number.';if(ok)ok.textContent='';}else{if(err)err.textContent='';if(ok)ok.textContent='✓';}})(this)" />
+              <span class="field-error"></span>
+              <span class="field-valid-mark"></span>
             </div>
             <div class="field">
               <label for="address">Shipping address</label>
-              <textarea id="address" name="address" autocomplete="street-address" required></textarea>
+              <textarea id="address" name="address" autocomplete="street-address" required
+                onblur="(function(el){var err=el.parentNode.querySelector('.field-error'),ok=el.parentNode.querySelector('.field-valid-mark');if(!el.value.trim()){if(err)err.textContent='Please enter your shipping address.';if(ok)ok.textContent='';}else{if(err)err.textContent='';if(ok)ok.textContent='✓';}})(this)"></textarea>
+              <span class="field-error"></span>
+              <span class="field-valid-mark"></span>
             </div>
             <div class="field">
               <label for="notes">Order notes (optional)</label>
@@ -130,6 +146,7 @@
 
   <footer class="site-footer">
     <div class="container">
+      <div class="footer-seal-col footer-seal-solo"><img class="badge-eu badge-eu--light" src="assets/brand/purity-badge-light.webp" alt="99% Pure Peptide" width="96" height="96" loading="lazy" /><img class="badge-eu badge-eu--dark" src="assets/brand/purity-badge-dark.webp" alt="99% Pure Peptide" width="96" height="96" loading="lazy" /></div>
                         <div class="footer-contact-section">
         <h4 class="footer-contact-heading">Get in Touch</h4>
         <div class="footer-contact-row">

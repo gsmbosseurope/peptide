@@ -81,6 +81,8 @@ $websiteSchema = [
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="cosmetics">Cosmetics</a>
+        <a href="vitamins">Vitamins</a>
         <a href="blog">Blog</a>
 
         <a href="peptide-guide">Peptide Guide</a>
@@ -111,6 +113,8 @@ $websiteSchema = [
       <a href="/">Home</a>
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
+      <a href="cosmetics">Cosmetics</a>
+      <a href="vitamins">Vitamins</a>
       <a href="blog">Blog</a>
 
       <a href="peptide-guide">Peptide Guide</a>
@@ -174,7 +178,7 @@ $websiteSchema = [
           <ul><li><a href="about">About</a></li><li><a href="blog">Blog</a></li><li></li><li><a href="peptide-guide">Peptide Guide</a></li></ul>
         </div>
         <div class="footer-seal-col">
-          <img class="badge-eu" src="assets/brand/eu-seal.png" alt="EU Certified Lab" width="96" height="96" loading="lazy" />
+          <img class="badge-eu badge-eu--light" src="assets/brand/purity-badge-light.webp" alt="99% Pure Peptide" width="96" height="96" loading="lazy" /><img class="badge-eu badge-eu--dark" src="assets/brand/purity-badge-dark.webp" alt="99% Pure Peptide" width="96" height="96" loading="lazy" />
         </div>
       </div>
                         <div class="footer-contact-section">

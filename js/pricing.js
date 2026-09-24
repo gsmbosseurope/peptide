@@ -45,7 +45,9 @@ function formatEUR(amount) {
     minimumFractionDigits: hasCents ? 2 : 0,
     maximumFractionDigits: 2,
   }).format(amount);
-  return formatted.replace("€", "€ ");
+  // Non-breaking space after the symbol ("€ 34"): readable, and it can't
+  // collapse or wrap inside RTL text the way a normal space can.
+  return formatted.replace("€", "€ ");
 }
 
 /**

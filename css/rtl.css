@@ -252,3 +252,5 @@ html[dir="rtl"] .catalog-banner-content .eyebrow .eyebrow-center-line {
   }
 }
 
+/* Phone numbers always read left-to-right, even inside RTL text. */
+a[href^="tel:"], a[href*="wa.me/"] { direction: ltr; unicode-bidi: isolate; }

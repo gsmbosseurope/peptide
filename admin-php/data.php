@@ -136,6 +136,33 @@ HEADER;
 
 function save_products_data($products, $categoryList) {
     file_put_contents(DATA_FILE, serialize_products_data($products, $categoryList));
+    sync_products_ar($products, $categoryList);
+}
+
+/**
+ * The Arabic catalog (js/products-data-ar.js) is what /ar pages load, so it
+ * must carry the same CATEGORY_LIST and the same language-neutral product
+ * fields as English. Previously it only refreshed when an Arabic translation
+ * was saved, so new categories/sub-categories never reached /ar pages.
+ */
+function sync_products_ar($products, $categoryList) {
+    if (!file_exists(DATA_FILE_AR)) return;
+    $byId = [];
+    foreach ($products as $p) $byId[$p['id']] = $p;
+    $shared = ['category', 'categories', 'featured', 'bestSeller', 'promoted'];
+    $productsAr = load_products_ar();
+    foreach ($productsAr as $i => $pa) {
+        if (!isset($byId[$pa['id']])) continue;
+        $en = $byId[$pa['id']];
+        foreach ($shared as $k) {
+            if (array_key_exists($k, $en)) $pa[$k] = $en[$k];
+            else unset($pa[$k]);
+        }
+        // Shared images follow English; an Arabic-only set is left alone.
+        if (empty($pa['ownImages'])) $pa['images'] = $en['images'] ?? [];
+        $productsAr[$i] = $pa;
+    }
+    file_put_contents(DATA_FILE_AR, serialize_products_data_ar($productsAr, $categoryList));
 }
 
 function save_products($products) {
@@ -173,6 +200,15 @@ function normalize_product($p) {
         'category' => $p['category'] ?: ($categories[0] ?? ''),
     ];
     if (count($categories) > 1) $out['categories'] = $categories;
+    // Only written when true, keeping products-data.js free of noise.
+    if (!empty($p['featured'])) $out['featured'] = true;
+    if (!empty($p['bestSeller'])) $out['bestSeller'] = true;
+    // Ids of other products advertised on this product's page.
+    if (!empty($p['promoted']) && is_array($p['promoted'])) {
+        $promoted = array_values(array_unique(array_filter(array_map('strval', $p['promoted']),
+            fn($v) => $v !== '' && $v !== ($p['id'] ?? ''))));
+        if ($promoted) $out['promoted'] = $promoted;
+    }
     $out['purity'] = $p['purity'] ?? '';
     $out['showPurity'] = ($p['showPurity'] ?? true) !== false;
     $out['shortDescription'] = $stripEmptyParagraphs($stripScripts($p['shortDescription'] ?? ''));
@@ -273,12 +309,23 @@ function normalize_product_ar($incomingAr, $englishProduct) {
         'category' => $englishProduct['category'] ?? '',
     ];
     if (!empty($englishProduct['categories'])) $out['categories'] = $englishProduct['categories'];
+    if (!empty($englishProduct['featured'])) $out['featured'] = true;
+    if (!empty($englishProduct['bestSeller'])) $out['bestSeller'] = true;
+    if (!empty($englishProduct['promoted'])) $out['promoted'] = $englishProduct['promoted'];
     $out['purity'] = $englishProduct['purity'] ?? '';
     $out['showPurity'] = $englishProduct['showPurity'] ?? true;
     $out['shortDescription'] = $stripEmptyParagraphs($stripScripts($arDesc));
     $out['composition'] = $arComposition;
     $out['uses'] = $arUses;
-    $out['images'] = $englishProduct['images'] ?? [];
+    // Images are shared with English by default; "ownImages" lets the
+    // Arabic page use its own set (e.g. Arabic-labelled packaging).
+    $ownImages = !empty($incomingAr['ownImages']) && !empty($incomingAr['images']) && is_array($incomingAr['images']);
+    if ($ownImages) {
+        $out['ownImages'] = true;
+        $out['images'] = array_values(array_filter(array_map('strval', $incomingAr['images']), fn($v) => $v !== ''));
+    } else {
+        $out['images'] = $englishProduct['images'] ?? [];
+    }
     $out['video'] = $englishProduct['video'] ?? '';
     $out['variants'] = $englishProduct['variants'] ?? [];
     $out['wholesaleTiers'] = $englishProduct['wholesaleTiers'] ?? [];

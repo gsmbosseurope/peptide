@@ -59,6 +59,9 @@
         <a href="/">Home</a>
         <a href="about">About</a>
         <a href="best-sellers">Best Sellers</a>
+        <a href="cosmetics">Cosmetics</a>
+        <a href="vitamins">Vitamins</a>
+        <a href="gallery">Gallery</a>
         <a href="blog">Blog</a>
         
         <a href="peptide-guide">Peptide Guide</a>
@@ -88,6 +91,8 @@
       <a href="/">Home</a>
       <a href="about">About</a>
       <a href="best-sellers">Best Sellers</a>
+      <a href="cosmetics">Cosmetics</a>
+      <a href="vitamins">Vitamins</a>
       <a href="blog">Blog</a>
       
       <a href="peptide-guide">Peptide Guide</a>
@@ -289,7 +294,7 @@
           <h4>Contact</h4>
           <ul>
             <li><a href="contact">Support</a></li>
-            <li><img class="badge-eu" src="assets/brand/eu-seal.png" alt="EU Certified Lab" width="72" height="72" loading="lazy" /></li>
+            <li><img class="badge-eu badge-eu--light" src="assets/brand/purity-badge-light.webp" alt="99% Pure Peptide" width="72" height="72" loading="lazy" /><img class="badge-eu badge-eu--dark" src="assets/brand/purity-badge-dark.webp" alt="99% Pure Peptide" width="72" height="72" loading="lazy" /></li>
           </ul>
         </div>
       </div>
