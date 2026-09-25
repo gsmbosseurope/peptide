@@ -2767,10 +2767,11 @@ a { color: inherit; text-decoration: none; }
 .scroll-btn:hover { border-color: var(--accent); background: rgba(201, 161, 90, 0.12); color: var(--text-accent-bright); }
 
 @media (max-width: 560px) {
-  /* Scroll-to-top/bottom is a "nice to have" on desktop but on a phone a
-     normal swipe already does the job — the buttons only add clutter and
-     compete with WhatsApp for the same corner, so they're hidden here. */
-  .scroll-buttons { display: none; }
+  /* Phones: smaller buttons in the right corner (WhatsApp sits on the
+     left), lifted clear of the iPhone home bar / Safari toolbar. */
+  .scroll-buttons { right: 14px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); gap: 8px; }
+  .scroll-btn { width: 40px; height: 40px; }
+  .scroll-btn svg { width: 18px; height: 18px; }
 }
 
 /* ---------- Floating WhatsApp button ---------- */
@@ -3945,3 +3946,441 @@ a { color: inherit; text-decoration: none; }
 
 .pd-gallery-section { margin-top: 40px; }
 .pd-gallery-section .section-title-row { margin-bottom: 16px; }
+
+/* =====================================================================
+   Style "Peptide 2" — deep green · green · sage · amber · white
+   (#164A41 · #4D774E · #9DC88D · #F1B24A · #FFFFFF). Picked from the
+   round style button in the header (js/theme.js); light + dark modes.
+   ===================================================================== */
+:root[data-palette="peptide2"] {
+  --void-navy: #164A41;
+  --deep-navy: #1c5a4e;
+  --steel-blue: #4D774E;
+  --soft-blue: #9DC88D;
+  --ice-blue: #e8f3e3;
+  --lab-gold: #F1B24A;
+  --lab-gold-bright: #f6c571;
+  --lab-gold-deep: #c98a24;
+}
+/* Night */
+:root[data-palette="peptide2"]:not([data-theme="light"]) {
+  --bg: #0f3a33;
+  --bg-alt: #13443b;
+  --bg-panel: #164A41;
+  --bg-panel-raised: #1f5a4e;
+  --bg-header: rgba(15, 58, 51, 0.78);
+  --bg-header-solid: rgba(15, 58, 51, 0.97);
+  --bg-input: rgba(255, 255, 255, 0.07);
+  --bg-card: linear-gradient(165deg, rgba(77, 119, 78, 0.35), rgba(22, 74, 65, 0.9));
+  --bg-media: #f4f8f1;
+  --bg-footer: linear-gradient(180deg, transparent, rgba(22, 74, 65, 0.7));
+  --bg-vial-card: rgba(28, 90, 78, 0.75);
+  --bg-category-tile: linear-gradient(150deg, rgba(157, 200, 141, 0.16), rgba(22, 74, 65, 0.5));
+  --bg-summary-card: rgba(28, 90, 78, 0.6);
+  --border-subtle: rgba(157, 200, 141, 0.2);
+  --border-strong: rgba(157, 200, 141, 0.38);
+  --text-primary: #ffffff;
+  --text-secondary: #d3e7cb;
+  --text-muted: #a9c9a0;
+  --accent: #F1B24A;
+  --accent-bright: #f6c571;
+  --text-accent: #F1B24A;
+  --text-accent-bright: #f6c571;
+  --shadow-glow: 0 0 40px rgba(241, 178, 74, 0.16);
+  --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --focus-ring: #F1B24A;
+}
+/* Day */
+:root[data-palette="peptide2"][data-theme="light"] {
+  --bg: #f7fbf4;
+  --bg-alt: #edf5e8;
+  --bg-panel: #ffffff;
+  --bg-panel-raised: #ffffff;
+  --bg-header: rgba(247, 251, 244, 0.86);
+  --bg-header-solid: rgba(247, 251, 244, 0.98);
+  --bg-input: #ffffff;
+  --bg-card: linear-gradient(165deg, #ffffff, #f7fbf4);
+  --bg-media: #ffffff;
+  --bg-footer: linear-gradient(180deg, transparent, #e4f0de);
+  --bg-vial-card: rgba(255, 255, 255, 0.94);
+  --bg-category-tile: linear-gradient(150deg, rgba(157, 200, 141, 0.22), #ffffff);
+  --bg-summary-card: #ffffff;
+  --border-subtle: rgba(22, 74, 65, 0.1);
+  --border-strong: rgba(22, 74, 65, 0.22);
+  --text-primary: #164A41;
+  --text-secondary: #3f6441;
+  --text-muted: #5f7a63;
+  --accent: #c98a24;
+  --accent-bright: #F1B24A;
+  --text-accent: #9a5f0f;          /* amber dark enough to read on white */
+  --text-accent-bright: #b8741a;
+  --shadow-glow: 0 0 40px rgba(77, 119, 78, 0.12);
+  --shadow-card: 0 12px 32px rgba(22, 74, 65, 0.1);
+  --focus-ring: #164A41;
+}
+:root[data-palette="peptide2"] body::before {
+  background:
+    radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(157, 200, 141, 0.2), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 100% 10%, rgba(241, 178, 74, 0.1), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide2"][data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(157, 200, 141, 0.28), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 100% 10%, rgba(241, 178, 74, 0.12), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+/* Amber buttons need dark green text */
+:root[data-palette="peptide2"] .btn-primary,
+:root[data-palette="peptide2"] .variant-chip.active,
+:root[data-palette="peptide2"] .tier-hint-item.is-achieved { color: #164A41; }
+
+/* Swap the turquoise accents (nav, dropdowns, ads, chips) for green + amber */
+:root[data-palette="peptide2"] .main-nav { --nav-teal: #4D774E; }
+:root[data-palette="peptide2"] .main-nav a.active,
+:root[data-palette="peptide2"] .nav-more-btn.active,
+:root[data-palette="peptide2"] .mobile-nav .mnav-more-list a.active,
+:root[data-palette="peptide2"] .pd-promo-go,
+:root[data-palette="peptide2"] .pd-related-btn {
+  background: linear-gradient(135deg, #F1B24A 0%, #e39b2d 100%) !important;
+  color: #164A41 !important;
+}
+:root[data-palette="peptide2"] .main-nav a.active::before { background: #164A41; }
+:root[data-palette="peptide2"] .main-nav a:hover,
+:root[data-palette="peptide2"] .nav-more:hover .nav-more-btn,
+:root[data-palette="peptide2"] .nav-section:hover .nav-section-link,
+:root[data-palette="peptide2"] .nav-fly:hover > .nav-fly-link,
+:root[data-palette="peptide2"] .main-nav .nav-more-menu a.nav-sub-all,
+:root[data-palette="peptide2"] .pd-promo-tag,
+:root[data-palette="peptide2"] .mnav-more[open] > summary { color: var(--text-primary); }
+:root[data-palette="peptide2"]:not([data-theme="light"]) .main-nav a:hover,
+:root[data-palette="peptide2"]:not([data-theme="light"]) .nav-fly:hover > .nav-fly-link { color: #9DC88D; }
+:root[data-palette="peptide2"] .pd-promo-card,
+:root[data-palette="peptide2"] .pd-related-card,
+:root[data-palette="peptide2"] .nav-more-menu,
+:root[data-palette="peptide2"] .nav-fly-panel { border-color: rgba(77, 119, 78, 0.35); }
+:root[data-palette="peptide2"] .mnav-more > summary svg { color: #4D774E; }
+
+/* Style-picker menu swatch */
+.palette-option-swatch { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; border: 1px solid var(--border-strong); }
+:root[data-palette="peptide2"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #164A41, #9DC88D, #F1B24A, #164A41); }
+
+/* =====================================================================
+   Style "Peptide 3" — navy · warm cream · coral · slate
+   (#172A39 · #E9E4E0 · #FC563C · #6E7575). Light + dark modes.
+   ===================================================================== */
+:root[data-palette="peptide3"] {
+  --void-navy: #172A39;
+  --deep-navy: #213749;
+  --steel-blue: #6E7575;
+  --soft-blue: #a9aeae;
+  --ice-blue: #E9E4E0;
+  --lab-gold: #FC563C;
+  --lab-gold-bright: #ff7a64;
+  --lab-gold-deep: #e0452c;
+}
+:root[data-palette="peptide3"] body::before {
+  background:
+    radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(252, 86, 60, 0.14), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 100% 10%, rgba(233, 228, 224, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide3"][data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(252, 86, 60, 0.1), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 100% 10%, rgba(110, 117, 117, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+/* Coral buttons carry white text */
+:root[data-palette="peptide3"] .btn-primary,
+:root[data-palette="peptide3"] .variant-chip.active,
+:root[data-palette="peptide3"] .tier-hint-item.is-achieved { color: #ffffff; }
+
+/* Turquoise accents (nav, dropdowns, ads) → coral + navy */
+:root[data-palette="peptide3"] .main-nav { --nav-teal: #6E7575; }
+:root[data-palette="peptide3"] .main-nav a.active,
+:root[data-palette="peptide3"] .nav-more-btn.active,
+:root[data-palette="peptide3"] .mobile-nav .mnav-more-list a.active,
+:root[data-palette="peptide3"] .pd-promo-go,
+:root[data-palette="peptide3"] .pd-related-btn {
+  background: linear-gradient(135deg, #FC563C 0%, #e0452c 100%) !important;
+  color: #ffffff !important;
+}
+:root[data-palette="peptide3"] .main-nav a.active::before { background: #ffffff; }
+:root[data-palette="peptide3"] .main-nav a:hover,
+:root[data-palette="peptide3"] .nav-more:hover .nav-more-btn,
+:root[data-palette="peptide3"] .nav-section:hover .nav-section-link,
+:root[data-palette="peptide3"] .nav-fly:hover > .nav-fly-link,
+:root[data-palette="peptide3"] .main-nav .nav-more-menu a.nav-sub-all,
+:root[data-palette="peptide3"] .pd-promo-tag,
+:root[data-palette="peptide3"] .mnav-more[open] > summary { color: var(--text-accent); }
+:root[data-palette="peptide3"] .pd-promo-card,
+:root[data-palette="peptide3"] .pd-related-card,
+:root[data-palette="peptide3"] .nav-more-menu,
+:root[data-palette="peptide3"] .nav-fly-panel { border-color: rgba(110, 117, 117, 0.35); }
+:root[data-palette="peptide3"] .mnav-more > summary svg { color: #FC563C; }
+:root[data-palette="peptide3"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #172A39, #6E7575, #FC563C, #E9E4E0, #172A39); }
+
+/* =====================================================================
+   Style "Peptide 4" — charcoal · white · crimson · rose · blush
+   (#222223 · #FEFEFE · #B62A2D · #D5575E · #E6A8A8). Light + dark.
+   ===================================================================== */
+:root[data-palette="peptide4"] {
+  --void-navy: #222223;
+  --deep-navy: #2d2d2f;
+  --steel-blue: #6b5d5e;
+  --soft-blue: #E6A8A8;
+  --ice-blue: #FEFEFE;
+  --lab-gold: #B62A2D;
+  --lab-gold-bright: #D5575E;
+  --lab-gold-deep: #9c2326;
+}
+:root[data-palette="peptide4"] body::before {
+  background:
+    radial-gradient(ellipse 1200px 800px at 85% -10%, rgba(182, 42, 45, 0.22), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 0% 10%, rgba(213, 87, 94, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide4"][data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 1200px 800px at 85% -10%, rgba(230, 168, 168, 0.3), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 0% 10%, rgba(182, 42, 45, 0.06), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide4"] .btn-primary,
+:root[data-palette="peptide4"] .variant-chip.active,
+:root[data-palette="peptide4"] .tier-hint-item.is-achieved { color: #ffffff; }
+
+:root[data-palette="peptide4"] .main-nav { --nav-teal: #D5575E; }
+:root[data-palette="peptide4"] .main-nav a.active,
+:root[data-palette="peptide4"] .nav-more-btn.active,
+:root[data-palette="peptide4"] .mobile-nav .mnav-more-list a.active,
+:root[data-palette="peptide4"] .pd-promo-go,
+:root[data-palette="peptide4"] .pd-related-btn {
+  background: linear-gradient(135deg, #D5575E 0%, #B62A2D 100%) !important;
+  color: #ffffff !important;
+}
+:root[data-palette="peptide4"] .main-nav a.active::before { background: #ffffff; }
+:root[data-palette="peptide4"] .main-nav a:hover,
+:root[data-palette="peptide4"] .nav-more:hover .nav-more-btn,
+:root[data-palette="peptide4"] .nav-section:hover .nav-section-link,
+:root[data-palette="peptide4"] .nav-fly:hover > .nav-fly-link,
+:root[data-palette="peptide4"] .main-nav .nav-more-menu a.nav-sub-all,
+:root[data-palette="peptide4"] .pd-promo-tag,
+:root[data-palette="peptide4"] .mnav-more[open] > summary { color: var(--text-accent); }
+:root[data-palette="peptide4"] .pd-promo-card,
+:root[data-palette="peptide4"] .pd-related-card,
+:root[data-palette="peptide4"] .nav-more-menu,
+:root[data-palette="peptide4"] .nav-fly-panel { border-color: rgba(213, 87, 94, 0.3); }
+:root[data-palette="peptide4"] .mnav-more > summary svg { color: #D5575E; }
+:root[data-palette="peptide4"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #222223, #B62A2D, #E6A8A8, #FEFEFE, #222223); }
+
+/* ===== Style "Peptide 5" — Navy · White · Electric Blue (generated) ===== */
+:root[data-palette="peptide5"] {
+  --void-navy: #111c33; --deep-navy: #1a2744; --steel-blue: #64748b; --soft-blue: #94a3b8;
+  --ice-blue: #f8fafc; --lab-gold: #3B82F6; --lab-gold-bright: #2563eb; --lab-gold-deep: #3B82F6;
+}
+:root[data-palette="peptide5"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(59,130,246,0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide5"][data-theme="light"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(59,130,246,0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide5"]:not([data-theme="light"]) .btn-primary, :root[data-palette="peptide5"]:not([data-theme="light"]) .variant-chip.active,
+:root[data-palette="peptide5"]:not([data-theme="light"]) .tier-hint-item.is-achieved { color: #ffffff; }
+:root[data-palette="peptide5"][data-theme="light"] .btn-primary, :root[data-palette="peptide5"][data-theme="light"] .variant-chip.active,
+:root[data-palette="peptide5"][data-theme="light"] .tier-hint-item.is-achieved { color: #ffffff; }
+:root[data-palette="peptide5"] .main-nav { --nav-teal: #3B82F6; }
+:root[data-palette="peptide5"]:not([data-theme="light"]) :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #60a5fa 0%, #3B82F6 100%) !important; color: #ffffff !important;
+}
+:root[data-palette="peptide5"][data-theme="light"] :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #2563eb 0%, #3B82F6 100%) !important; color: #ffffff !important;
+}
+:root[data-palette="peptide5"] .main-nav a.active::before { background: currentColor; }
+:root[data-palette="peptide5"] :is(.main-nav a:hover, .nav-more:hover .nav-more-btn, .nav-section:hover .nav-section-link, .nav-fly:hover > .nav-fly-link,
+  .main-nav .nav-more-menu a.nav-sub-all, .pd-promo-tag, .mnav-more[open] > summary) { color: var(--text-accent); }
+:root[data-palette="peptide5"] :is(.pd-promo-card, .pd-related-card, .nav-more-menu, .nav-fly-panel) { border-color: var(--border-subtle); }
+:root[data-palette="peptide5"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #0F172A, #3B82F6, #0F172A); }
+
+/* ===== Style "Peptide 6" — Charcoal · Lime · Soft Gray (generated) ===== */
+:root[data-palette="peptide6"] {
+  --void-navy: #1F2937; --deep-navy: #2a3545; --steel-blue: #6b7280; --soft-blue: #9ca3af;
+  --ice-blue: #F3F4F6; --lab-gold: #A3E635; --lab-gold-bright: #84cc16; --lab-gold-deep: #A3E635;
+}
+:root[data-palette="peptide6"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(163,230,53,0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide6"][data-theme="light"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(163,230,53,0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide6"]:not([data-theme="light"]) .btn-primary, :root[data-palette="peptide6"]:not([data-theme="light"]) .variant-chip.active,
+:root[data-palette="peptide6"]:not([data-theme="light"]) .tier-hint-item.is-achieved { color: #1F2937; }
+:root[data-palette="peptide6"][data-theme="light"] .btn-primary, :root[data-palette="peptide6"][data-theme="light"] .variant-chip.active,
+:root[data-palette="peptide6"][data-theme="light"] .tier-hint-item.is-achieved { color: #1F2937; }
+:root[data-palette="peptide6"] .main-nav { --nav-teal: #A3E635; }
+:root[data-palette="peptide6"]:not([data-theme="light"]) :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #bef264 0%, #A3E635 100%) !important; color: #1F2937 !important;
+}
+:root[data-palette="peptide6"][data-theme="light"] :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #84cc16 0%, #A3E635 100%) !important; color: #1F2937 !important;
+}
+:root[data-palette="peptide6"] .main-nav a.active::before { background: currentColor; }
+:root[data-palette="peptide6"] :is(.main-nav a:hover, .nav-more:hover .nav-more-btn, .nav-section:hover .nav-section-link, .nav-fly:hover > .nav-fly-link,
+  .main-nav .nav-more-menu a.nav-sub-all, .pd-promo-tag, .mnav-more[open] > summary) { color: var(--text-accent); }
+:root[data-palette="peptide6"] :is(.pd-promo-card, .pd-related-card, .nav-more-menu, .nav-fly-panel) { border-color: var(--border-subtle); }
+:root[data-palette="peptide6"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #1F2937, #A3E635, #1F2937); }
+
+/* ===== Style "Peptide 7" — Emerald · Mint · Cream (generated) ===== */
+:root[data-palette="peptide7"] {
+  --void-navy: #065F46; --deep-navy: #0a6e52; --steel-blue: #4b6b5f; --soft-blue: #9fd9bf;
+  --ice-blue: #FFF8E7; --lab-gold: #065F46; --lab-gold-bright: #0a7a5a; --lab-gold-deep: #065F46;
+}
+:root[data-palette="peptide7"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(167,243,208,0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide7"][data-theme="light"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(6,95,70,0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide7"]:not([data-theme="light"]) .btn-primary, :root[data-palette="peptide7"]:not([data-theme="light"]) .variant-chip.active,
+:root[data-palette="peptide7"]:not([data-theme="light"]) .tier-hint-item.is-achieved { color: #065F46; }
+:root[data-palette="peptide7"][data-theme="light"] .btn-primary, :root[data-palette="peptide7"][data-theme="light"] .variant-chip.active,
+:root[data-palette="peptide7"][data-theme="light"] .tier-hint-item.is-achieved { color: #ffffff; }
+:root[data-palette="peptide7"] .main-nav { --nav-teal: #065F46; }
+:root[data-palette="peptide7"]:not([data-theme="light"]) :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #c9f8e1 0%, #A7F3D0 100%) !important; color: #065F46 !important;
+}
+:root[data-palette="peptide7"][data-theme="light"] :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #0a7a5a 0%, #065F46 100%) !important; color: #ffffff !important;
+}
+:root[data-palette="peptide7"] .main-nav a.active::before { background: currentColor; }
+:root[data-palette="peptide7"] :is(.main-nav a:hover, .nav-more:hover .nav-more-btn, .nav-section:hover .nav-section-link, .nav-fly:hover > .nav-fly-link,
+  .main-nav .nav-more-menu a.nav-sub-all, .pd-promo-tag, .mnav-more[open] > summary) { color: var(--text-accent); }
+:root[data-palette="peptide7"] :is(.pd-promo-card, .pd-related-card, .nav-more-menu, .nav-fly-panel) { border-color: var(--border-subtle); }
+:root[data-palette="peptide7"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #065F46, #A7F3D0, #065F46); }
+
+/* ===== Style "Peptide 8" — Burgundy · Blush · Ivory (generated) ===== */
+:root[data-palette="peptide8"] {
+  --void-navy: #3f1414; --deep-navy: #521b1b; --steel-blue: #7a5055; --soft-blue: #d1a9ad;
+  --ice-blue: #FFFDF7; --lab-gold: #7F1D1D; --lab-gold-bright: #9b2727; --lab-gold-deep: #7F1D1D;
+}
+:root[data-palette="peptide8"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(243,213,216,0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide8"][data-theme="light"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(127,29,29,0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide8"]:not([data-theme="light"]) .btn-primary, :root[data-palette="peptide8"]:not([data-theme="light"]) .variant-chip.active,
+:root[data-palette="peptide8"]:not([data-theme="light"]) .tier-hint-item.is-achieved { color: #7F1D1D; }
+:root[data-palette="peptide8"][data-theme="light"] .btn-primary, :root[data-palette="peptide8"][data-theme="light"] .variant-chip.active,
+:root[data-palette="peptide8"][data-theme="light"] .tier-hint-item.is-achieved { color: #ffffff; }
+:root[data-palette="peptide8"] .main-nav { --nav-teal: #7F1D1D; }
+:root[data-palette="peptide8"]:not([data-theme="light"]) :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #f8e4e6 0%, #F3D5D8 100%) !important; color: #7F1D1D !important;
+}
+:root[data-palette="peptide8"][data-theme="light"] :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #9b2727 0%, #7F1D1D 100%) !important; color: #ffffff !important;
+}
+:root[data-palette="peptide8"] .main-nav a.active::before { background: currentColor; }
+:root[data-palette="peptide8"] :is(.main-nav a:hover, .nav-more:hover .nav-more-btn, .nav-section:hover .nav-section-link, .nav-fly:hover > .nav-fly-link,
+  .main-nav .nav-more-menu a.nav-sub-all, .pd-promo-tag, .mnav-more[open] > summary) { color: var(--text-accent); }
+:root[data-palette="peptide8"] :is(.pd-promo-card, .pd-related-card, .nav-more-menu, .nav-fly-panel) { border-color: var(--border-subtle); }
+:root[data-palette="peptide8"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #7F1D1D, #F3D5D8, #7F1D1D); }
+
+/* ===== Style "Peptide 9" — Teal · Coral · Sand (generated) ===== */
+:root[data-palette="peptide9"] {
+  --void-navy: #0b504a; --deep-navy: #0F766E; --steel-blue: #5f6f69; --soft-blue: #c9bfa6;
+  --ice-blue: #fdf8ef; --lab-gold: #e8663a; --lab-gold-bright: #FF7F50; --lab-gold-deep: #e8663a;
+}
+:root[data-palette="peptide9"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(255,127,80,0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide9"][data-theme="light"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(232,102,58,0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide9"]:not([data-theme="light"]) .btn-primary, :root[data-palette="peptide9"]:not([data-theme="light"]) .variant-chip.active,
+:root[data-palette="peptide9"]:not([data-theme="light"]) .tier-hint-item.is-achieved { color: #073b37; }
+:root[data-palette="peptide9"][data-theme="light"] .btn-primary, :root[data-palette="peptide9"][data-theme="light"] .variant-chip.active,
+:root[data-palette="peptide9"][data-theme="light"] .tier-hint-item.is-achieved { color: #ffffff; }
+:root[data-palette="peptide9"] .main-nav { --nav-teal: #e8663a; }
+:root[data-palette="peptide9"]:not([data-theme="light"]) :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #ff9a74 0%, #FF7F50 100%) !important; color: #073b37 !important;
+}
+:root[data-palette="peptide9"][data-theme="light"] :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #FF7F50 0%, #e8663a 100%) !important; color: #ffffff !important;
+}
+:root[data-palette="peptide9"] .main-nav a.active::before { background: currentColor; }
+:root[data-palette="peptide9"] :is(.main-nav a:hover, .nav-more:hover .nav-more-btn, .nav-section:hover .nav-section-link, .nav-fly:hover > .nav-fly-link,
+  .main-nav .nav-more-menu a.nav-sub-all, .pd-promo-tag, .mnav-more[open] > summary) { color: var(--text-accent); }
+:root[data-palette="peptide9"] :is(.pd-promo-card, .pd-related-card, .nav-more-menu, .nav-fly-panel) { border-color: var(--border-subtle); }
+:root[data-palette="peptide9"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #0F766E, #FF7F50, #0F766E); }
+
+/* ===== Style "Peptide 10" — Plum · Lavender · Off-White (generated) ===== */
+:root[data-palette="peptide10"] {
+  --void-navy: #221447; --deep-navy: #2e1c5e; --steel-blue: #6b6384; --soft-blue: #a99bd6;
+  --ice-blue: #FAF7FF; --lab-gold: #6D28D9; --lab-gold-bright: #7c3aed; --lab-gold-deep: #6D28D9;
+}
+:root[data-palette="peptide10"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(196,181,253,0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide10"][data-theme="light"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(109,40,217,0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide10"]:not([data-theme="light"]) .btn-primary, :root[data-palette="peptide10"]:not([data-theme="light"]) .variant-chip.active,
+:root[data-palette="peptide10"]:not([data-theme="light"]) .tier-hint-item.is-achieved { color: #2e1065; }
+:root[data-palette="peptide10"][data-theme="light"] .btn-primary, :root[data-palette="peptide10"][data-theme="light"] .variant-chip.active,
+:root[data-palette="peptide10"][data-theme="light"] .tier-hint-item.is-achieved { color: #ffffff; }
+:root[data-palette="peptide10"] .main-nav { --nav-teal: #6D28D9; }
+:root[data-palette="peptide10"]:not([data-theme="light"]) :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #ddd6fe 0%, #C4B5FD 100%) !important; color: #2e1065 !important;
+}
+:root[data-palette="peptide10"][data-theme="light"] :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #7c3aed 0%, #6D28D9 100%) !important; color: #ffffff !important;
+}
+:root[data-palette="peptide10"] .main-nav a.active::before { background: currentColor; }
+:root[data-palette="peptide10"] :is(.main-nav a:hover, .nav-more:hover .nav-more-btn, .nav-section:hover .nav-section-link, .nav-fly:hover > .nav-fly-link,
+  .main-nav .nav-more-menu a.nav-sub-all, .pd-promo-tag, .mnav-more[open] > summary) { color: var(--text-accent); }
+:root[data-palette="peptide10"] :is(.pd-promo-card, .pd-related-card, .nav-more-menu, .nav-fly-panel) { border-color: var(--border-subtle); }
+:root[data-palette="peptide10"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #6D28D9, #C4B5FD, #6D28D9); }
+
+/* ===== Style "Peptide 11" — Terracotta · Mustard · Cream (generated) ===== */
+:root[data-palette="peptide11"] {
+  --void-navy: #3d1f0e; --deep-navy: #512812; --steel-blue: #6f5a48; --soft-blue: #cdb08c;
+  --ice-blue: #FFF7E6; --lab-gold: #C2410C; --lab-gold-bright: #dc5b1f; --lab-gold-deep: #C2410C;
+}
+:root[data-palette="peptide11"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(234,179,8,0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide11"][data-theme="light"] body::before {
+  background: radial-gradient(ellipse 1200px 800px at 20% -10%, rgba(194,65,12,0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 55%, var(--bg) 100%);
+}
+:root[data-palette="peptide11"]:not([data-theme="light"]) .btn-primary, :root[data-palette="peptide11"]:not([data-theme="light"]) .variant-chip.active,
+:root[data-palette="peptide11"]:not([data-theme="light"]) .tier-hint-item.is-achieved { color: #2a1409; }
+:root[data-palette="peptide11"][data-theme="light"] .btn-primary, :root[data-palette="peptide11"][data-theme="light"] .variant-chip.active,
+:root[data-palette="peptide11"][data-theme="light"] .tier-hint-item.is-achieved { color: #ffffff; }
+:root[data-palette="peptide11"] .main-nav { --nav-teal: #C2410C; }
+:root[data-palette="peptide11"]:not([data-theme="light"]) :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #facc15 0%, #EAB308 100%) !important; color: #2a1409 !important;
+}
+:root[data-palette="peptide11"][data-theme="light"] :is(.main-nav a.active, .nav-more-btn.active, .mobile-nav .mnav-more-list a.active, .pd-promo-go, .pd-related-btn) {
+  background: linear-gradient(135deg, #dc5b1f 0%, #C2410C 100%) !important; color: #ffffff !important;
+}
+:root[data-palette="peptide11"] .main-nav a.active::before { background: currentColor; }
+:root[data-palette="peptide11"] :is(.main-nav a:hover, .nav-more:hover .nav-more-btn, .nav-section:hover .nav-section-link, .nav-fly:hover > .nav-fly-link,
+  .main-nav .nav-more-menu a.nav-sub-all, .pd-promo-tag, .mnav-more[open] > summary) { color: var(--text-accent); }
+:root[data-palette="peptide11"] :is(.pd-promo-card, .pd-related-card, .nav-more-menu, .nav-fly-panel) { border-color: var(--border-subtle); }
+:root[data-palette="peptide11"] .palette-toggle-swatch { background: conic-gradient(from 180deg, #C2410C, #EAB308, #C2410C); }

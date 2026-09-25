@@ -10,6 +10,7 @@
  */
 // ROOT_DIR = public_html (parent of ar/)
 define('AR_ROOT_DIR', __DIR__ . '/..');
+require_once AR_ROOT_DIR . '/admin-php/share.php';
 
 function load_products_ar() {
     $file = AR_ROOT_DIR . '/js/products-data-ar.js';
@@ -72,13 +73,15 @@ if (!$product && count($products)) $product = $products[0];
 
 $pageTitle = $product ? htmlspecialchars($product['name']) . ' — trusted-peptide.com' : 'المنتج — trusted-peptide.com';
 $pageDesc = $product && !empty($product['shortDescription'])
-    ? htmlspecialchars(trim(strip_tags($product['shortDescription'])))
+    ? htmlspecialchars(share_description($product['shortDescription']))
     : 'ببتيد بحثي مصدره الاتحاد الأوروبي، معتمد للنقاء والجودة الثابتة.';
 $pageUrl = 'https://trusted-peptide.com/ar/product' . ($product ? '?id=' . rawurlencode($product['id']) : '');
 $pageUrlEn = 'https://trusted-peptide.com/product' . ($product ? '?id=' . rawurlencode($product['id']) : '');
 $pageImage = $product && !empty($product['images'][0])
     ? 'https://trusted-peptide.com/' . ltrim($product['images'][0], '/')
     : 'https://trusted-peptide.com/assets/brand/hero-vials.jpg';
+// Small, cached share image for WhatsApp/Facebook/Telegram previews.
+[$shareImage, $shareW, $shareH] = share_image($product['images'][0] ?? '');
 
 // Product schema (JSON-LD) — same AggregateOffer pattern as product.php.
 // Skipped when the product has no translated name yet (untranslated
@@ -118,7 +121,7 @@ if ($product && !empty($product['name']) && !empty($product['variants'])) {
       var stored = localStorage.getItem("peptidesLabsTheme");
       var theme = stored === "light" || stored === "dark" ? stored : "light";
       document.documentElement.setAttribute("data-theme", theme);
-      var validPalettes = ["bloom", "ember", "forest", "tide", "crimson", "royal", "papaya", "orbit", "neoncyan", "lakers", "aurora", "blueprint", "coastal", "citrusink", "chocolate", "burgundy"];
+      var validPalettes = ["peptide2", "peptide3", "peptide4", "peptide5", "peptide6", "peptide7", "peptide8", "peptide9", "peptide10", "peptide11"];
       var storedPalette = localStorage.getItem("peptidesLabsPalette");
       var palette = validPalettes.indexOf(storedPalette) !== -1 ? storedPalette : (typeof THEME_SETTINGS !== "undefined" ? THEME_SETTINGS.defaultPaletteId : null);
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
@@ -135,11 +138,18 @@ if ($product && !empty($product['name']) && !empty($product['variants'])) {
   <meta property="og:title" content="<?php echo $pageTitle; ?>" />
   <meta property="og:description" content="<?php echo $pageDesc; ?>" />
   <meta property="og:url" content="<?php echo htmlspecialchars($pageUrl); ?>" />
-  <meta property="og:image" content="<?php echo htmlspecialchars($pageImage); ?>" />
+  <meta property="og:image" content="<?php echo htmlspecialchars($shareImage); ?>" />
+  <meta property="og:image:secure_url" content="<?php echo htmlspecialchars($shareImage); ?>" />
+  <meta property="og:image:type" content="image/jpeg" />
+<?php if ($shareW): ?>
+  <meta property="og:image:width" content="<?php echo $shareW; ?>" />
+  <meta property="og:image:height" content="<?php echo $shareH; ?>" />
+<?php endif; ?>
+  <meta property="og:image:alt" content="<?php echo $product ? htmlspecialchars($product['name']) : 'Trusted Peptide'; ?>" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="<?php echo $pageTitle; ?>" />
   <meta name="twitter:description" content="<?php echo $pageDesc; ?>" />
-  <meta name="twitter:image" content="<?php echo htmlspecialchars($pageImage); ?>" />
+  <meta name="twitter:image" content="<?php echo htmlspecialchars($shareImage); ?>" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -141,7 +141,7 @@ function initCategoryIconsSection() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  initThemeToggle();   // â† ÙˆØ¶Ø¹ Ù„ÙŠÙ„ÙŠ / Ù†Ù‡Ø§Ø±ÙŠ â€” ÙŠØ´ØªØºÙ„ Ù‚Ø¨Ù„ ÙƒÙ„ Ø´ÙŠØ¡
+  initThemeToggle();   // ← وضع ليلي / نهاري — يشتغل قبل كل شيء
   initMobileNav();
   initScrollReveal();
   initNavDropdown();
@@ -153,13 +153,13 @@ document.addEventListener("DOMContentLoaded", () => {
   initQuickSearch();
 });
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   THEME TOGGLE â€” ÙˆØ¶Ø¹ Ù„ÙŠÙ„ÙŠ / Ù†Ù‡Ø§Ø±ÙŠ
-   ÙŠÙ‚Ø±Ø£ Ø§Ù„Ø§Ø®ØªÙŠØ§Ø± Ù…Ù† localStorageØŒ ÙŠØ·Ø¨Ù‘Ù‚Ù‡ ÙÙˆØ±Ø§Ù‹ Ø¹Ù„Ù‰ <html>ØŒ
-   ÙˆÙŠØ±Ø¨Ø· ÙƒÙ„ Ø§Ù„Ø£Ø²Ø±Ø§Ø± Ø§Ù„ØªÙŠ ØªØ­Ù…Ù„ class="theme-toggle-btn"
-   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════════════════════════
+   THEME TOGGLE — وضع ليلي / نهاري
+   يقرأ الاختيار من localStorage، يطبّقه فوراً على <html>،
+   ويربط كل الأزرار التي تحمل class="theme-toggle-btn"
+   ══════════════════════════════════════════════════════════════════ */
 (function applyThemeEarly() {
-  // Ù†Ø·Ø¨Ù‘Ù‚ Ø§Ù„Ø«ÙŠÙ… Ù‚Ø¨Ù„ Ø±Ø³Ù… Ø§Ù„ØµÙØ­Ø© Ù„ØªØ¬Ù†Ù‘Ø¨ Ø§Ù„ÙˆÙ…ÙŠØ¶
+  // نطبّق الثيم قبل رسم الصفحة لتجنّب الوميض
   try {
     const saved = localStorage.getItem("tp-theme");
     if (saved === "dark")  document.documentElement.setAttribute("data-theme", "dark");
@@ -187,7 +187,7 @@ function initThemeToggle() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   }
 
-  // Ø§Ø±Ø¨Ø· ÙƒÙ„ Ø§Ù„Ø£Ø²Ø±Ø§Ø± Ø§Ù„ØªÙŠ ØªØ­Ù…Ù„ class="theme-toggle-btn"
+  // اربط كل الأزرار التي تحمل class="theme-toggle-btn"
   document.querySelectorAll(".theme-toggle-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const next = isDark() ? "light" : "dark";
@@ -196,11 +196,11 @@ function initThemeToggle() {
     });
   });
 
-  // Ø¥Ø°Ø§ Ù„Ù… ÙŠÙØ¶Ù Ø§Ù„Ø²Ø± Ø¨Ø¹Ø¯ (Ù…Ø«Ù„Ø§Ù‹ ÙŠÙØ¶Ø§Ù Ø¨Ù€ JS Ù„Ø§Ø­Ù‚Ø§Ù‹) â€” delegate Ø¹Ù„Ù‰ Ø§Ù„Ù€ body
+  // إذا لم يُضف الزر بعد (مثلاً يُضاف بـ JS لاحقاً) — delegate على الـ body
   document.body.addEventListener("click", e => {
     const btn = e.target.closest(".theme-toggle-btn");
     if (!btn) return;
-    // ØªØ¬Ù†Ù‘Ø¨ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ Ù…Ø±ØªÙŠÙ† Ø¥Ø°Ø§ ÙƒØ§Ù† querySelector Ø£Ù…Ø³Ùƒ Ø§Ù„Ø²Ø± Ø£Ø¹Ù„Ø§Ù‡
+    // تجنّب التطبيق مرتين إذا كان querySelector أمسك الزر أعلاه
     if (document.querySelectorAll(".theme-toggle-btn").length === 0) {
       const next = isDark() ? "light" : "dark";
       try { localStorage.setItem("tp-theme", next); } catch {}
@@ -238,7 +238,7 @@ function initWhatsAppButton() {
 
   // On phones the button sits directly over scrolling content (there's no
   // room to place it elsewhere), so it's faded further while the page is
-  // actively moving and restored once scrolling settles â€” avoids it
+  // actively moving and restored once scrolling settles — avoids it
   // blocking text/links mid-scroll while staying available at rest.
   const isMobile = window.matchMedia("(max-width: 560px)");
   if (isMobile.matches) {
@@ -314,7 +314,7 @@ function initMobileNav() {
   drawer.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeDrawer));
 
   // Tapping anywhere outside the open drawer (the darkened page behind it,
-  // or the header logo/actions) closes it â€” previously only the toggle
+  // or the header logo/actions) closes it — previously only the toggle
   // button, the X, or a nav link inside the drawer would close it.
   document.addEventListener("click", (e) => {
     if (!drawer.classList.contains("open")) return;
@@ -574,34 +574,34 @@ function initQuickSearch() {
 
   const isAr = document.documentElement.lang === "ar" ||
                document.documentElement.getAttribute("dir") === "rtl";
-  const placeholder = isAr ? "Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ù†ØªØ¬â€¦" : "Search productsâ€¦";
-  const hintText    = isAr ? "Ø§Ø¶ØºØ· Esc Ù„Ù„Ø¥ØºÙ„Ø§Ù‚" : "Press Esc to close";
-  const emptyText   = isAr ? "Ù„Ø§ ØªÙˆØ¬Ø¯ Ù†ØªØ§Ø¦Ø¬" : "No results found";
-  // Ø±Ø§Ø¨Ø· ØµÙØ­Ø© Ø§Ù„Ù…Ù†ØªØ¬ Ø¨Ø­Ø³Ø¨ Ø§Ù„Ù„ØºØ©
+  const placeholder = isAr ? "ابحث عن منتج…" : "Search products…";
+  const hintText    = isAr ? "اضغط Esc للإغلاق" : "Press Esc to close";
+  const emptyText   = isAr ? "لا توجد نتائج" : "No results found";
+  // رابط صفحة المنتج بحسب اللغة
   const productBase = isAr ? "/ar/product" : "/product";
 
-  // â”€â”€ Ø²Ø± Ø§Ù„Ø¨Ø­Ø« ÙÙŠ Ø§Ù„Ù‡ÙŠØ¯Ø± â”€â”€
+  // ── زر البحث في الهيدر ──
   const btn = document.createElement("button");
   btn.className = "quick-search-btn";
-  btn.setAttribute("aria-label", isAr ? "Ø¨Ø­Ø«" : "Search");
+  btn.setAttribute("aria-label", isAr ? "بحث" : "Search");
   btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
 
-  // Ø£Ø¯Ø±Ø¬ Ø§Ù„Ø²Ø± Ù‚Ø¨Ù„ Ø²Ø± Ø§Ù„Ù„ØºØ© ÙÙŠ header-actions
+  // أدرج الزر قبل زر اللغة في header-actions
   const actions = document.querySelector(".header-actions");
   if (actions) {
     const langSwitch = actions.querySelector(".lang-switch");
     actions.insertBefore(btn, langSwitch || actions.firstChild);
   }
 
-  // â”€â”€ Ø§Ù„Ù€ overlay â”€â”€
+  // ── الـ overlay ──
   const overlay = document.createElement("div");
   overlay.className = "quick-search-overlay";
   overlay.innerHTML = `
-    <div class="quick-search-box" role="dialog" aria-modal="true" aria-label="${isAr ? "Ø¨Ø­Ø« Ø³Ø±ÙŠØ¹" : "Quick search"}">
+    <div class="quick-search-box" role="dialog" aria-modal="true" aria-label="${isAr ? "بحث سريع" : "Quick search"}">
       <div class="quick-search-input-row">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input class="quick-search-input" type="search" placeholder="${placeholder}" autocomplete="off" spellcheck="false" dir="${isAr ? 'rtl' : 'ltr'}" />
-        <button class="quick-search-close" aria-label="Close">âœ•</button>
+        <button class="quick-search-close" aria-label="Close">✕</button>
       </div>
       <div class="quick-search-results"></div>
       <div class="quick-search-hint">${hintText}</div>
@@ -635,13 +635,13 @@ function initQuickSearch() {
   function renderResults(query) {
     const q = query.trim().toLowerCase();
     const all = Object.values(PRODUCTS);
+    const catsOf = (p) => (Array.isArray(p.categories) && p.categories.length ? p.categories : [p.category]).filter(Boolean);
     const matched = q
       ? all.filter(p =>
           (p.name || "").toLowerCase().includes(q) ||
-          (p.nameAr || "").includes(query.trim()) ||
-          (p.category || "").toLowerCase().includes(q) ||
-          (p.description || "").toLowerCase().includes(q) ||
-          (p.descriptionAr || "").includes(query.trim())
+          (p.id || "").toLowerCase().includes(q) ||
+          catsOf(p).some((c) => c.toLowerCase().includes(q)) ||
+          (p.shortDescription || "").toLowerCase().includes(q)
         ).slice(0, 8)
       : all.slice(0, 6);
 
@@ -651,10 +651,14 @@ function initQuickSearch() {
     }
     results.innerHTML = matched.map(p => {
       const img = p.images && p.images[0]
-        ? `<img class="quick-search-item-img" src="${p.images[0]}" alt="${p.name}" loading="lazy" />`
+        ? `<img class="quick-search-item-img" src="/${p.images[0].replace(/^\//, "")}" alt="" loading="lazy" />`
         : `<span class="quick-search-item-img"></span>`;
-      const name = isAr && p.nameAr ? p.nameAr : p.name;
-      const cat  = isAr && p.categoryAr ? p.categoryAr : (p.category || "");
+      const name = p.name;
+      // Most specific category only, short label (Arabic label on /ar pages).
+      const cats = catsOf(p);
+      const leaf = cats.find((c) => !cats.some((o) => o !== c && o.startsWith(c + " › "))) || "";
+      const labelsAr = typeof CATEGORY_LABELS_AR !== "undefined" ? CATEGORY_LABELS_AR : {};
+      const cat = (isAr && labelsAr[leaf]) || PEPTIDE_NAV_SHORT[leaf] || leaf.split(" › ").pop();
       return `<a class="quick-search-item" href="${productBase}?id=${encodeURIComponent(p.id || p.name)}">
         ${img}
         <div>

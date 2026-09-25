@@ -253,4 +253,6 @@ html[dir="rtl"] .catalog-banner-content .eyebrow .eyebrow-center-line {
 }
 
 /* Phone numbers always read left-to-right, even inside RTL text. */
-a[href^="tel:"], a[href*="wa.me/"] { direction: ltr; unicode-bidi: isolate; }
+a[href^="tel:"], a[href^="https://wa.me/32"] { direction: ltr; unicode-bidi: isolate; }
+/* Share-menu items are labels, not phone numbers — keep them RTL. */
+html[dir="rtl"] .share-menu-item { direction: rtl; unicode-bidi: normal; }
