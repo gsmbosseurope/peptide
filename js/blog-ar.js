@@ -91,7 +91,7 @@ function initBlogPostDetailPageAr() {
   });
 }
 
-const BLOG_RTL_PATTERN_AR = /[֑-߿יִ-﷿ﹰ-ﻼ]/;
+const BLOG_RTL_PATTERN_AR = /[֑-߿יִ-﷿ﹰ-ﻼ]/; // escaped: literal Hebrew chars got Unicode-decomposed and widened the range to cover "—"
 
 function formatBlogPostParagraphsAr(container) {
   if (!container) return;

@@ -20,7 +20,7 @@ $galleryItems = load_gallery_items();
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Gallery — trusted-peptide.com</title>
+  <title>Product Gallery: Research Peptide Vials &amp; Packaging | Trusted-Peptide</title>
   <meta name="description" content="Photos and videos from trusted-peptide.com — lab, packaging, and product shots." />
   <link rel="canonical" href="https://trusted-peptide.com/gallery" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/gallery" />
@@ -28,12 +28,12 @@ $galleryItems = load_gallery_items();
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/gallery" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="Gallery — trusted-peptide.com" />
+  <meta property="og:title" content="Product Gallery: Research Peptide Vials &amp; Packaging | Trusted-Peptide" />
   <meta property="og:description" content="Photos and videos from trusted-peptide.com — lab, packaging, and product shots." />
   <meta property="og:url" content="https://trusted-peptide.com/gallery" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Gallery — trusted-peptide.com" />
+  <meta name="twitter:title" content="Product Gallery: Research Peptide Vials &amp; Packaging | Trusted-Peptide" />
   <meta name="twitter:description" content="Photos and videos from trusted-peptide.com — lab, packaging, and product shots." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />

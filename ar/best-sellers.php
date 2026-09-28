@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>الأكثر مبيعاً — trusted-peptide.com</title>
+  <title>الببتيدات الأكثر مبيعاً: BPC-157 وTB-500 وGHK-Cu وغيرها | Trusted-Peptide</title>
   <meta name="description" content="الببتيدات البحثية الأكثر طلباً للعافية العامة — التعافي والبشرة والطاقة وصحة الخلايا. بدون شرط حالة محددة." />
   <link rel="canonical" href="https://trusted-peptide.com/ar/best-sellers" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/best-sellers" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/best-sellers" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="الأكثر مبيعاً — trusted-peptide.com" />
+  <meta property="og:title" content="الببتيدات الأكثر مبيعاً: BPC-157 وTB-500 وGHK-Cu وغيرها | Trusted-Peptide" />
   <meta property="og:description" content="الببتيدات البحثية الأكثر طلباً للعافية العامة — التعافي والبشرة والطاقة وصحة الخلايا." />
   <meta property="og:url" content="https://trusted-peptide.com/ar/best-sellers" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="الأكثر مبيعاً — trusted-peptide.com" />
+  <meta name="twitter:title" content="الببتيدات الأكثر مبيعاً: BPC-157 وTB-500 وGHK-Cu وغيرها | Trusted-Peptide" />
   <meta name="twitter:description" content="الببتيدات البحثية الأكثر طلباً للعافية العامة — التعافي والبشرة والطاقة وصحة الخلايا." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />

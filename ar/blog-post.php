@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../admin-php/config.php';
 require_once __DIR__ . '/../admin-php/data.php';
+require_once __DIR__ . '/../admin-php/seo.php';
 
 $postId = isset($_GET['id']) ? (string) $_GET['id'] : '';
 $posts = load_blog_posts();
@@ -9,6 +10,15 @@ foreach ($posts as $p) {
     if ($p['id'] === $postId) { $post = $p; break; }
 }
 
+// Unknown or missing id: never fall back to other content (that made
+// every bad URL a duplicate page). Empty id goes to the listing page;
+// an unknown id gets a real 404.
+if (!$post) {
+    if ($postId === '') { header('Location: /ar/blog', true, 301); exit; }
+    http_response_code(404);
+    include __DIR__ . '/404.php';
+    exit;
+}
 $pageTitle = $post ? htmlspecialchars($post['title']) . ' — trusted-peptide.com' : 'المدونة — trusted-peptide.com';
 $pageDesc = $post && !empty($post['summary'])
     ? htmlspecialchars($post['summary'])
@@ -63,6 +73,8 @@ $pageImage = $post && !empty($post['coverImage'])
   <link rel="stylesheet" href="../css/animations.css?v=<?php echo filemtime(__DIR__ . '/../css/animations.css'); ?>" />
   <link rel="stylesheet" href="../css/hero.css?v=<?php echo filemtime(__DIR__ . '/../css/hero.css'); ?>" />
   <link rel="stylesheet" href="../css/rtl.css?v=<?php echo filemtime(__DIR__ . '/../css/rtl.css'); ?>" />
+  <?php seo_jsonld(seo_article($post['title'], $post['summary'] ?? '', $pageUrl, $pageImage, $post['createdAt'] ?? '', 'ar')); ?>
+  <?php seo_jsonld(seo_breadcrumb([['الرئيسية', 'https://trusted-peptide.com/ar/'], ['المدونة', 'https://trusted-peptide.com/ar/blog'], [$post['title'], $pageUrl]])); ?>
 </head>
 <body>
 

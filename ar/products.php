@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>كل المنتجات — trusted-peptide.com</title>
+  <title>شراء ببتيدات بحثية أونلاين: BPC-157 وسيماغلوتايد وTB-500 | Trusted-Peptide</title>
   <meta name="description" content="تصفح أكثر من 120 ببتيد بحثي مع أسعار شفافة لكل مقاس وخصومات للكميات." />
   <link rel="canonical" href="https://trusted-peptide.com/ar/products" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/products" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/products" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="كل المنتجات — trusted-peptide.com" />
+  <meta property="og:title" content="شراء ببتيدات بحثية أونلاين: BPC-157 وسيماغلوتايد وTB-500 | Trusted-Peptide" />
   <meta property="og:description" content="تصفح أكثر من 120 ببتيد بحثي مع أسعار شفافة لكل مقاس وخصومات للكميات." />
   <meta property="og:url" content="https://trusted-peptide.com/ar/products" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="كل المنتجات — trusted-peptide.com" />
+  <meta name="twitter:title" content="شراء ببتيدات بحثية أونلاين: BPC-157 وسيماغلوتايد وTB-500 | Trusted-Peptide" />
   <meta name="twitter:description" content="تصفح أكثر من 120 ببتيد بحثي مع أسعار شفافة لكل مقاس وخصومات للكميات." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />

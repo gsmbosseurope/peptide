@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>About — trusted-peptide.com</title>
+  <title>About Trusted-Peptide: EU-Sourced, HPLC-Tested Research Peptides</title>
   <meta name="description" content="EU-sourced research peptides, certified for purity and consistency. Learn about our sourcing, testing, and shipping." />
   <link rel="canonical" href="https://trusted-peptide.com/about" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/about" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/about" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="About — trusted-peptide.com" />
+  <meta property="og:title" content="About Trusted-Peptide: EU-Sourced, HPLC-Tested Research Peptides" />
   <meta property="og:description" content="EU-sourced research peptides, certified for purity and consistency. Learn about our sourcing, testing, and shipping." />
   <meta property="og:url" content="https://trusted-peptide.com/about" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="About — trusted-peptide.com" />
+  <meta name="twitter:title" content="About Trusted-Peptide: EU-Sourced, HPLC-Tested Research Peptides" />
   <meta name="twitter:description" content="EU-sourced research peptides, certified for purity and consistency. Learn about our sourcing, testing, and shipping." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
@@ -163,7 +163,7 @@
       <div class="split-section reveal">
         <div>
           <span class="eyebrow">Our Lab</span>
-          <h1>Precision is the whole product.</h1>
+          <h2 class="as-h1">Precision is the whole product.</h2>
           <p>trusted-peptide.com was built for researchers who don't compromise on data. Every compound we list is HPLC-verified for purity, sourced from EU-certified laboratories, and shipped cold-chain to preserve integrity from vial to bench.</p>
           <p>We publish exact composition and purity for every peptide — no vague "proprietary blend" language. What's on the label is what's in the vial.</p>
         </div>

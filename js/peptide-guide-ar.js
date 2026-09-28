@@ -10,7 +10,7 @@ function peptideTopicQueryParamAr(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
 
-const PEPTIDE_TOPIC_RTL_PATTERN_AR = /[֑-߿יִ-﷽ﹰ-ﻼ]/;
+const PEPTIDE_TOPIC_RTL_PATTERN_AR = /[֑-߿יִ-﷿ﹰ-ﻼ]/; // escaped: literal Hebrew chars got Unicode-decomposed and widened the range to cover "—"
 function peptideTopicDirAr(text) {
   return PEPTIDE_TOPIC_RTL_PATTERN_AR.test(text || "") ? "rtl" : "ltr";
 }

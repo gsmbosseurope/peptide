@@ -374,7 +374,7 @@ function initProductDetailPage() {
 // Same heading/RTL-line detection as js/blog.js's formatBlogPostParagraphs()
 // — needed because Quill's rich-text output carries no direction
 // attribute and every paragraph is structurally identical.
-const PD_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/;
+const PD_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/; // escaped: literal Hebrew chars got Unicode-decomposed and widened the range to cover "—"
 
 function formatProductDescParagraphs(container) {
   if (!container) return;

@@ -348,7 +348,7 @@ function initProductDetailPage() {
 // needed here for the same reason: Quill's rich-text output carries no
 // direction attribute and treats every line as a structurally identical
 // paragraph.
-const PD_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/;
+const PD_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/; // escaped: literal Hebrew chars got Unicode-decomposed and widened the range to cover "—"
 
 function formatProductDescParagraphs(container) {
   if (!container) return;

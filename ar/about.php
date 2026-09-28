@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>من نحن — trusted-peptide.com</title>
+  <title>من نحن | Trusted-Peptide: ببتيدات بحثية أوروبية المصدر ومختبرة بتقنية HPLC</title>
   <meta name="description" content="ببتيدات بحثية مصدرها الاتحاد الأوروبي، معتمدة للنقاء والجودة الثابتة. تعرّف على مصادرنا واختباراتنا وطريقة الشحن." />
   <link rel="canonical" href="https://trusted-peptide.com/ar/about" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/about" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/about" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="من نحن — trusted-peptide.com" />
+  <meta property="og:title" content="من نحن | Trusted-Peptide: ببتيدات بحثية أوروبية المصدر ومختبرة بتقنية HPLC" />
   <meta property="og:description" content="ببتيدات بحثية مصدرها الاتحاد الأوروبي، معتمدة للنقاء والجودة الثابتة. تعرّف على مصادرنا واختباراتنا وطريقة الشحن." />
   <meta property="og:url" content="https://trusted-peptide.com/ar/about" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="من نحن — trusted-peptide.com" />
+  <meta name="twitter:title" content="من نحن | Trusted-Peptide: ببتيدات بحثية أوروبية المصدر ومختبرة بتقنية HPLC" />
   <meta name="twitter:description" content="ببتيدات بحثية مصدرها الاتحاد الأوروبي، معتمدة للنقاء والجودة الثابتة. تعرّف على مصادرنا واختباراتنا وطريقة الشحن." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />
@@ -158,7 +158,7 @@
       <div class="split-section reveal">
         <div>
           <span class="eyebrow">مختبرنا</span>
-          <h1>الدقة هي المنتج بأكمله.</h1>
+          <h2 class="as-h1">الدقة هي المنتج بأكمله.</h2>
           <p>بُني trusted-peptide.com للباحثين الذين لا يتنازلون عن دقة البيانات. كل مركّب مُدرج موثّق النقاء بتحليل HPLC، مصدره مختبرات معتمدة أوروبياً، ويُشحن ببراد حافظ للحفاظ على سلامته من القارورة حتى المختبر.</p>
           <p>ننشر التركيب والنقاء الدقيقين لكل ببتيد — بدون عبارات غامضة مثل "خلطة خاصة". ما هو مكتوب على الملصق هو بالضبط ما في القارورة.</p>
         </div>

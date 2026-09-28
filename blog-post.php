@@ -9,6 +9,7 @@
  */
 require_once __DIR__ . '/admin-php/config.php';
 require_once __DIR__ . '/admin-php/data.php';
+require_once __DIR__ . '/admin-php/seo.php';
 
 $postId = isset($_GET['id']) ? (string) $_GET['id'] : '';
 $posts = load_blog_posts();
@@ -17,6 +18,15 @@ foreach ($posts as $p) {
     if ($p['id'] === $postId) { $post = $p; break; }
 }
 
+// Unknown or missing id: never fall back to other content (that made
+// every bad URL a duplicate page). Empty id goes to the listing page;
+// an unknown id gets a real 404.
+if (!$post) {
+    if ($postId === '') { header('Location: /blog', true, 301); exit; }
+    http_response_code(404);
+    include __DIR__ . '/404.php';
+    exit;
+}
 $pageTitle = $post ? htmlspecialchars($post['title']) . ' — trusted-peptide.com' : 'Blog — trusted-peptide.com';
 $pageDesc = $post && !empty($post['summary'])
     ? htmlspecialchars($post['summary'])
@@ -76,6 +86,8 @@ $pageImage = $post && !empty($post['coverImage'])
     .footer-phone-num:hover{text-decoration:underline;}
     .footer-bottom{display:flex;flex-wrap:nowrap;justify-content:space-between;gap:8px;padding-top:14px;border-top:1px solid rgba(128,128,128,.15);margin-top:8px;font-size:.78rem;opacity:.6;}
   </style>
+  <?php seo_jsonld(seo_article($post['title'], $post['summary'] ?? '', $pageUrl, $pageImage, $post['createdAt'] ?? '', 'en')); ?>
+  <?php seo_jsonld(seo_breadcrumb([['Home', 'https://trusted-peptide.com/'], ['Blog', 'https://trusted-peptide.com/blog'], [$post['title'], $pageUrl]])); ?>
 </head>
 <body>
 

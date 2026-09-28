@@ -348,7 +348,13 @@ function renderEditor(product) {
             const selected = Array.isArray(product.categories) && product.categories.length
               ? product.categories
               : [product.category].filter(Boolean);
-            return orderedCategories().map(
+            // A category the product still carries but which is no longer in
+            // the managed list (renamed/deleted) is shown ticked, so saving the
+            // product can't silently wipe it.
+            const orphans = selected.filter((c) => c && !CATEGORIES.includes(c)).map(
+              (c) => `<label class="checkbox-label"><input type="checkbox" value="${escapeAttr(c)}" checked /> ${escapeHtml(c)} <em style="color:var(--danger);font-style:normal;">(old — not in category list)</em></label>`
+            ).join("");
+            return orphans + orderedCategories().map(
               (c) =>
                 `<label class="checkbox-label${isSubcat(c) ? " is-subcat" : ""}" style="--depth:${subcatDepth(c)}"><input type="checkbox" value="${escapeAttr(c)}" ${selected.includes(c) ? "checked" : ""} /> ${isSubcat(c) ? "↳ " + escapeHtml(subcatLabel(c)) : escapeHtml(c)}</label>`
             ).join("");

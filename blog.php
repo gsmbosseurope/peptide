@@ -20,7 +20,7 @@ $allPosts = load_blog_posts();
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Blog — trusted-peptide.com</title>
+  <title>Research Peptides Blog: Mechanisms, Research &amp; Handling | Trusted-Peptide</title>
   <meta name="description" content="Educational articles on research peptides — mechanisms, categories, and handling." />
   <link rel="canonical" href="https://trusted-peptide.com/blog" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/blog" />
@@ -28,12 +28,12 @@ $allPosts = load_blog_posts();
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/blog" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="Blog — trusted-peptide.com" />
+  <meta property="og:title" content="Research Peptides Blog: Mechanisms, Research &amp; Handling | Trusted-Peptide" />
   <meta property="og:description" content="Educational articles on research peptides — mechanisms, categories, and handling." />
   <meta property="og:url" content="https://trusted-peptide.com/blog" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Blog — trusted-peptide.com" />
+  <meta name="twitter:title" content="Research Peptides Blog: Mechanisms, Research &amp; Handling | Trusted-Peptide" />
   <meta name="twitter:description" content="Educational articles on research peptides — mechanisms, categories, and handling." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />

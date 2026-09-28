@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Vitamins — trusted-peptide.com</title>
+  <title>Vitamins &amp; Supplements: B12, Glutathione, NAD+ &amp; More | Trusted-Peptide</title>
   <meta name="description" content="Lab-grade vitamins and essential compounds — EU-sourced with transparent pricing." />
   <link rel="canonical" href="https://trusted-peptide.com/vitamins" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/vitamins" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/vitamins" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="Vitamins — trusted-peptide.com" />
+  <meta property="og:title" content="Vitamins &amp; Supplements: B12, Glutathione, NAD+ &amp; More | Trusted-Peptide" />
   <meta property="og:description" content="Lab-grade vitamins and essential compounds — EU-sourced with transparent pricing." />
   <meta property="og:url" content="https://trusted-peptide.com/vitamins" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Vitamins — trusted-peptide.com" />
+  <meta name="twitter:title" content="Vitamins &amp; Supplements: B12, Glutathione, NAD+ &amp; More | Trusted-Peptide" />
   <meta name="twitter:description" content="Lab-grade vitamins and essential compounds — EU-sourced with transparent pricing." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />

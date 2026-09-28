@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../admin-php/config.php';
 require_once __DIR__ . '/../admin-php/data.php';
+require_once __DIR__ . '/../admin-php/seo.php';
 
 $topicId = isset($_GET['id']) ? (string) $_GET['id'] : '';
 $topics = load_peptide_topics();
@@ -14,6 +15,19 @@ if (substr($topicId, -3) === '-ar') {
     }
 }
 
+// Unknown or missing id: never fall back to other content (that made
+// every bad URL a duplicate page). Empty id goes to the listing page;
+// an unknown id gets a real 404.
+if (!$topic) {
+    if ($topicId === '') { header('Location: /ar/peptide-guide', true, 301); exit; }
+    http_response_code(404);
+    include __DIR__ . '/404.php';
+    exit;
+}
+// Pair with the English topic when one exists under the same id minus "-ar".
+$topicIdEn = substr($topic['id'], 0, -3);
+$topicUrlEn = in_array($topicIdEn, array_column($topics, 'id'), true)
+    ? 'https://trusted-peptide.com/peptide-guide-topic?id=' . rawurlencode($topicIdEn) : '';
 $pageTitle = $topic ? htmlspecialchars($topic['title']) . ' — trusted-peptide.com' : 'دليل الببتيد — trusted-peptide.com';
 $pageDesc = $topic && !empty($topic['summary'])
     ? htmlspecialchars($topic['summary'])
@@ -43,10 +57,11 @@ $pageImage = $topic && !empty($topic['images'][0])
   <title><?php echo $pageTitle; ?></title>
   <meta name="description" content="<?php echo $pageDesc; ?>" />
   <link rel="canonical" href="<?php echo htmlspecialchars($pageUrl); ?>" />
-  <?php // No hreflang here: Arabic and English peptide-guide topics are
-  // separate content (distinct "-ar"-suffixed ids with no 1:1 English
-  // counterpart id), not translations of the same page, so there's no
-  // correct URL to declare as the alternate-language version. ?>
+  <?php if ($topicUrlEn): ?>
+  <link rel="alternate" hreflang="en" href="<?php echo htmlspecialchars($topicUrlEn); ?>" />
+  <link rel="alternate" hreflang="ar" href="<?php echo htmlspecialchars($pageUrl); ?>" />
+  <link rel="alternate" hreflang="x-default" href="<?php echo htmlspecialchars($topicUrlEn); ?>" />
+  <?php endif; ?>
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Trusted-Peptide" />
   <meta property="og:title" content="<?php echo $pageTitle; ?>" />
@@ -67,6 +82,7 @@ $pageImage = $topic && !empty($topic['images'][0])
   <link rel="stylesheet" href="../css/animations.css?v=<?php echo filemtime(__DIR__ . '/../css/animations.css'); ?>" />
   <link rel="stylesheet" href="../css/hero.css?v=<?php echo filemtime(__DIR__ . '/../css/hero.css'); ?>" />
   <link rel="stylesheet" href="../css/rtl.css?v=<?php echo filemtime(__DIR__ . '/../css/rtl.css'); ?>" />
+  <?php seo_jsonld(seo_breadcrumb([['الرئيسية', 'https://trusted-peptide.com/ar/'], ['دليل الببتيد', 'https://trusted-peptide.com/ar/peptide-guide'], [$topic['title'], $pageUrl]])); ?>
 </head>
 <body>
 

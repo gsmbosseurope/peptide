@@ -20,7 +20,7 @@ $allPosts = load_blog_posts();
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>المدونة — trusted-peptide.com</title>
+  <title>مدونة الببتيدات البحثية: الآليات والأبحاث وطرق الاستخدام | Trusted-Peptide</title>
   <meta name="description" content="مقالات تعليمية عن الببتيدات البحثية — الآليات والفئات وطريقة التعامل." />
   <link rel="canonical" href="https://trusted-peptide.com/ar/blog" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/blog" />
@@ -28,12 +28,12 @@ $allPosts = load_blog_posts();
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/blog" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="المدونة — trusted-peptide.com" />
+  <meta property="og:title" content="مدونة الببتيدات البحثية: الآليات والأبحاث وطرق الاستخدام | Trusted-Peptide" />
   <meta property="og:description" content="مقالات تعليمية عن الببتيدات البحثية — الآليات والفئات وطريقة التعامل." />
   <meta property="og:url" content="https://trusted-peptide.com/ar/blog" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="المدونة — trusted-peptide.com" />
+  <meta name="twitter:title" content="مدونة الببتيدات البحثية: الآليات والأبحاث وطرق الاستخدام | Trusted-Peptide" />
   <meta name="twitter:description" content="مقالات تعليمية عن الببتيدات البحثية — الآليات والفئات وطريقة التعامل." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />

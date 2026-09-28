@@ -11,6 +11,7 @@
 // ROOT_DIR = public_html (parent of ar/)
 define('AR_ROOT_DIR', __DIR__ . '/..');
 require_once AR_ROOT_DIR . '/admin-php/share.php';
+require_once AR_ROOT_DIR . '/admin-php/seo.php';
 
 function load_products_ar() {
     $file = AR_ROOT_DIR . '/js/products-data-ar.js';
@@ -69,7 +70,15 @@ $product = null;
 foreach ($products as $p) {
     if ($p['id'] === $productId) { $product = $p; break; }
 }
-if (!$product && count($products)) $product = $products[0];
+// Unknown or missing id: never fall back to other content (that made
+// every bad URL a duplicate page). Empty id goes to the listing page;
+// an unknown id gets a real 404.
+if (!$product) {
+    if ($productId === '') { header('Location: /ar/products', true, 301); exit; }
+    http_response_code(404);
+    include __DIR__ . '/404.php';
+    exit;
+}
 
 $pageTitle = $product ? htmlspecialchars($product['name']) . ' — trusted-peptide.com' : 'المنتج — trusted-peptide.com';
 $pageDesc = $product && !empty($product['shortDescription'])
@@ -98,6 +107,8 @@ if ($product && !empty($product['name']) && !empty($product['variants'])) {
         'image' => $pageImage,
         'url' => $pageUrl,
         'inLanguage' => 'ar',
+        'sku' => $product['id'],
+        'brand' => ['@type' => 'Brand', 'name' => 'Trusted-Peptide'],
         'offers' => [
             '@type' => 'AggregateOffer',
             'priceCurrency' => 'EUR',
@@ -173,6 +184,7 @@ if ($product && !empty($product['name']) && !empty($product['variants'])) {
   <?php if ($productSchema): ?>
   <script type="application/ld+json"><?php echo json_encode($productSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?></script>
   <?php endif; ?>
+  <?php seo_jsonld(seo_breadcrumb([['الرئيسية', 'https://trusted-peptide.com/ar/'], ['المنتجات', 'https://trusted-peptide.com/ar/products'], [$product['name'], $pageUrl]])); ?>
 </head>
 <body>
 

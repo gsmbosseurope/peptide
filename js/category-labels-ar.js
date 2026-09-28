@@ -21,5 +21,7 @@ const CATEGORY_LABELS_AR = {
     "Digestive & Gut Health": "صحة الجهاز الهضمي والأمعاء",
     "Accessories & Supplies": "الملحقات واللوازم",
     "Cosmetics": "مستحضرات التجميل",
-    "Vitamins": "الفيتامينات"
+    "Vitamins": "الفيتامينات",
+    "Cosmetics › Face Care": "العناية بالوحه",
+    "Vitamins › Omega 3": "زيت سمك"
 };

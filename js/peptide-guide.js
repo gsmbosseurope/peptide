@@ -12,7 +12,7 @@ function peptideTopicQueryParam(name) {
 // Detects Arabic (and other RTL-script) text so topic titles/paragraphs
 // written in Arabic render right-to-left, while English text is left
 // untouched — checked per text chunk, not per page.
-const PEPTIDE_TOPIC_RTL_PATTERN = /[֑-߿יִ-﷽ﹰ-ﻼ]/;
+const PEPTIDE_TOPIC_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/; // escaped: literal Hebrew chars got Unicode-decomposed and widened the range to cover "—"
 function peptideTopicDir(text) {
   return PEPTIDE_TOPIC_RTL_PATTERN.test(text || "") ? "rtl" : "ltr";
 }

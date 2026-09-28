@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>مستحضرات التجميل — trusted-peptide.com</title>
+  <title>مستحضرات تجميل وسيرومات بالببتيدات: كولاجين وفيتامين C وريتينول | Trusted-Peptide</title>
   <meta name="description" content="ببتيدات تجميلية بجودة بحثية للبشرة والشعر والتجديد الخلوي — مصدرها أوروبا، ونقاؤها موثّق." />
   <link rel="canonical" href="https://trusted-peptide.com/ar/cosmetics" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/cosmetics" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/cosmetics" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="مستحضرات التجميل — trusted-peptide.com" />
+  <meta property="og:title" content="مستحضرات تجميل وسيرومات بالببتيدات: كولاجين وفيتامين C وريتينول | Trusted-Peptide" />
   <meta property="og:description" content="ببتيدات تجميلية بجودة بحثية للبشرة والشعر والتجديد الخلوي — مصدرها أوروبا، ونقاؤها موثّق." />
   <meta property="og:url" content="https://trusted-peptide.com/ar/cosmetics" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="مستحضرات التجميل — trusted-peptide.com" />
+  <meta name="twitter:title" content="مستحضرات تجميل وسيرومات بالببتيدات: كولاجين وفيتامين C وريتينول | Trusted-Peptide" />
   <meta name="twitter:description" content="ببتيدات تجميلية بجودة بحثية للبشرة والشعر والتجديد الخلوي — مصدرها أوروبا، ونقاؤها موثّق." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />

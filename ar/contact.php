@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>تواصل معنا — trusted-peptide.com</title>
+  <title>تواصل معنا | Trusted-Peptide: الطلبات والجملة ودعم الببتيدات البحثية</title>
   <meta name="description" content="لديك سؤال عن طلب أو مركّب؟ تواصل مع Trusted-Peptide عبر واتساب أو البريد الإلكتروني." />
   <link rel="canonical" href="https://trusted-peptide.com/ar/contact" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/contact" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/contact" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="تواصل معنا — trusted-peptide.com" />
+  <meta property="og:title" content="تواصل معنا | Trusted-Peptide: الطلبات والجملة ودعم الببتيدات البحثية" />
   <meta property="og:description" content="لديك سؤال عن طلب أو مركّب؟ تواصل مع Trusted-Peptide عبر واتساب أو البريد الإلكتروني." />
   <meta property="og:url" content="https://trusted-peptide.com/ar/contact" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="تواصل معنا — trusted-peptide.com" />
+  <meta name="twitter:title" content="تواصل معنا | Trusted-Peptide: الطلبات والجملة ودعم الببتيدات البحثية" />
   <meta name="twitter:description" content="لديك سؤال عن طلب أو مركّب؟ تواصل مع Trusted-Peptide عبر واتساب أو البريد الإلكتروني." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />

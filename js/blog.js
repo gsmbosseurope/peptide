@@ -97,7 +97,7 @@ function initBlogPostDetailPage() {
 // dir="rtl" — Quill's raw output carries no direction attribute at all
 // (unlike the plain-paragraph guide renderers, which already add
 // dir="rtl" themselves), so Arabic content was defaulting to left-aligned.
-const BLOG_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/;
+const BLOG_RTL_PATTERN = /[֑-߿יִ-﷿ﹰ-ﻼ]/; // escaped: literal Hebrew chars got Unicode-decomposed and widened the range to cover "—"
 
 // Quill's body content is a flat run of <p> tags — a "Name:" heading line
 // and its explanation are structurally identical paragraphs, so the same

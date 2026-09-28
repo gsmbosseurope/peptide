@@ -9,6 +9,7 @@
  */
 require_once __DIR__ . '/admin-php/config.php';
 require_once __DIR__ . '/admin-php/data.php';
+require_once __DIR__ . '/admin-php/seo.php';
 
 $topicId = isset($_GET['id']) ? (string) $_GET['id'] : '';
 $topics = load_peptide_topics();
@@ -17,6 +18,19 @@ foreach ($topics as $t) {
     if ($t['id'] === $topicId) { $topic = $t; break; }
 }
 
+// Unknown or missing id: never fall back to other content (that made
+// every bad URL a duplicate page). Empty id goes to the listing page;
+// an unknown id gets a real 404.
+if (!$topic) {
+    if ($topicId === '') { header('Location: /peptide-guide', true, 301); exit; }
+    http_response_code(404);
+    include __DIR__ . '/404.php';
+    exit;
+}
+// A topic whose Arabic twin exists (same id + "-ar") gets hreflang pairs.
+$topicIds = array_column($topics, 'id');
+$topicUrlAr = in_array($topic['id'] . '-ar', $topicIds, true)
+    ? 'https://trusted-peptide.com/ar/peptide-guide-topic?id=' . rawurlencode($topic['id'] . '-ar') : '';
 $pageTitle = $topic ? htmlspecialchars($topic['title']) . ' — trusted-peptide.com' : 'Peptide Guide — trusted-peptide.com';
 $pageDesc = $topic && !empty($topic['summary'])
     ? htmlspecialchars($topic['summary'])
@@ -46,6 +60,11 @@ $pageImage = $topic && !empty($topic['images'][0])
   <title><?php echo $pageTitle; ?></title>
   <meta name="description" content="<?php echo $pageDesc; ?>" />
   <link rel="canonical" href="<?php echo htmlspecialchars($pageUrl); ?>" />
+  <?php if ($topicUrlAr): ?>
+  <link rel="alternate" hreflang="en" href="<?php echo htmlspecialchars($pageUrl); ?>" />
+  <link rel="alternate" hreflang="ar" href="<?php echo htmlspecialchars($topicUrlAr); ?>" />
+  <link rel="alternate" hreflang="x-default" href="<?php echo htmlspecialchars($pageUrl); ?>" />
+  <?php endif; ?>
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Trusted-Peptide" />
   <meta property="og:title" content="<?php echo $pageTitle; ?>" />
@@ -71,6 +90,7 @@ $pageImage = $topic && !empty($topic['images'][0])
     .footer-phone-num:hover{text-decoration:underline;}
     .footer-bottom{display:flex;flex-wrap:nowrap;justify-content:space-between;gap:8px;padding-top:14px;border-top:1px solid rgba(128,128,128,.15);margin-top:8px;font-size:.78rem;opacity:.6;}
   </style>
+  <?php seo_jsonld(seo_breadcrumb([['Home', 'https://trusted-peptide.com/'], ['Peptide Guide', 'https://trusted-peptide.com/peptide-guide'], [$topic['title'], $pageUrl]])); ?>
 </head>
 <body>
 

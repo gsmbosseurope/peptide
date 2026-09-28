@@ -9,6 +9,7 @@
  */
 require_once __DIR__ . '/admin-php/config.php';
 require_once __DIR__ . '/admin-php/data.php';
+require_once __DIR__ . '/admin-php/seo.php';
 require_once __DIR__ . '/admin-php/share.php';
 
 $productId = isset($_GET['id']) ? (string) $_GET['id'] : '';
@@ -17,7 +18,15 @@ $product = null;
 foreach ($products as $p) {
     if ($p['id'] === $productId) { $product = $p; break; }
 }
-if (!$product && count($products)) $product = $products[0];
+// Unknown or missing id: never fall back to other content (that made
+// every bad URL a duplicate page). Empty id goes to the listing page;
+// an unknown id gets a real 404.
+if (!$product) {
+    if ($productId === '') { header('Location: /products', true, 301); exit; }
+    http_response_code(404);
+    include __DIR__ . '/404.php';
+    exit;
+}
 
 $pageTitle = $product ? htmlspecialchars($product['name']) . ' — trusted-peptide.com' : 'Product — trusted-peptide.com';
 // shortDescription is rich HTML (Quill-authored) — meta tags must be plain
@@ -46,6 +55,8 @@ if ($product && !empty($product['variants'])) {
         'description' => trim(strip_tags($product['shortDescription'] ?? '')),
         'image' => $pageImage,
         'url' => $pageUrl,
+        'sku' => $product['id'],
+        'brand' => ['@type' => 'Brand', 'name' => 'Trusted-Peptide'],
         'offers' => [
             '@type' => 'AggregateOffer',
             'priceCurrency' => 'EUR',
@@ -118,6 +129,7 @@ if ($product && !empty($product['variants'])) {
     .footer-phone-num:hover{text-decoration:underline;}
     .footer-bottom{display:flex;flex-wrap:nowrap;justify-content:space-between;gap:8px;padding-top:14px;border-top:1px solid rgba(128,128,128,.15);margin-top:8px;font-size:.78rem;opacity:.6;}
   </style>
+  <?php seo_jsonld(seo_breadcrumb([['Home', 'https://trusted-peptide.com/'], ['Products', 'https://trusted-peptide.com/products'], [$product['name'], $pageUrl]])); ?>
 </head>
 <body>
 

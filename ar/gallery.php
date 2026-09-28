@@ -20,7 +20,7 @@ $galleryItems = load_gallery_items();
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>معرض الصور — trusted-peptide.com</title>
+  <title>معرض الصور: عبوات وتغليف الببتيدات البحثية | Trusted-Peptide</title>
   <meta name="description" content="صور وفيديوهات من trusted-peptide.com — المختبر والتغليف والمنتجات." />
   <link rel="canonical" href="https://trusted-peptide.com/ar/gallery" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/gallery" />
@@ -28,12 +28,12 @@ $galleryItems = load_gallery_items();
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/gallery" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="معرض الصور — trusted-peptide.com" />
+  <meta property="og:title" content="معرض الصور: عبوات وتغليف الببتيدات البحثية | Trusted-Peptide" />
   <meta property="og:description" content="صور وفيديوهات من trusted-peptide.com — المختبر والتغليف والمنتجات." />
   <meta property="og:url" content="https://trusted-peptide.com/ar/gallery" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="معرض الصور — trusted-peptide.com" />
+  <meta name="twitter:title" content="معرض الصور: عبوات وتغليف الببتيدات البحثية | Trusted-Peptide" />
   <meta name="twitter:description" content="صور وفيديوهات من trusted-peptide.com — المختبر والتغليف والمنتجات." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="../assets/brand/logo-icon.png" type="image/png" />

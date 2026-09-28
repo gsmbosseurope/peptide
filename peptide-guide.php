@@ -20,7 +20,7 @@ $allTopics = load_peptide_topics();
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Peptide Guide — trusted-peptide.com</title>
+  <title>Peptide Guide: Research Peptides Explained by Category &amp; Mechanism | Trusted-Peptide</title>
   <meta name="description" content="In-depth topic guides covering peptide categories, mechanisms, and research use." />
   <link rel="canonical" href="https://trusted-peptide.com/peptide-guide" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/peptide-guide" />
@@ -28,12 +28,12 @@ $allTopics = load_peptide_topics();
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/peptide-guide" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="Peptide Guide — trusted-peptide.com" />
+  <meta property="og:title" content="Peptide Guide: Research Peptides Explained by Category &amp; Mechanism | Trusted-Peptide" />
   <meta property="og:description" content="In-depth topic guides covering peptide categories, mechanisms, and research use." />
   <meta property="og:url" content="https://trusted-peptide.com/peptide-guide" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Peptide Guide — trusted-peptide.com" />
+  <meta name="twitter:title" content="Peptide Guide: Research Peptides Explained by Category &amp; Mechanism | Trusted-Peptide" />
   <meta name="twitter:description" content="In-depth topic guides covering peptide categories, mechanisms, and research use." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />

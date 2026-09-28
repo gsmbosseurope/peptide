@@ -23,10 +23,17 @@ $staticPages = [
     ['path' => '/blog', 'priority' => '0.7', 'changefreq' => 'weekly'],
     ['path' => '/peptide-guide', 'priority' => '0.6', 'changefreq' => 'weekly'],
     ['path' => '/contact', 'priority' => '0.4', 'changefreq' => 'yearly'],
+    ['path' => '/gallery', 'priority' => '0.5', 'changefreq' => 'monthly'],
     ['path' => '/ar/', 'priority' => '0.9', 'changefreq' => 'daily'],
     ['path' => '/ar/products', 'priority' => '0.8', 'changefreq' => 'daily'],
     ['path' => '/ar/cosmetics', 'priority' => '0.7', 'changefreq' => 'weekly'],
     ['path' => '/ar/vitamins', 'priority' => '0.7', 'changefreq' => 'weekly'],
+    ['path' => '/ar/about', 'priority' => '0.5', 'changefreq' => 'monthly'],
+    ['path' => '/ar/best-sellers', 'priority' => '0.7', 'changefreq' => 'weekly'],
+    ['path' => '/ar/blog', 'priority' => '0.6', 'changefreq' => 'weekly'],
+    ['path' => '/ar/peptide-guide', 'priority' => '0.6', 'changefreq' => 'weekly'],
+    ['path' => '/ar/contact', 'priority' => '0.4', 'changefreq' => 'yearly'],
+    ['path' => '/ar/gallery', 'priority' => '0.4', 'changefreq' => 'monthly'],
 ];
 
 /** Arabic product ids — same balanced-bracket extractor pattern as admin-php/data.php, duplicated here since the Arabic catalog isn't wired into that data layer yet. */
@@ -85,7 +92,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 <?php endforeach; ?>
 <?php foreach ($topics as $t): if (empty($t['id'])) continue; ?>
   <url>
-    <loc><?php echo htmlspecialchars($baseUrl . '/peptide-guide-topic?id=' . rawurlencode($t['id'])); ?></loc>
+    <loc><?php echo htmlspecialchars($baseUrl . (substr($t['id'], -3) === '-ar' ? '/ar' : '') . '/peptide-guide-topic?id=' . rawurlencode($t['id'])); ?></loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -95,6 +102,13 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     <loc><?php echo htmlspecialchars($baseUrl . '/blog-post?id=' . rawurlencode($p['id'])); ?></loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+<?php endforeach; ?>
+<?php foreach ($blogPosts as $p): if (empty($p['id'])) continue; ?>
+  <url>
+    <loc><?php echo htmlspecialchars($baseUrl . '/ar/blog-post?id=' . rawurlencode($p['id'])); ?></loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 <?php endforeach; ?>
 </urlset>

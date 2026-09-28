@@ -15,7 +15,7 @@
       if (palette && palette !== "classic") document.documentElement.setAttribute("data-palette", palette);
     })();
   </script>
-  <title>Best Sellers — trusted-peptide.com</title>
+  <title>Best-Selling Research Peptides: BPC-157, TB-500, GHK-Cu &amp; More | Trusted-Peptide</title>
   <meta name="description" content="The most requested research peptides for general wellness — recovery, skin, energy, and cellular health. No specific condition required." />
   <link rel="canonical" href="https://trusted-peptide.com/best-sellers" />
   <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/best-sellers" />
@@ -23,12 +23,12 @@
   <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/best-sellers" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Trusted-Peptide" />
-  <meta property="og:title" content="Best Sellers — trusted-peptide.com" />
+  <meta property="og:title" content="Best-Selling Research Peptides: BPC-157, TB-500, GHK-Cu &amp; More | Trusted-Peptide" />
   <meta property="og:description" content="The most requested research peptides for general wellness — recovery, skin, energy, and cellular health." />
   <meta property="og:url" content="https://trusted-peptide.com/best-sellers" />
   <meta property="og:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Best Sellers — trusted-peptide.com" />
+  <meta name="twitter:title" content="Best-Selling Research Peptides: BPC-157, TB-500, GHK-Cu &amp; More | Trusted-Peptide" />
   <meta name="twitter:description" content="The most requested research peptides for general wellness — recovery, skin, energy, and cellular health." />
   <meta name="twitter:image" content="https://trusted-peptide.com/assets/brand/hero-vials.jpg" />
   <link rel="icon" href="assets/brand/logo-icon.png" type="image/png" />
