@@ -191,6 +191,7 @@ function initProductDetailPage() {
           <a class="btn btn-secondary" id="whatsapp-order-btn" target="_blank" rel="noopener">Order via WhatsApp</a>
           <span id="pd-share-wrap"></span>
         </div>
+        ${product.purity ? `<div class="pd-trust"><img src="/assets/brand/purity-seal.svg" width="64" height="64" alt="99% purity seal, HPLC verified" /><ul><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>${product.purity} purity</b>, HPLC verified</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>EU-sourced, certified lab</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Cold-chain shipping</li></ul></div>` : ""}
 
         <div class="pd-tabs">
           <div class="pd-tab active" data-tab="main">Benefits &amp; Usage</div>
@@ -212,6 +213,7 @@ function initProductDetailPage() {
   `;
 
   formatProductDescParagraphs(document.querySelector(".pd-desc"));
+  collapseLongDesc(document.querySelector(".pd-desc"), "Read more", "Show less");
 
   const descText = document.querySelector(".pd-desc").textContent.trim();
   renderShareButton(document.getElementById("pd-share-wrap"), {
@@ -376,3 +378,23 @@ function formatProductDescParagraphs(container) {
 }
 
 document.addEventListener("DOMContentLoaded", initProductDetailPage);
+
+// Phones: long descriptions pushed size/price/Add to Cart thousands of pixels
+// down. Show the opening paragraphs with a fade and a toggle instead.
+function collapseLongDesc(desc, moreLabel, lessLabel) {
+  if (!desc || !window.matchMedia("(max-width: 700px)").matches) return;
+  if (desc.scrollHeight < 520) return;
+  desc.classList.add("pd-desc--collapsed");
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "pd-desc-toggle";
+  btn.textContent = moreLabel;
+  btn.setAttribute("aria-expanded", "false");
+  btn.addEventListener("click", () => {
+    const open = desc.classList.toggle("pd-desc--collapsed") === false;
+    btn.textContent = open ? lessLabel : moreLabel;
+    btn.setAttribute("aria-expanded", String(open));
+    if (!open) desc.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
+  desc.after(btn);
+}

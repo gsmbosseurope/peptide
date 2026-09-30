@@ -2160,6 +2160,9 @@ a { color: inherit; text-decoration: none; }
 
 .brand-name .lab { color: var(--text-accent); }
 
+/* Logo mark swaps to its white/light-teal version on the dark theme. */
+:root[data-theme="dark"] .brand img[src*="logo-icon"] { content: url("../assets/brand/logo-icon-dark.png"); }
+
 .brand-dash { font-size: 0; }
 .brand-dash::after { content: " "; font-size: 1rem; }
 

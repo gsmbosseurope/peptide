@@ -29,3 +29,9 @@ skills-lock.json
 # Archives (manual upload bundles, backups)
 *.zip
 *.rar
+
+# Upload bundle (logo + footer)
+/footer/
+
+/claude-setup/
+/deploy/

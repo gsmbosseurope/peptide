@@ -2288,3 +2288,184 @@ h1.pd-name,
   text-decoration: none !important;
 }
 .product-card-desc :is(h1, h2, h3, h4, h5, h6, p, li)::after { content: " "; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Footer v2 (partials/footer.php) — brand + trust + contact, link columns,
+   seal; mobile-first so the phone view is compact with no empty gaps.
+   ══════════════════════════════════════════════════════════════════════ */
+.tpf { padding: 40px 0 24px; margin-top: 40px; }
+.tpf .container { display: grid; gap: 28px; }
+.tpf-top { display: grid; gap: 28px; grid-template-columns: 1fr; }
+.tpf-brand { display: grid; gap: 14px; justify-items: start; }
+.tpf-logo { display: inline-flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 700; color: var(--text-primary); text-decoration: none; }
+.tpf-logo img { width: 40px; height: 40px; flex: none; }
+.tpf-accent { color: var(--text-accent); }
+.tpf-tag { margin: 0; max-width: 40ch; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+.tpf-trust { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.tpf-trust li {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 600; color: var(--text-primary);
+  background: var(--bg-panel); border: 1px solid var(--border-subtle);
+}
+.tpf-trust svg { width: 14px; height: 14px; color: var(--text-accent); flex: none; }
+.tpf-contact { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 440px; }
+.tpf-btn {
+  display: flex; align-items: center; gap: 10px; min-width: 0;
+  padding: 10px 12px; border-radius: 12px; text-decoration: none;
+  background: var(--bg-panel); border: 1px solid var(--border-subtle); color: var(--text-primary);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.tpf-btn:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.tpf-btn svg { width: 22px; height: 22px; flex: none; color: var(--text-accent); }
+.tpf-btn--wa svg { color: #25d366; }
+.tpf-btn span { display: grid; min-width: 0; line-height: 1.25; }
+.tpf-btn small { font-size: 0.72rem; color: var(--text-muted); }
+.tpf-btn b { font-size: 0.86rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tpf-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-top: 22px; border-top: 1px solid var(--border-subtle); }
+.tpf-links h4 { margin: 0 0 10px; font-size: 0.74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+.tpf-links ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.tpf-links a { display: block; padding-block: 7px; font-size: 0.92rem; color: var(--text-secondary); text-decoration: none; }
+.tpf-links a:hover { color: var(--text-primary); }
+.tpf-methods { display: grid; gap: 18px; padding-top: 22px; border-top: 1px solid var(--border-subtle); }
+.tpf-methods > div { display: grid; gap: 10px; }
+.tpf-label { font-size: 0.72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+.tpf .footer-methods-icons { gap: 6px; }
+.tpf .footer-methods-icons .icon-chip { height: 28px; min-width: 0; padding: 0 9px; font-size: 0.74rem; }
+.tpf-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; padding-top: 18px; border-top: 1px solid var(--border-subtle); font-size: 0.78rem; color: var(--text-muted); padding-bottom: 72px; }
+html[dir="rtl"] .tpf-links h4, html[dir="rtl"] .tpf-label { letter-spacing: 0; }
+
+@media (min-width: 900px) {
+  .tpf { padding-top: 56px; }
+  .tpf-top { grid-template-columns: 1.2fr 1.5fr; align-items: start; gap: 48px; }
+  .tpf-links { border-top: 0; padding-top: 4px; }
+  .tpf-methods { grid-template-columns: auto 1fr; gap: 40px; }
+  .tpf-bottom { padding-bottom: 0; }
+}
+@media (max-width: 440px) {
+  /* Phone: one contact button per row so the full number always fits. */
+  .tpf-contact { grid-template-columns: 1fr; }
+}
+
+/* Product page trust card: the purity seal next to three short proof points,
+   right under Add to Cart where the buying decision happens. */
+.pd-trust {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 16px; padding: 12px 14px;
+  border: 1px solid var(--border-subtle); border-radius: 14px;
+  background: var(--bg-panel);
+}
+.pd-trust img { width: 64px; height: 64px; flex: none; filter: drop-shadow(0 3px 8px rgba(11, 31, 58, .18)); }
+.pd-trust ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 0.88rem; color: var(--text-secondary); }
+.pd-trust li { display: flex; align-items: center; gap: 7px; }
+.pd-trust li b { color: var(--text-primary); font-weight: 600; }
+.pd-trust svg { width: 15px; height: 15px; flex: none; color: #12B5A8; }
+
+/* ── Contrast fixes found by the palette x theme audit ───────────────────
+   Primary buttons in some dark palettes had text the same colour as the
+   button (Add to Cart invisible). Text colours below give >= 4.5:1. */
+:root[data-palette="peptide7"]:not([data-theme="light"]) .btn-primary,
+:root[data-palette="peptide8"]:not([data-theme="light"]) .btn-primary,
+:root[data-palette="peptide10"]:not([data-theme="light"]) .btn-primary { color: #ffffff; }
+:root[data-palette="peptide7"]:not([data-theme="light"]) .share-btn,
+:root[data-palette="peptide8"]:not([data-theme="light"]) .share-btn,
+:root[data-palette="peptide10"]:not([data-theme="light"]) .share-btn { color: #0b1f3a !important; }
+/* Peptide 9 light: white on coral was 2.5:1, use deep ink instead. */
+:root[data-palette="peptide9"][data-theme="light"] :is(.btn-primary, .share-btn, .filter-chip.active, .variant-chip.active) { color: #2a1206 !important; }
+:root[data-palette="peptide9"]:not([data-theme="light"]) .quick-search-close { color: #ffffff; }
+/* Default palette share button: darker teal so white text reads. */
+:root:not([data-palette]) .share-btn,
+:root[data-palette="classic"] .share-btn { background: linear-gradient(135deg, #07756b 0%, #0a8a7e 100%) !important; }
+/* Brand chips whose white text was under 3:1. */
+.icon-chip.brand-postnl, .icon-chip.brand-tnt, .icon-chip.brand-bitcoin { color: #1a1a1a !important; }
+/* Trust list: bold part and text sit in one run (no flex gap before comma). */
+.pd-trust li > span { display: inline; }
+.icon-chip.brand-payafter { background: #3d5a80 !important; color: #ffffff !important; border-color: transparent !important; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Mobile pass (≤ 600px): hide secondary chrome, tighten cards and tiles,
+   resize headings, and keep the buying controls near the top.
+   ══════════════════════════════════════════════════════════════════════ */
+.pd-desc--collapsed { max-height: 320px; overflow: hidden; position: relative; }
+.pd-desc--collapsed::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 110px;
+  background: linear-gradient(to bottom, transparent, var(--bg)); pointer-events: none;
+}
+.pd-desc-toggle {
+  display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 18px;
+  padding: 8px 16px; border-radius: 999px; font: inherit; font-weight: 600; font-size: 0.9rem;
+  background: var(--bg-panel); color: var(--text-primary); border: 1px solid var(--border-strong); cursor: pointer;
+}
+@media (max-width: 600px) {
+  /* Hide: page scroll arrows, card
+     descriptions and "View →" (the whole card is the link), long trust list. */
+  .scroll-buttons,
+  .product-card-desc,
+  .product-card-footer .btn-ghost,
+  .trust-strip { display: none !important; }
+
+  /* Home: 8 most-requested products on phones, "View All" covers the rest. */
+  #featured-grid > .product-card:nth-child(n+9) { display: none; }
+
+  /* Tighter product cards. */
+  .product-grid { gap: 10px !important; }
+  .product-card-body { padding: 10px 12px 12px !important; gap: 4px !important; }
+  .product-card-name { font-size: 0.98rem !important; line-height: 1.25; }
+  .product-card-cat { font-size: 0.68rem !important; }
+  .product-card-footer { margin-top: 4px !important; }
+  .product-card-footer .price-tag { font-size: 0.95rem !important; }
+
+  /* Headings sized for a 390px screen. */
+  h1 { font-size: clamp(1.7rem, 7.5vw, 2.1rem); }
+  .pd-name { font-size: 1.9rem !important; }
+  .section { padding-top: 48px; padding-bottom: 48px; }
+
+  /* Category tiles: 3 per row, no subtitle, smaller icon. */
+  .category-icons-section .category-icons-grid,
+  .category-icons-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+  .cat-card-v2 { padding: 12px 8px !important; gap: 8px !important; min-height: 0 !important; text-align: center; align-items: center !important; }
+  .cat-card-v2-icon { width: 40px !important; height: 40px !important; }
+  .cat-card-v2-name { font-size: 0.78rem !important; line-height: 1.2; }
+  .cat-card-v2-sub { display: none !important; }
+
+  /* Product page: buttons in one compact block, Share as a small pill. */
+  .pd-actions { gap: 8px !important; }
+  .pd-actions .btn { padding-block: 12px !important; }
+  .pd-actions .share-btn { width: auto !important; padding: 8px 14px !important; font-size: 0.85rem; }
+  .pd-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+  .pd-related-body { padding: 10px !important; }
+
+  /* Floating WhatsApp sits clear of content. */
+  .whatsapp-float-btn { transform: scale(.86); transform-origin: bottom left; }
+}
+
+/* Phone header: brand name (stacked on two lines) + all actions incl. the
+   style picker, with compact 34px buttons so everything fits at 360-430px. */
+@media (max-width: 600px) {
+  .site-header .container { gap: 8px; }
+  .site-header .brand { gap: 6px; min-width: 0; }
+  .site-header .brand-logo { height: 30px !important; width: auto; }
+  .site-header .brand-name { display: block !important; font-size: 0.86rem; line-height: 1.05; white-space: nowrap; }
+  .site-header .brand-name .lab { display: block; }
+  .site-header .brand-dash { display: none; }
+  .header-actions { gap: 4px !important; }
+  .header-actions > :is(a, button),
+  .header-actions .palette-toggle,
+  .quick-search-btn {
+    height: 34px !important; min-width: 34px !important; padding: 0 7px !important;
+    border-radius: 9px !important; font-size: 0.78rem !important;
+  }
+  .header-actions svg { width: 16px; height: 16px; }
+  .palette-toggle-swatch { width: 16px !important; height: 16px !important; }
+  .mobile-menu-toggle { padding: 0 6px !important; }
+}
+@media (max-width: 400px) {
+  .site-header .container { padding-inline: 12px; gap: 6px; }
+  .site-header .brand-logo { height: 26px !important; }
+  .site-header .brand-name { font-size: 0.76rem; }
+  .header-actions { gap: 3px !important; }
+  .header-actions > :is(a, button),
+  .header-actions .palette-toggle,
+  .quick-search-btn { height: 30px !important; min-width: 30px !important; padding: 0 5px !important; font-size: 0.72rem !important; }
+  .header-actions svg { width: 14px; height: 14px; }
+}

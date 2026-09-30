@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="99% purity, HPLC verified">
+  <defs>
+    <path id="tp-top" d="M22 60 a38 38 0 0 1 76 0"/>
+    <path id="tp-bot" d="M18 60 a42 42 0 0 0 84 0"/>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="#0B1F3A"/>
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#12B5A8" stroke-width="2"/>
+  <circle cx="60" cy="60" r="31" fill="none" stroke="#12B5A8" stroke-width="1" stroke-opacity=".45"/>
+  <text font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="700" letter-spacing="2.2" fill="#FFFFFF">
+    <textPath href="#tp-top" startOffset="50%" text-anchor="middle">HPLC VERIFIED</textPath>
+  </text>
+  <text font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing="2" fill="#5FD6CB">
+    <textPath href="#tp-bot" startOffset="50%" text-anchor="middle">RESEARCH GRADE</textPath>
+  </text>
+  <circle cx="18" cy="60" r="2.2" fill="#12B5A8"/>
+  <circle cx="102" cy="60" r="2.2" fill="#12B5A8"/>
+  <g transform="translate(51 38) scale(.28)">
+    <path d="M12 48 L26 36 L38 42 L52 18" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="12" cy="48" r="7" fill="#FFFFFF"/><circle cx="26" cy="36" r="7" fill="#5FD6CB"/>
+    <circle cx="38" cy="42" r="7" fill="#FFFFFF"/><circle cx="52" cy="18" r="9" fill="#5FD6CB"/>
+  </g>
+  <text x="60" y="70" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="800" fill="#FFFFFF">99%</text>
+  <text x="60" y="81" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" letter-spacing="1.6" fill="#5FD6CB">PURITY</text>
+</svg>
