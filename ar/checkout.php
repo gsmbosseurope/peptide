@@ -131,7 +131,7 @@
   <?php $footerLang = 'ar'; include __DIR__ . '/../partials/footer.php'; ?>
 
   <script src="../js/pricing.js?v=<?php echo filemtime(__DIR__ . '/../js/pricing.js'); ?>" data-cfasync="false"></script>
-  <script src="../js/products-data-ar.js?v=<?php echo filemtime(__DIR__ . '/../js/products-data-ar.js'); ?>" data-cfasync="false"></script>
+  <?php require_once __DIR__ . '/../partials/slim.php'; echo slim_data_tag('ar', '../'); ?>
   <script src="../js/theme.js?v=<?php echo filemtime(__DIR__ . '/../js/theme.js'); ?>" data-cfasync="false"></script>
   <script src="../js/main.js?v=<?php echo filemtime(__DIR__ . '/../js/main.js'); ?>" data-cfasync="false"></script>
   <script src="../js/cart-ar.js?v=<?php echo filemtime(__DIR__ . '/../js/cart-ar.js'); ?>" data-cfasync="false"></script>

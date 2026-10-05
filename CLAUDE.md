@@ -30,3 +30,8 @@ Keep product names in English scientific notation, also on Arabic pages. Every r
 
 ## Tools in `.claude/`
 Hook `guard.js` blocks `config.php` and asks before touching live-data files; hook `check-js.js` strips BOMs and syntax-checks JS; `/deploy-check` lists and packages changed files; agent `ar-en-sync-reviewer` compares EN/AR.
+
+## Speed
+- Listing pages load `js/products-slim.js` / `products-slim-ar.js` (short teasers only), generated automatically by `partials/slim.php` from the full data file whenever that file changes. Only `product.php` / `ar/product.php` load the full `products-data*.js`. Never edit or commit the slim files (git-ignored); never ship them in an upload (the server builds them from its own live data).
+- Product cards show `<image>-t.webp` thumbnails with automatic fallback to the full image. After new products appear, run `python tools/make-thumbs.py` and upload the new `*-t.webp` files.
+- Hero banner: `assets/brand/hero-vials.webp` / `hero-vials-800.webp` (the .jpg is kept for og:image).

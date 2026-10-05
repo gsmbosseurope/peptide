@@ -78,6 +78,13 @@ function isArabicPage() {
   return typeof CATEGORY_LABELS_AR !== "undefined";
 }
 
+// Cards show a 400px thumbnail (<name>-t.webp, made by the thumbnail script);
+// if it does not exist yet (e.g. a product just added in the admin) the onerror
+// handler on the <img> falls back to the full-size image.
+function cardThumb(path) {
+  return path.replace(/\.(webp|jpe?g|png)$/i, "-t.webp");
+}
+
 function productCardHTML(product) {
   const price = cheapestVariantPrice(product);
   const img = product.images && product.images[0] ? product.images[0] : "";
@@ -86,7 +93,7 @@ function productCardHTML(product) {
   return `
     <a class="product-card reveal" href="product?id=${encodeURIComponent(product.id)}">
       <div class="product-card-media">
-        ${img ? `<img src="/${img}" alt="${product.name}" loading="lazy" />` : ""}
+        ${img ? `<img src="/${cardThumb(img)}" data-full="/${img}" alt="${product.name}" loading="lazy" decoding="async" onerror="if(this.dataset.full&&this.src.indexOf(this.dataset.full)<0){this.src=this.dataset.full}" />` : ""}
       </div>
       <div class="product-card-body">
         <div class="product-card-meta-row">

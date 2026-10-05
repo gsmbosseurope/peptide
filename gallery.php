@@ -156,7 +156,7 @@ $galleryItems = load_gallery_items();
   <?php $footerLang = 'en'; include __DIR__ . '/partials/footer.php'; ?>
 
   <script src="js/pricing.js?v=<?php echo filemtime(__DIR__ . '/js/pricing.js'); ?>" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <?php require_once __DIR__ . '/partials/slim.php'; echo slim_data_tag('en', ''); ?>
   <script src="js/category-tile-labels.js?v=<?php echo filemtime(__DIR__ . '/js/category-tile-labels.js'); ?>" data-cfasync="false"></script>
   <script src="js/gallery-lightbox.js?v=<?php echo filemtime(__DIR__ . '/js/gallery-lightbox.js'); ?>" data-cfasync="false"></script>
   <script>document.addEventListener("DOMContentLoaded", function () { initGalleryLightbox("#gallery-grid"); });</script>

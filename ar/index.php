@@ -120,7 +120,7 @@ $websiteSchema = [
     </nav>
 
   <section class="catalog-banner">
-    <img class="catalog-banner-img" src="/assets/brand/hero-vials.jpg" width="1600" height="678" fetchpriority="high" alt="مختبر DNA Peptides — BPC-157, GHK-Cu, SEMAX, TB-500, NAD+, Tirzepetide, GLOW, KLOW" />
+    <img class="catalog-banner-img" src="/assets/brand/hero-vials.webp" srcset="/assets/brand/hero-vials-800.webp 800w, /assets/brand/hero-vials.webp 1600w" sizes="100vw" width="1600" height="678" fetchpriority="high" alt="مختبر DNA Peptides — BPC-157, GHK-Cu, SEMAX, TB-500, NAD+, Tirzepetide, GLOW, KLOW" />
     <div class="catalog-banner-fade"></div>
     <div class="container catalog-banner-content reveal">
       <span class="eyebrow">الببتيدات الأكثر ثقة<br /><span class="eyebrow-center-line">في أوروبا</span></span>
@@ -161,7 +161,7 @@ $websiteSchema = [
   <?php $footerLang = 'ar'; include __DIR__ . '/../partials/footer.php'; ?>
 
   <script src="../js/pricing.js?v=<?php echo filemtime(__DIR__ . '/../js/pricing.js'); ?>" data-cfasync="false"></script>
-  <script src="../js/products-data-ar.js?v=<?php echo filemtime(__DIR__ . '/../js/products-data-ar.js'); ?>" data-cfasync="false"></script>
+  <?php require_once __DIR__ . '/../partials/slim.php'; echo slim_data_tag('ar', '../'); ?>
   <script src="../js/category-labels-ar.js?v=<?php echo filemtime(__DIR__ . '/../js/category-labels-ar.js'); ?>" data-cfasync="false"></script>
   <script src="../js/category-tile-labels.js?v=<?php echo filemtime(__DIR__ . '/../js/category-tile-labels.js'); ?>" data-cfasync="false"></script>
   <script src="../js/catalog.js?v=<?php echo filemtime(__DIR__ . '/../js/catalog.js'); ?>" data-cfasync="false"></script>

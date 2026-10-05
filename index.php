@@ -124,7 +124,7 @@ $websiteSchema = [
     </nav>
 
   <section class="catalog-banner">
-    <img class="catalog-banner-img" src="assets/brand/hero-vials.jpg" width="1600" height="678" fetchpriority="high" alt="DNA Peptides Lab research vials — BPC-157, GHK-Cu, SEMAX, TB-500, NAD+, Tirzepetide, GLOW, KLOW" />
+    <img class="catalog-banner-img" src="assets/brand/hero-vials.webp" srcset="assets/brand/hero-vials-800.webp 800w, assets/brand/hero-vials.webp 1600w" sizes="100vw" width="1600" height="678" fetchpriority="high" alt="DNA Peptides Lab research vials — BPC-157, GHK-Cu, SEMAX, TB-500, NAD+, Tirzepetide, GLOW, KLOW" />
     <div class="catalog-banner-fade"></div>
     <div class="container catalog-banner-content reveal">
       <span class="eyebrow">No.1 Trusted Peptides<br />in Europe</span>
@@ -165,7 +165,7 @@ $websiteSchema = [
   <?php $footerLang = 'en'; include __DIR__ . '/partials/footer.php'; ?>
 
   <script src="js/pricing.js?v=<?php echo filemtime(__DIR__ . '/js/pricing.js'); ?>" data-cfasync="false"></script>
-  <script src="js/products-data.js?v=<?php echo filemtime(__DIR__ . '/js/products-data.js'); ?>" data-cfasync="false"></script>
+  <?php require_once __DIR__ . '/partials/slim.php'; echo slim_data_tag('en', ''); ?>
   <script src="js/category-tile-labels.js?v=<?php echo filemtime(__DIR__ . '/js/category-tile-labels.js'); ?>" data-cfasync="false"></script>
   <script src="js/catalog.js?v=<?php echo filemtime(__DIR__ . '/js/catalog.js'); ?>" data-cfasync="false"></script>
   <script src="js/theme.js?v=<?php echo filemtime(__DIR__ . '/js/theme.js'); ?>" data-cfasync="false"></script>
