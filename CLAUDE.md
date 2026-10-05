@@ -6,7 +6,7 @@ Bilingual PHP site (English at `/`, Arabic at `/ar/`, RTL) for research peptides
 - Explain to the user in **Arabic** (code, paths and identifiers stay as they are).
 - After a change, **list the files to upload**; do not rebuild a zip unless asked.
 - Hosting is cPanel with manual upload behind Cloudflare. After uploading, purge the Cloudflare cache.
-- No PHP on this machine: PHP files cannot be linted or run locally. Say so instead of claiming they were tested.
+- PHP 8.5 is installed locally (same version as the server, with mbstring/gd/curl/openssl enabled in its php.ini). Lint with `php -l file.php`; run the site with `php -S 127.0.0.1:8099 -t .` and open `http://127.0.0.1:8099/index.php`. In a fresh shell refresh PATH first (winget edits it). Local pages need no `config.php` for public pages; the admin panel does.
 - Pushing to GitHub (`gsmbosseurope/peptide`, private) is outward-facing: confirm first.
 
 ## Live data: the admin panel edits these on the SERVER

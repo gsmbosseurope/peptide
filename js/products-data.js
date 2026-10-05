@@ -5097,6 +5097,38 @@ const PRODUCTS = [
                 "discountPercent": 20
             }
         ]
+    },
+    {
+        "id": "spermidine",
+        "name": "Spermidine",
+        "category": "Organ-Specific Bioregulators & Therapeutic Compounds",
+        "purity": "",
+        "showPurity": true,
+        "shortDescription": "<p>Spermidine</p>",
+        "composition": [
+            "Spermidine"
+        ],
+        "uses": [
+            "Spermidine"
+        ],
+        "images": [],
+        "video": "",
+        "variants": [
+            {
+                "size": "10 mg",
+                "price": 79
+            }
+        ],
+        "wholesaleTiers": [
+            {
+                "minQty": 5,
+                "discountPercent": 10
+            },
+            {
+                "minQty": 10,
+                "discountPercent": 20
+            }
+        ]
     }
 ];
 
