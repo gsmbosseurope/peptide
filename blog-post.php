@@ -17,6 +17,8 @@ $post = null;
 foreach ($posts as $p) {
     if ($p['id'] === $postId) { $post = $p; break; }
 }
+// Arabic posts (id ends in "-ar") live under /ar/ only.
+if ($post && substr($post['id'], -3) === '-ar') $post = null;
 
 // Unknown or missing id: never fall back to other content (that made
 // every bad URL a duplicate page). Empty id goes to the listing page;
@@ -56,9 +58,9 @@ $pageImage = $post && !empty($post['coverImage'])
   <title><?php echo $pageTitle; ?></title>
   <meta name="description" content="<?php echo $pageDesc; ?>" />
   <link rel="canonical" href="<?php echo htmlspecialchars($pageUrl); ?>" />
-  <?php if ($post): ?>
+  <?php if ($post && in_array($post['id'] . '-ar', array_column($posts, 'id'), true)): ?>
   <link rel="alternate" hreflang="en" href="<?php echo htmlspecialchars($pageUrl); ?>" />
-  <link rel="alternate" hreflang="ar" href="https://trusted-peptide.com/ar/blog-post?id=<?php echo rawurlencode($post['id']); ?>" />
+  <link rel="alternate" hreflang="ar" href="https://trusted-peptide.com/ar/blog-post?id=<?php echo rawurlencode($post['id'] . '-ar'); ?>" />
   <link rel="alternate" hreflang="x-default" href="<?php echo htmlspecialchars($pageUrl); ?>" />
   <?php endif; ?>
   <meta property="og:type" content="article" />

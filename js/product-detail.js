@@ -126,7 +126,8 @@ function initProductDetailPage() {
     return;
   }
 
-  document.title = `${product.name} — trusted-peptide.com`;
+  // Keep the hand-written SEO title (set by product.php) when there is one.
+  if (!document.querySelector('meta[name="x-seo-override"]')) document.title = `${product.name} — trusted-peptide.com`;
 
   let activeVariantIndex = 0;
   let qty = 1;

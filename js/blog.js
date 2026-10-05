@@ -35,12 +35,13 @@ function initBlogListPage() {
   const grid = document.getElementById("blog-posts-grid");
   if (!grid) return;
 
-  if (typeof BLOG_POSTS === "undefined" || !BLOG_POSTS.length) {
+  const posts = typeof BLOG_POSTS === "undefined" ? [] : BLOG_POSTS.filter((p) => !/-ar$/.test(p.id));
+  if (!posts.length) {
     grid.innerHTML = `<div class="empty-state"><h3>No posts published yet</h3><p>Check back soon.</p></div>`;
     return;
   }
 
-  grid.innerHTML = BLOG_POSTS.map(blogPostCardHTML).join("");
+  grid.innerHTML = posts.map(blogPostCardHTML).join("");
   initScrollReveal();
 }
 

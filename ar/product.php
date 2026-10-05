@@ -84,6 +84,8 @@ $pageTitle = $product ? htmlspecialchars($product['name']) . ' — trusted-pepti
 $pageDesc = $product && !empty($product['shortDescription'])
     ? htmlspecialchars(share_description($product['shortDescription']))
     : 'ببتيد بحثي مصدره الاتحاد الأوروبي، معتمد للنقاء والجودة الثابتة.';
+$seoOv = $product ? seo_product_override($product['id'], 'ar') : null;
+if ($seoOv) { $pageTitle = htmlspecialchars($seoOv[0]); $pageDesc = htmlspecialchars($seoOv[1]); }
 $pageUrl = 'https://trusted-peptide.com/ar/product' . ($product ? '?id=' . rawurlencode($product['id']) : '');
 $pageUrlEn = 'https://trusted-peptide.com/product' . ($product ? '?id=' . rawurlencode($product['id']) : '');
 $pageImage = $product && !empty($product['images'][0])
@@ -140,6 +142,7 @@ if ($product && !empty($product['name']) && !empty($product['variants'])) {
   </script>
   <title><?php echo $pageTitle; ?></title>
   <meta name="description" content="<?php echo $pageDesc; ?>" />
+  <?php if ($seoOv): ?><meta name="x-seo-override" content="1" /><?php endif; ?>
   <link rel="canonical" href="<?php echo htmlspecialchars($pageUrl); ?>" />
   <link rel="alternate" hreflang="en" href="<?php echo htmlspecialchars($pageUrlEn); ?>" />
   <link rel="alternate" hreflang="ar" href="<?php echo htmlspecialchars($pageUrl); ?>" />

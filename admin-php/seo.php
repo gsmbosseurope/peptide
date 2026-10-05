@@ -54,3 +54,30 @@ function seo_article($title, $desc, $url, $image, $date, $lang) {
     }
     return $data;
 }
+
+/**
+ * Hand-written <title>/meta description for the most searched products, EN + AR.
+ * Returns [title, description] or null (then the page uses its automatic ones).
+ * Kept here instead of the product data so admin-panel saves can never drop them.
+ */
+function seo_product_override($id, $lang) {
+    static $map = [
+        'bpc-157' => [
+            'en' => ['BPC-157 Peptide for Research – HPLC Tested | Trusted-Peptide', 'Research-grade BPC-157 with a batch certificate of analysis (HPLC purity and mass-spec identity). Shipped from Europe, cold-chain packed. For laboratory research use only.'],
+            'ar' => ['ببتيد BPC-157 للأبحاث – مُختبر بتقنية HPLC | ترستد ببتيد', 'ببتيد BPC-157 بجودة بحثية مع شهادة تحليل لكل دفعة (نقاء HPLC وتأكيد الهوية بطيف الكتلة). يُشحن من أوروبا بتغليف مبرّد. للاستخدام المخبري والبحثي فقط.'],
+        ],
+        'tb-500' => [
+            'en' => ['TB-500 Peptide for Research – HPLC Tested | Trusted-Peptide', 'Research-grade TB-500 (thymosin beta-4 fragment) with a certificate of analysis for every batch. Shipped from Europe in cold-chain packaging. For laboratory research use only.'],
+            'ar' => ['ببتيد TB-500 للأبحاث – مُختبر بتقنية HPLC | ترستد ببتيد', 'ببتيد TB-500 (جزء من ثيموسين بيتا-4) بجودة بحثية مع شهادة تحليل لكل دفعة. يُشحن من أوروبا بتغليف مبرّد. للاستخدام المخبري والبحثي فقط.'],
+        ],
+        'ghk-cu' => [
+            'en' => ['GHK-Cu Copper Peptide for Research – Lab Tested | Trusted-Peptide', 'Research-grade GHK-Cu copper peptide, HPLC tested with a certificate of analysis. Shipped from Europe. For laboratory research use only.'],
+            'ar' => ['ببتيد النحاس GHK-Cu للأبحاث – مُختبر مخبرياً | ترستد ببتيد', 'ببتيد النحاس GHK-Cu بجودة بحثية، مُختبر بتقنية HPLC مع شهادة تحليل. يُشحن من أوروبا. للاستخدام المخبري والبحثي فقط.'],
+        ],
+        'bpc-tb-blend' => [
+            'en' => ['BPC-157 + TB-500 Blend for Research | Trusted-Peptide', 'Pre-mixed BPC-157 and TB-500 research blend, HPLC tested with a batch certificate of analysis. Shipped from Europe. For laboratory research use only.'],
+            'ar' => ['مزيج BPC-157 وTB-500 للأبحاث | ترستد ببتيد', 'مزيج جاهز من BPC-157 وTB-500 للأبحاث، مُختبر بتقنية HPLC مع شهادة تحليل لكل دفعة. يُشحن من أوروبا. للاستخدام المخبري والبحثي فقط.'],
+        ],
+    ];
+    return $map[$id][$lang] ?? null;
+}

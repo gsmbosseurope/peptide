@@ -97,14 +97,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     <priority>0.5</priority>
   </url>
 <?php endforeach; ?>
-<?php foreach ($blogPosts as $p): if (empty($p['id'])) continue; ?>
+<?php foreach ($blogPosts as $p): if (empty($p['id'])) continue; if (substr($p['id'], -3) === '-ar') continue; ?>
   <url>
     <loc><?php echo htmlspecialchars($baseUrl . '/blog-post?id=' . rawurlencode($p['id'])); ?></loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 <?php endforeach; ?>
-<?php foreach ($blogPosts as $p): if (empty($p['id'])) continue; ?>
+<?php foreach ($blogPosts as $p): if (empty($p['id'])) continue; if (substr($p['id'], -3) !== '-ar') continue; ?>
   <url>
     <loc><?php echo htmlspecialchars($baseUrl . '/ar/blog-post?id=' . rawurlencode($p['id'])); ?></loc>
     <changefreq>monthly</changefreq>

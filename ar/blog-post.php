@@ -9,6 +9,8 @@ $post = null;
 foreach ($posts as $p) {
     if ($p['id'] === $postId) { $post = $p; break; }
 }
+// Only Arabic posts (id ends in "-ar") are served here.
+if ($post && substr($post['id'], -3) !== '-ar') $post = null;
 
 // Unknown or missing id: never fall back to other content (that made
 // every bad URL a duplicate page). Empty id goes to the listing page;
@@ -48,10 +50,10 @@ $pageImage = $post && !empty($post['coverImage'])
   <title><?php echo $pageTitle; ?></title>
   <meta name="description" content="<?php echo $pageDesc; ?>" />
   <link rel="canonical" href="<?php echo htmlspecialchars($pageUrl); ?>" />
-  <?php if ($post): ?>
-  <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/blog-post?id=<?php echo rawurlencode($post['id']); ?>" />
+  <?php $twinEn = $post ? substr($post['id'], 0, -3) : ''; if ($post && in_array($twinEn, array_column($posts, 'id'), true)): ?>
+  <link rel="alternate" hreflang="en" href="https://trusted-peptide.com/blog-post?id=<?php echo rawurlencode($twinEn); ?>" />
   <link rel="alternate" hreflang="ar" href="<?php echo htmlspecialchars($pageUrl); ?>" />
-  <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/blog-post?id=<?php echo rawurlencode($post['id']); ?>" />
+  <link rel="alternate" hreflang="x-default" href="https://trusted-peptide.com/blog-post?id=<?php echo rawurlencode($twinEn); ?>" />
   <?php endif; ?>
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Trusted-Peptide" />
